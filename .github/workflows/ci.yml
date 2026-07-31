@@ -1,0 +1,90 @@
+# =============================================================================
+# ZR APP · Integración continua
+# =============================================================================
+# Las pruebas de acceso cruzado (test:rls) BLOQUEAN la fusión. No es negociable:
+# verifican que un estudiante no puede leer los datos personales de otro, y la
+# base contiene datos de menores de edad.
+#
+# Referencia: tareas/SPRINT_0.md · T-010
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verificar:
+    name: Verificación completa
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Preparar la CLI de Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Levantar Supabase local
+        run: supabase start
+
+      - name: Aplicar migraciones y datos de prueba desde cero
+        run: supabase db reset
+
+      # Si alguna tabla queda sin RLS, se detiene aquí y no llega a producción.
+      - name: Verificar que ninguna tabla quedó sin RLS
+        run: |
+          RESULTADO=$(psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -tAc \
+            "select count(*) from pg_tables where schemaname='public' and rowsecurity = false;")
+          echo "Tablas sin RLS: $RESULTADO"
+          if [ "$RESULTADO" != "0" ]; then
+            echo "::error::Hay tablas sin Row Level Security. No se puede fusionar."
+            psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -c \
+              "select tablename from pg_tables where schemaname='public' and rowsecurity = false;"
+            exit 1
+          fi
+
+      - name: Comprobación de tipos
+        run: npm run typecheck
+
+      - name: Linter
+        run: npm run lint
+
+      - name: Pruebas unitarias y de reglas de negocio
+        run: npm run test
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_LOCAL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_LOCAL }}
+
+      - name: 🔒 Pruebas de acceso cruzado (BLOQUEAN LA FUSIÓN)
+        run: npm run test:rls
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_LOCAL }}
+
+      # Última red de seguridad: que la clave de servicio no acabe en el paquete
+      # que descarga el navegador. Si eso pasa, cualquiera lee toda la base.
+      - name: Verificar que no se filtró la clave de servicio
+        run: |
+          npm run build
+          if grep -rn "service_role" .next/static/ 2>/dev/null; then
+            echo "::error::La clave service_role aparece en el paquete del navegador."
+            exit 1
+          fi
+          echo "Limpio: la clave de servicio no está expuesta."
