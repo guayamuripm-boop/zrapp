@@ -35,7 +35,7 @@ automotriz. Clases sabatinas, ~100 estudiantes activos de 15 a 25 años.
 │   ├── migrations/          14 archivos SQL · COPIAR TAL CUAL, NO EDITAR
 │   └── seed/                Datos de prueba
 │
-├── tareas/                  6 sprints con tareas atómicas T-001 … T-515
+├── plan/                    el sprint vigente al 5 de septiembre
 ├── marca/                   Logos y referencia visual oficial
 └── docs/                    Contexto de negocio, auditoría y decisiones
 ```

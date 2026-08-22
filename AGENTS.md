@@ -18,7 +18,7 @@ Las clases son **los sábados**. Hay ~100 estudiantes activos, de 15 a 25 años.
 **Fase 1 (lo único que se construye ahora):**
 1. Registro e inicio de sesión con cédula.
 2. Consentimiento parental obligatorio para estudiantes de 15 a 17 años (ley LOPNNA).
-3. Carnet digital con código QR rotatorio.
+3. Carnet digital con la identidad del estudiante.
 4. Asistencia: **administración muestra un QR de un solo uso y el estudiante lo escanea**.
 5. Entrega de refrigerio marcada con el mismo escaneo.
 6. Exámenes digitales con autocalificación.
@@ -70,7 +70,6 @@ Estas diez reglas no se negocian, no se optimizan y no se saltan "solo por esta 
 | Lógica de servidor | Supabase Edge Functions (Deno) | — |
 | Lector de QR | `@zxing/browser` | — |
 | Generador de QR | `qrcode` | — |
-| Códigos rotatorios | `otpauth` (TOTP) | — |
 | Pruebas | Vitest + Playwright | — |
 | Despliegue | Vercel | — |
 
@@ -92,10 +91,12 @@ La carpeta `plan/` tiene el sprint completo. Léela **antes** que el resto de es
 | `plan/02_SPRINT.md` | Los 15 días, tarea por tarea |
 | `plan/03_DATOS.md` | Qué debe entregar la academia y cuándo |
 | `plan/04_CONFIGURACION.md` | Qué se cambia sin tocar código |
+| `plan/05_DIAGNOSTICO.md` | El diagnóstico de entrada del primer día |
+| `plan/06_ENTREGABLE.md` | **Qué se entrega el 5 de septiembre. Manda sobre el alcance** |
 
-⚠️ **Corrección a §5 de este archivo:** dice que las 16 migraciones están «YA APLICADAS».
-**No lo están en `zr-prod`.** Esa base va por la migración 033 y tiene tablas que el
-repositorio no conoce. Ver `plan/01_ESTADO.md` antes de escribir SQL.
+⚠️ **El repositorio y la base de datos divergieron.** `zr-prod` va por la migración 033 y el
+repositorio por la 016. La base tiene tablas que el repositorio no conoce, y el repositorio
+tiene tablas que nunca se aplicaron ahí. **Lee `plan/01_ESTADO.md` antes de escribir SQL.**
 
 ---
 
@@ -106,16 +107,18 @@ Ejecuta en este orden exacto. Cada paso depende del anterior.
 | Orden | Qué hacer | Archivo que debes leer |
 |---|---|---|
 | 1 | Preparar entorno, crear proyecto, instalar dependencias | `spec/01_SETUP.md` |
-| 2 | Aplicar las 13 migraciones SQL **sin modificarlas** | `supabase/migrations/` |
+| 2 | ⚠️ **NO apliques las migraciones de este repositorio** | `plan/01_ESTADO.md` |
 | 3 | Cargar datos de prueba | `supabase/seed/seed_dev.sql` |
 | 4 | Generar los tipos de TypeScript desde la base | `spec/01_SETUP.md` §6 |
 | 5 | Implementar las Edge Functions | `spec/03_EDGE_FUNCTIONS.md` |
 | 6 | Implementar las pantallas, en el orden de las tareas | `spec/04_PANTALLAS.md` |
 | 7 | Escribir y correr las pruebas | `spec/05_PRUEBAS.md` |
 
-**Las tareas atómicas están en `tareas/`.** Cada una dice exactamente qué archivos crear, qué
-debe hacer, y cómo se verifica que quedó bien. Ejecútalas en orden numérico: `T-001`, `T-002`, …
-No empieces una tarea sin haber cumplido el criterio de verificación de la anterior.
+**Las tareas del sprint vigente están en `plan/02_SPRINT.md`**, con su criterio de terminado.
+No empieces una sin haber cumplido el criterio de la anterior.
+
+⚠️ **La tabla de arriba describe el orden original del proyecto, no el sprint actual.** Para
+llegar al 5 de septiembre, el orden es el de `plan/02_SPRINT.md`.
 
 ---
 
@@ -144,13 +147,12 @@ ZR App/
 │   └── validators.ts
 │
 ├── supabase/
-│   ├── migrations/              ← 16 archivos SQL YA APLICADOS. NO EDITAR NINGUNO.
+│   ├── migrations/              ← ⚠️ SUPERADAS por zr-prod. Lee su LEEME.md
 │   ├── functions/validate-scan/ ← Edge Function de validación de QR
 │   └── seed/seed_dev.sql        ← datos de prueba
 │
-├── tareas/                      ← tareas atómicas por sprint
-│   ├── SPRINT_0.md … SPRINT_5.md
-│   └── SPRINT_MDV_0.md … SPRINT_MDV_3.md
+├── plan/                        ← ⭐ EL SPRINT VIGENTE. Empieza por aquí
+│   ├── 00_LEEME.md … 06_ENTREGABLE.md
 │
 ├── tests/rls/                   ← pruebas de aislamiento entre estudiantes
 │
@@ -166,6 +168,7 @@ ZR App/
 │   └── 13_DISENO_DE_PRODUCTO_ESTUDIANTE.md  qué gana el estudiante y por qué
 │
 └── _archivo/                    ← histórico. NO es fuente de verdad, no lo sigas.
+    │                              Lee _archivo/LEEME.md antes de abrir nada de ahí
     ├── prototipos/              prototipos v1, v2 y estático
     └── docs-superados/          docs de stack y esquema que ya no aplican
 ```
