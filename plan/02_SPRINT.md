@@ -13,9 +13,9 @@
 **Regla del sprint:** si algo se atrasa, se recorta alcance — nunca se recorta la prueba en
 teléfono real.
 
-> ⚠️ **Alcance revisado el 21 de agosto.** La evaluación práctica **sale del MVP**: el 5 de
-> septiembre es la primera clase de la cohorte y no hay nada que evaluar. En su lugar entra el
-> **diagnóstico de entrada**. Ver `00_LEEME.md` y `05_DIAGNOSTICO.md`.
+> ⚠️ **El alcance lo define `06_ENTREGABLE.md`.** Si una tarea de aquí no sirve a algo de
+> ese documento, no va. La evaluación práctica **sale del MVP**: el 5 de septiembre es la
+> primera clase y no hay nada que evaluar.
 
 ---
 
@@ -120,6 +120,17 @@ Sin tareas asignadas. Si la semana va al día, adelantar T-09.
 **Terminado cuando:** un estudiante escanea desde su teléfono y administración ve subir el
 contador, con ambos dispositivos en el taller.
 
+### T-10b · Registro manual **[HACE POSIBLE EL CRITERIO DE ÉXITO]**
+Sin esto, un teléfono que falla termina en un papel — y el criterio de éxito es cero papel.
+
+- [ ] Administración busca al estudiante en la lista de quienes faltan
+- [ ] Lo marca presente con un motivo: sin batería · cámara falla · no instaló la app · otro
+- [ ] Queda registrado que fue manual y quién lo hizo
+- [ ] Marca asistencia **y refrigerio**, igual que el escaneo
+
+**Terminado cuando:** un estudiante sin teléfono queda registrado en la app en menos de 20
+segundos.
+
 ---
 
 ## 🔴 Martes 26 — Carnet
@@ -162,6 +173,18 @@ minutos y las tres entienden el mensaje final.
 - [ ] Lo que más les preocupa, agregado por frecuencia
 - [ ] Las respuestas abiertas **no se proyectan** ni se muestran atribuidas
 
+### T-13b · El profesor abre el diagnóstico
+El diagnóstico no está disponible hasta que él lo abre. Ver `06_ENTREGABLE.md` §4.
+
+- [ ] Botón «Abrir el diagnóstico» en el panel del profesor
+- [ ] El estado vive en la sesión de clase, no en la configuración global
+- [ ] Al abrirlo, **le aparece a los estudiantes sin recargar** (tiempo real)
+- [ ] El profesor ve el contador llenarse: «14 de 24 respondieron»
+- [ ] Lo puede cerrar
+
+**Terminado cuando:** el profesor abre desde un teléfono y a otro teléfono le aparece el
+diagnóstico en menos de 5 segundos, sin tocar nada.
+
 ---
 
 ## 🔴 Sábado 30 — PRUEBA EN CLASE REAL
@@ -177,6 +200,9 @@ Con la clase real de ese sábado.
 **Terminado cuando:** hay una lista escrita de fallos y quedan 6 días para arreglarlos.
 
 **Sin esta fecha, el 5 de septiembre es a ciegas.**
+
+> El ensayo sirve también para que **el profesor y administración usen la app antes del día**.
+> Nadie debería estar aprendiendo su pantalla el 5 de septiembre.
 
 ---
 
@@ -211,6 +237,15 @@ Con la clase real de ese sábado.
 - [ ] Se instala en Android desde el navegador
 - [ ] Probado en tres teléfonos
 
+### T-18b · El botón del sitio web
+- [ ] Coordinar con quien administre zrmecademy.com
+- [ ] Renombrar `Sign in` a **Aula Virtual**
+- [ ] Apuntarlo a la app
+- [ ] Probar desde un teléfono: debe abrir la app instalada, no el navegador
+
+**Depende de terceros.** Si quien administra el sitio no responde esta semana, se avisa y se
+entrega con enlace directo.
+
 ---
 
 ## 🔴 Jueves 4 — Congelar
@@ -220,6 +255,14 @@ Con la clase real de ese sábado.
 - [ ] Contraseñas temporales con cambio obligatorio
 - [ ] Cargar el profesor
 - [ ] Verificar el aislamiento: el estudiante A no ve nada de B
+
+### T-19b · Repartir la app antes del sábado **[RIESGO]**
+- [ ] Mandar el enlace por WhatsApp a la cohorte, **lunes 1 a más tardar**
+- [ ] Instrucción de una línea de cómo instalarla
+- [ ] Confirmar que al menos 20 de 24 la instalaron antes del viernes
+
+⚠️ **No dejar la instalación para el mismo día.** 24 teléfonos descargando a la vez con la
+señal del taller es un riesgo evitable.
 
 ### T-20 · Congelar
 - [ ] **No se despliega nada más después de este día**
@@ -263,7 +306,9 @@ profesores · historial · pantalla de configuración.
 | Falla algo en el ensayo | **Sábado 30** | Quedan 6 días para arreglar |
 | No hay contenido para la primera semana | **Martes 2** | Publicar 2 casos y completar durante la semana |
 | La app no se instala en gama media | **Miércoles 3** | Funciona igual desde el navegador, sin instalar |
-| Se cae internet en el taller | El día | Lista impresa y carga manual el lunes |
+| Se cae internet en el taller | El día | Administración anota en su teléfono y carga al recuperar señal |
+| Llegan sin la app instalada | **Viernes 4** | Registro manual por administración |
+| El sitio web no se puede tocar | **Miércoles 3** | Se entrega con enlace directo por WhatsApp |
 
 **Los cuatro primeros se descubren con tiempo si se respetan las fechas.** Ese es el propósito
 de ponerlos al principio.

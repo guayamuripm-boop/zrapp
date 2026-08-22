@@ -99,6 +99,7 @@ dato se decide el modelo, en vez de decidirlo ahora a ciegas.
 | `03_DATOS.md` | Qué debe entregar la academia, y para cuándo |
 | `04_CONFIGURACION.md` | Qué se cambia sin tocar código |
 | `05_DIAGNOSTICO.md` | El diagnóstico de entrada: qué pregunta y por qué |
+| `06_ENTREGABLE.md` | **Qué se entrega exactamente el 5 de septiembre. Manda sobre el alcance** |
 
 ---
 
