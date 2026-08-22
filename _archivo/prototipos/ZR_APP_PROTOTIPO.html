@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ZR App · Prototipo</title>
+<style>
+/* ============================================================
+   ZR APP · PROTOTIPO VISUAL COMPLETO
+   Identidad: Manual de Identidad ZR Mecademy 2025
+   Colores, tipografía, medidas y voz según spec/06
+   ============================================================ */
+:root{
+  --zr-navy:#21284F;
+  --zr-blue-deep:#1E4D96;
+  --zr-blue:#3869B1;
+  --zr-blue-mid:#6590CB;
+  --zr-blue-light:#98BAE3;
+  --zr-white:#FFFFFF;
+  --zr-success:#16A34A;
+  --zr-warning:#EAB308;
+  --zr-error:#DC2626;
+  --zr-bg:#F5F7FB;
+  --zr-surface:#FFFFFF;
+  --zr-border:#C9D6EA;
+  --zr-text:#21284F;
+  --zr-text-muted:#4A5578;
+  --zr-touch:48px;
+  --zr-btn-h:56px;
+  --zr-btn-h-lg:64px;
+  --zr-radius:12px;
+  --zr-gap:16px;
+  --zr-page-pad:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Raleway','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--zr-bg);color:var(--zr-text);
+  min-height:100vh;font-size:16px;line-height:1.5;
+}
+.serif{font-family:'Georgia',serif}
+.hidden{display:none!important}
+/* ============ PANTA - desktop viewport for the whole app ============ */
+.phone{
+  width:100%;max-width:430px;margin:0 auto;min-height:100vh;
+  background:var(--zr-bg);position:relative;
+  box-shadow:0 0 40px rgba(33,40,79,.15);
+}
+@media(min-width:431px){
+  body{padding:24px 0;background:#d8dee9}
+  .phone{border-radius:28px;min-height:calc(100vh - 48px);overflow:hidden}
+}
+/* ============ TOP BAR ============ */
+.topbar{
+  background:var(--zr-navy);color:#fff;padding:14px var(--zr-page-pad);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;gap:12px;
+}
+.topbar .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.topbar .logo .zr{
+  width:34px;height:34px;background:var(--zr-blue);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;
+}
+.topbar .meta{font-size:11px;color:#c9d6ea;text-align:right;line-height:1.3}
+.topbar .exit{cursor:pointer;color:#fff;background:rgba(255,255,255,.12);border:none;
+  width:40px;height:40px;border-radius:10px;font-size:18px;flex-shrink:0}
+/* ============ AUTH ============ */
+.auth{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(160deg,var(--zr-navy) 0%,var(--zr-blue-deep) 55%,var(--zr-blue) 100%);padding:0}
+.auth .brand{margin:auto;text-align:center;color:#fff;padding:32px 24px;width:100%;max-width:420px}
+.auth .brand .big{width:84px;height:84px;background:var(--zr-blue);border-radius:22px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800}
+.auth .brand h1{font-size:26px;margin-bottom:6px}
+.auth .brand p{color:#c9d6ea;font-size:14px}
+.auth .card{background:var(--zr-surface);border-radius:24px 24px 0 0;padding:28px 20px calc(28px + env(safe-area-inset-bottom));width:100%;max-width:430px;margin:0 auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--zr-text-muted);margin-bottom:6px}
+.field input,.field select,.field textarea{
+  width:100%;height:var(--zr-btn-h);border:1.5px solid var(--zr-border);border-radius:12px;
+  padding:0 16px;font-size:16px;font-family:inherit;color:var(--zr-text);background:#fff;
+}
+.field textarea{height:auto;padding:12px 16px;min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--zr-blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.field .hint{font-size:12px;color:var(--zr-text-muted);margin-top:4px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:var(--zr-btn-h);
+  border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;padding:0 16px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--zr-blue);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--zr-blue);color:var(--zr-blue)}
+.btn-ghost{background:transparent;color:var(--zr-blue);font-weight:600}
+.btn-warn{background:var(--zr-warning);color:#4a3500}
+.btn-lg{min-height:var(--zr-btn-h-lg);font-size:17px}
+.btn-danger{background:var(--zr-error);color:#fff}
+.btn-success{background:var(--zr-success);color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.link{color:var(--zr-blue);text-decoration:none;font-weight:600}
+.center{text-align:center}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.mb-16{margin-bottom:16px}.mb-8{margin-bottom:8px}
+.muted{color:var(--zr-text-muted);font-size:14px}
+.small{font-size:13px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.badge-success{background:#dcfce7;color:#166534}
+.badge-warning{background:#fef3c7;color:#92400e}
+.badge-error{background:#fee2e2;color:#991b1b}
+.badge-info{background:#e0ecfa;color:#1e4d96}
+.badge-neutral{background:#eef1f7;color:#4a5578}
+/* ============ ALERT / AVISO ============ */
+.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:14px;font-size:14px;margin-bottom:14px}
+.aviso .ic{font-size:20px;line-height:1.3}
+.aviso-error{background:#fee2e2;color:#7f1d1d}
+.aviso-warning{background:#fef9c3;color:#713f12}
+.aviso-success{background:#dcfce7;color:#14532d}
+.aviso-info{background:#e0ecfa;color:#1e3a8a}
+/* ============ LAYOUT PROFESOR/ADMIN ============ */
+.side{
+  display:grid;grid-template-columns:72px 1fr;min-height:100vh;background:var(--zr-bg);
+}
+.side .rail{
+  background:var(--zr-navy);display:flex;flex-direction:column;gap:6px;padding:16px 8px;align-items:stretch;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.rail .item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;color:#c9d6ea;font-size:10px;
+  padding:10px 4px;border-radius:10px;cursor:pointer;text-align:center;border:none;background:transparent;font-family:inherit;font-weight:600;
+}
+.rail .item .icon{font-size:20px}
+.rail .item.active{background:var(--zr-blue-light);color:var(--zr-navy)}
+.rail .item:hover{background:rgba(255,255,255,.08);color:#fff}
+.content{padding:var(--zr-page-pad) 16px calc(20px + env(safe-area-inset-bottom));max-width:700px;margin:0 auto;width:100%}
+/* ============ STUDENT BOTTOM NAV ============ */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;
+  background:var(--zr-navy);display:grid;grid-template-columns:repeat(4,1fr);z-index:60;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav .bn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;color:#c9d6ea;font-size:10.5px;
+  padding:10px 4px 8px;border:none;background:transparent;font-family:inherit;font-weight:600;cursor:pointer;
+}
+.bottom-nav .bn .icon{font-size:22px}
+.bottom-nav .bn.active{color:var(--zr-blue-light)}
+/* ============ CARDS ============ */
+.card{background:var(--zr-surface);border:1px solid var(--zr-border);border-radius:var(--zr-radius);padding:16px;margin-bottom:14px}
+.card h3{font-size:16px;margin-bottom:8px}
+.info-band{background:var(--zr-blue-light);color:var(--zr-navy);border-radius:12px;padding:14px;margin-bottom:14px}
+.info-band h3{font-size:16px;margin-bottom:4px}
+.info-band .sub{font-size:13px;opacity:.85}
+.list-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #edf1f8}
+.list-item:last-child{border-bottom:none}
+.list-item .av{width:44px;height:44px;border-radius:12px;background:var(--zr-blue-light);color:var(--zr-navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0}
+.list-item .body{flex:1;min-width:0}
+.list-item .title{font-weight:700;font-size:15px}
+.list-item .subtitle{font-size:13px;color:var(--zr-text-muted)}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-top:3px}
+.chip-ok{background:#dcfce7;color:#166534}
+.chip-miss{background:#eef1f7;color:#4a5578}
+.chip-next{background:#e0ecfa;color:#1e4d96}
+.chip-red{background:#fee2e2;color:#991b1b}
+.chip-yellow{background:#fef3c7;color:#92400e}
+/* ============ QR / CARNET ============ */
+.qr-wrap{
+  border:3px solid var(--zr-navy);border-radius:14px;padding:14px;background:#fff;
+  max-width:260px;margin:10px auto;position:relative;
+}
+.qr-canvas{width:100%;aspect-ratio:1;display:block;border-radius:6px}
+.qr-bar{height:6px;border-radius:3px;background:var(--zr-blue);margin-top:10px;transition:width 1s linear}
+.qr-timer{font-size:12px;color:var(--zr-text-muted);text-align:center;margin-top:6px}
+.carnet-name{font-size:20px;font-weight:700;text-align:center}
+.carnet-cedula{font-size:15px;color:var(--zr-text-muted);text-align:center}
+/* ============ SCAN FRANJA ============ */
+.scan-banner{
+  border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;min-height:110px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.scan-banner .name{font-size:36px;font-weight:800;font-family:'Raleway',sans-serif;line-height:1.1}
+.scan-banner .sub{font-size:14px;margin-top:4px;opacity:.9}
+.scan-ok{background:var(--zr-success);color:#fff}
+.scan-warn{background:var(--zr-warning);color:#4a3500}
+.scan-err{background:var(--zr-error);color:#fff}
+.counter{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--zr-border);border-radius:12px;padding:14px}
+.counter .num{font-size:28px;font-weight:800;color:var(--zr-navy)}
+.counter .lbl{font-size:12px;color:var(--zr-text-muted)}
+/* ============ EXAMEN ============ */
+.progress-bar{height:8px;background:#e3e9f3;border-radius:4px;overflow:hidden;margin-bottom:8px}
+.progress-bar .fill{height:100%;background:var(--zr-blue);border-radius:4px;transition:width .3s}
+.opt{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:64px;
+  border:2px solid var(--zr-border);border-radius:12px;background:#fff;padding:12px 14px;margin-bottom:10px;
+  font-size:16px;font-family:inherit;color:var(--zr-text);cursor:pointer;
+}
+.opt .letter{width:32px;height:32px;border-radius:8px;background:#eef1f7;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.opt.selected{border-color:var(--zr-blue);background:#eef4fd}
+.opt.selected .letter{background:var(--zr-blue);color:#fff}
+.vf{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vf .opt{justify-content:center;min-height:120px;font-size:22px;font-weight:800;border-width:3px}
+.vf .opt.v{color:#166534}
+.vf .opt.f{color:#991b1b}
+.vf .opt.selected.v{border-color:var(--zr-success);background:#dcfce7}
+.vf .opt.selected.f{border-color:var(--zr-error);background:#fee2e2}
+/* ============ TABLAS ============ */
+.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--zr-border);border-radius:12px;overflow:hidden;font-size:14px}
+.table th{background:var(--zr-navy);color:#fff;text-align:left;padding:10px 12px;font-size:12px}
+.table td{padding:10px 12px;border-top:1px solid #edf1f8}
+.table td input{width:70px;height:40px;border:1.5px solid var(--zr-border);border-radius:8px;padding:0 8px;font-size:15px;text-align:center}
+.table .gray{color:#9aa3bd;font-weight:600}
+/* ============ MODALES ============ */
+.overlay{position:fixed;inset:0;background:rgba(33,40,79,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:430px;padding:24px 20px calc(24px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:slideUp .25s}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.dropzone{border:2px dashed var(--zr-blue-mid);border-radius:12px;padding:22px;text-align:center;cursor:pointer;color:var(--zr-text-muted);background:#f7faff;margin-bottom:12px}
+.dropzone.over{background:#e0ecfa;border-color:var(--zr-blue)}
+.file-pill{display:flex;align-items:center;gap:8px;background:#eef1f7;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px}
+/* ============ GRIDS ============ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat-card{background:#fff;border:1px solid var(--zr-border);border-radius:12px;padding:16px}
+.stat-card .num{font-size:30px;font-weight:800;color:var(--zr-navy)}
+.stat-card .lbl{font-size:12.5px;color:var(--zr-text-muted);margin-top:2px}
+.stat-card.warn .num{color:var(--zr-error)}
+.mapa-comp{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:8px}
+.mapa-comp .dot{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:800}
+.mapa-comp .dot.ok{background:var(--zr-success)}
+.mapa-comp .dot.prog{background:var(--zr-blue-mid)}
+.mapa-comp .dot.pend{background:#cbd5e1;color:#64748b}
+.mapa-comp .t{flex:1;font-size:14.5px;font-weight:600}
+.mapa-comp .st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px}
+.st-dominada{background:#dcfce7;color:#166534}
+.st-progreso{background:#e0ecfa;color:#1e4d96}
+.st-pendiente{background:#eef1f7;color:#64748b}
+.tabs{display:flex;background:#eef1f7;border-radius:12px;padding:4px;margin-bottom:14px;gap:4px}
+.tabs button{flex:1;border:none;background:transparent;padding:10px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;color:var(--zr-text-muted)}
+.tabs button.active{background:#fff;color:var(--zr-navy);box-shadow:0 1px 4px rgba(33,40,79,.12)}
+.toggle{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--zr-border);border-radius:12px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit}
+.toggle .pill{width:42px;height:24px;border-radius:12px;background:#cbd5e1;position:relative;transition:.2s}
+.toggle .pill::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.toggle.on{background:var(--zr-blue);color:#fff;border-color:var(--zr-blue)}
+.toggle.on .pill{background:var(--zr-blue-light)}
+.toggle.on .pill::after{left:21px}
+.seg{display:flex;border-radius:12px;overflow:hidden;border:1.5px solid var(--zr-border);margin-bottom:14px}
+.seg button{flex:1;padding:12px;border:none;background:#fff;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;color:var(--zr-text-muted)}
+.seg button.active{background:var(--zr-blue);color:#fff}
+.section-title{font-size:18px;font-weight:800;margin:6px 0 12px}
+.pill-danger{background:var(--zr-error);color:#fff}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+<!-- ============================================================
+     LOGIN
+============================================================ -->
+<div id="vista-login" class="auth">
+  <div class="brand">
+    <div class="big">ZR</div>
+    <h1>ZR Mecademy</h1>
+    <p>Tu academia técnica automotriz</p>
+  </div>
+  <div class="card">
+    <div class="field">
+      <label>Cédula</label>
+      <input id="login-ced" placeholder="V-12345678" autocomplete="off" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input id="login-pass" type="password" placeholder="••••••••">
+    </div>
+    <div id="login-error" class="aviso aviso-error hidden"><span class="ic">⚠️</span><div>Cédula o contraseña incorrecta</div></div>
+    <button class="btn btn-primary" onclick="ingresar()">Entrar</button>
+    <div class="center mt-16">
+      <a class="link" onclick="ir('registro')">¿Eres nuevo? Regístrate</a>
+    </div>
+    <div class="center mt-8">
+      <a class="link small" onclick="ir('recuperar')">¿Olvidaste tu contraseña?</a>
+    </div>
+    <div class="mt-24 aviso aviso-info"><span class="ic">🎛️</span>
+      <div><b>Modo demo:</b> usa <code>V-30000001</code> (estudiante), <code>V-10000003</code> (profesor), <code>V-10000005</code> (admin).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     REGISTRO
+============================================================ -->
+<div id="vista-registro" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Inscribirme</div>
+    <button class="exit" onclick="ir('login')">✕</button></div>
+  <div class="content">
+    <div class="field">
+      <label>Nombre completo</label>
+      <input id="reg-nombre" placeholder="Ej. Luis Hernández">
+    </div>
+    <div class="field">
+      <label>Cédula</label>
+      <input id="reg-ced" placeholder="V-12345678" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <div class="field">
+      <label>Fecha de nacimiento</label>
+      <input id="reg-fecha" type="date">
+      <div class="hint">Determina si hace falta consentimiento parental (15-17 años)</div>
+    </div>
+    <div class="field">
+      <label>Correo de contacto</label>
+      <input id="reg-correo" type="email" placeholder="Si eres menor de 18, pon el correo de tu representante">
+    </div>
+    <div class="field">
+      <label>Teléfono (opcional)</label>
+      <input id="reg-tel" placeholder="0412-0000000">
+    </div>
+    <div class="field">
+      <label>Sede</label>
+      <select id="reg-sede">
+        <option>San Antonio de los Altos</option>
+        <option>Caracas</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Turno</label>
+      <select id="reg-turno">
+        <option>Mañana (8:00 am)</option>
+        <option>Tarde (1:00 pm)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input id="reg-pass" type="password" placeholder="Mínimo 8 caracteres">
+    </div>
+    <div class="field">
+      <label>Repetir contraseña</label>
+      <input id="reg-pass2" type="password">
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="registrar()">Crear mi cuenta</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     CONSENTIMIENTO (LOPNNA)
+============================================================ -->
+<div id="vista-consentimiento" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Consentimiento</div></div>
+  <div class="content">
+    <div class="aviso aviso-warning"><span class="ic">👩‍⚖️</span>
+      <div>Como eres <b>menor de edad</b>, la ley exige que tu representante legal autorice tu cuenta (LOPNNA).</div>
+    </div>
+    <div class="card">
+      <h3>Datos del representante</h3>
+      <div class="field"><label>Nombre</label><input id="rep-nombre" placeholder="Nombre y apellido"></div>
+      <div class="field"><label>Cédula</label><input id="rep-ced" placeholder="V-12345678" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="field"><label>Correo</label><input id="rep-correo" type="email"></div>
+      <div class="field"><label>Teléfono</label><input id="rep-tel"></div>
+      <div class="field">
+        <label>Método de consentimiento</label>
+        <select id="rep-metodo" onchange="toggleRepMetodo()">
+          <option value="fisico">Firmó en papel en la sede</option>
+          <option value="digital">Subir documento firmado</option>
+        </select>
+      </div>
+      <div id="rep-doc-wrap" class="hidden">
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:28px">📄</div>
+          <div><b>Toca para subir</b> el documento firmado</div>
+        </div>
+        <input type="file" id="fileInput" class="hidden" onchange="mostrarArchivo(this)">
+        <div id="archivo-subido"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="guardarConsentimiento()">Guardar y entrar</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     RECUPERAR
+============================================================ -->
+<div id="vista-recuperar" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Recuperar</div>
+    <button class="exit" onclick="ir('login')">✕</button></div>
+  <div class="content">
+    <p class="mb-16 muted">Escribe tu cédula. Te enviaremos el enlace a tu correo de contacto.</p>
+    <div class="field"><label>Cédula</label><input id="rec-ced" placeholder="V-12345678"></div>
+    <button class="btn btn-primary" onclick="recuperar()">Enviar enlace</button>
+    <div id="rec-ok" class="aviso aviso-success hidden mt-16"><span class="ic">✅</span><div>Revisa tu correo de contacto (para menores, el del representante).</div></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESTUDIANTE
+============================================================ -->
+<div id="vista-estudiante" class="hidden">
+  <div class="topbar">
+    <div class="logo"><div class="zr">ZR</div>Carnet</div>
+    <div class="meta"><b id="est-nombre">Luis Hernández</b><br><span id="est-cedula">V-30000001</span></div>
+    <button class="exit" onclick="salir()">⏻</button>
+  </div>
+
+  <!-- CARNET -->
+  <div id="pantalla-carnet" class="content">
+    <div class="card info-band">
+      <h3>📅 PRÓXIMO SÁBADO</h3>
+      <div class="sub"><b>sáb 15 ago</b> · Semana 2 · Diagnóstico de batería</div>
+      <div class="mt-8" style="font-size:14px">Para llegar preparado:<br>Investiga los tipos de batería y cómo se mide su densidad.</div>
+      <button class="btn btn-outline mt-8" onclick="navegar('progreso')">Ver la guía →</button>
+    </div>
+
+    <div class="card">
+      <h3 style="display:flex;justify-content:space-between;align-items:center">🎯 MI PROGRESO
+        <span class="badge badge-info" onclick="navegar('progreso')" style="cursor:pointer">Ver todas →</span>
+      </h3>
+      <div class="muted">Electricidad Automotriz</div>
+      <div class="mt-8 mapa-comp" style="background:#eef1f7">
+        <div class="dot ok">✓</div><div class="t">Dominas 2 de 4 competencias</div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <div class="carnet-name" id="carnet-nombre">Luis Hernández</div>
+      <div class="carnet-cedula" id="carnet-ced">V-30000001</div>
+      <div class="mt-8 badge badge-info">Cohorte 2026-B · Mañana · CCST-2026-01-001</div>
+
+      <div class="qr-wrap">
+        <canvas id="qrCanvas" class="qr-canvas" width="260" height="260"></canvas>
+        <div class="qr-bar" id="qrBar"></div>
+        <div class="qr-timer" id="qrTimer">Código válido por 30 s</div>
+      </div>
+      <div class="mt-8 small muted">Código: <code id="qrCodeText">ZR1|V-30000001|------</code></div>
+
+      <div class="tabs mt-16">
+        <button class="active" onclick="cambiarQR('asistencia',this)">Asistencia</button>
+        <button onclick="cambiarQR('refrigerio',this)">Refrigerio</button>
+      </div>
+
+      <div class="mt-16 small muted">Módulos aprobados: <b>3 de 13</b></div>
+    </div>
+  </div>
+
+  <!-- CLASES -->
+  <div id="pantalla-clases" class="content hidden">
+    <div class="section-title">Mis clases</div>
+    <div class="list-item">
+      <div class="av">1</div>
+      <div class="body"><div class="title">sáb 15 ago · Diagnóstico de batería</div>
+        <div class="subtitle">Semana 2 · Electricidad</div>
+        <div class="chip chip-next">Próxima</div></div>
+      <button class="btn btn-ghost" onclick="navegar('feedback')">Opinar</button>
+    </div>
+    <div class="list-item">
+      <div class="av">2</div>
+      <div class="body"><div class="title">sáb 08 ago · Ley de Ohm aplicada</div>
+        <div class="subtitle">Semana 1 · Electricidad</div>
+        <div class="chip chip-ok">Asististe ✓</div></div>
+      <button class="btn btn-ghost" onclick="navegar('feedback')">Opinar</button>
+    </div>
+    <div class="list-item">
+      <div class="av">3</div>
+      <div class="body"><div class="title">sáb 01 ago · Introducción al taller</div>
+        <div class="subtitle">Semana 1 · Electricidad</div>
+        <div class="chip chip-miss">No registrada</div></div>
+      <button class="btn btn-ghost" onclick="navegar('feedback')">Opinar</button>
+    </div>
+  </div>
+
+  <!-- EXAMENES -->
+  <div id="pantalla-examenes" class="content hidden">
+    <div class="section-title">Exámenes</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h3>Diagnóstico de batería</h3>
+          <div class="muted">Electricidad · 10 preguntas · 20 pts</div>
+        </div>
+        <span class="badge badge-success">Habilitado</span>
+      </div>
+      <button class="btn btn-primary mt-16" onclick="navegar('presentar')">Presentar examen →</button>
+    </div>
+    <div class="card">
+      <h3>Ley de Ohm</h3>
+      <div class="muted">Electricidad · Calificado</div>
+      <div class="mt-8" style="font-size:34px;font-weight:800;color:var(--zr-success)">16,5 / 20</div>
+      <div class="small muted">Aprueba con 12</div>
+    </div>
+    <div class="card">
+      <h3>Sistema de carga</h3>
+      <div class="muted">Entregado · Esperando calificación</div>
+      <span class="badge badge-warning mt-8">En espera</span>
+    </div>
+  </div>
+
+  <!-- PRESENTAR EXAMEN -->
+  <div id="pantalla-presentar" class="content hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div class="section-title" style="margin:0">Pregunta <span id="preg-actual">1</span> de <span id="preg-total">3</span></div>
+      <span id="examen-tiempo" class="badge badge-neutral">08:32</span>
+    </div>
+    <div class="progress-bar"><div class="fill" id="preg-progress" style="width:33%"></div></div>
+    <div id="pregunta-cuerpo"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-outline" style="width:auto;flex:1" onclick="pregAnterior()">← Anterior</button>
+      <button class="btn btn-primary" style="flex:1" onclick="pregSiguiente()">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PROGRESO / MAPA -->
+  <div id="pantalla-progreso" class="content hidden">
+    <div class="section-title">Electricidad Automotriz</div>
+    <div class="muted mb-16">Dominas <b>2 de 4</b> competencias de este módulo</div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)">
+      <div class="dot ok">✓</div><div class="t">Ley de Ohm aplicada</div>
+      <span class="st st-dominada">Dominada</span>
+    </div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)">
+      <div class="dot ok">✓</div><div class="t">Diagnóstico de batería</div>
+      <span class="st st-dominada">Dominada</span>
+    </div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)">
+      <div class="dot prog">↻</div><div class="t">Sistema de carga: alternador</div>
+      <span class="st st-progreso">En progreso</span>
+    </div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)">
+      <div class="dot pend">·</div><div class="t">Lectura de diagramas eléctricos</div>
+      <span class="st st-pendiente">Pendiente</span>
+    </div>
+    <div class="mt-16 aviso aviso-info"><span class="ic">🔒</span><div>Tu mapa es personal. Nadie más puede verlo, ni se compara con otros estudiantes.</div></div>
+  </div>
+
+  <!-- MATERIAL -->
+  <div id="pantalla-material" class="content hidden">
+    <div class="section-title">Material de estudio</div>
+    <div class="card">
+      <h3 style="display:flex;align-items:center;gap:8px">📘 Guía · Semana 2 <span class="badge badge-neutral">PDF · 2,4 MB</span></h3>
+      <div class="muted">Diagnóstico de batería</div>
+      <button class="btn btn-outline mt-8" onclick="verMaterial()">Ver / descargar</button>
+    </div>
+    <div class="card">
+      <h3 style="display:flex;align-items:center;gap:8px">📊 Presentación · Ley de Ohm <span class="badge badge-neutral">PPT · 5,1 MB</span></h3>
+      <div class="muted">Semana 1</div>
+      <button class="btn btn-outline mt-8" onclick="verMaterial()">Ver / descargar</button>
+    </div>
+    <div class="card">
+      <h3 style="display:flex;align-items:center;gap:8px">🖼️ Esquema del alternador <span class="badge badge-neutral">IMG · 800 KB</span></h3>
+      <div class="muted">Semana 3</div>
+      <button class="btn btn-outline mt-8" onclick="verMaterial()">Ver</button>
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div id="pantalla-notas" class="content hidden">
+    <div class="section-title">Mis notas</div>
+    <table class="table">
+      <tr><th>Módulo</th><th>Final</th><th>Estado</th></tr>
+      <tr><td>Seguridad y taller</td><td class="gray">18,0</td><td><span class="badge badge-success">Aprobado</span></td></tr>
+      <tr><td>Herramientas básicas</td><td class="gray">15,5</td><td><span class="badge badge-success">Aprobado</span></td></tr>
+      <tr><td>Electricidad automotriz</td><td class="gray">16,5</td><td><span class="badge badge-success">En curso</span></td></tr>
+    </table>
+    <div class="mt-16 muted small">Aprueba con 12 · Primer módulo aprueba con 10</div>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div id="pantalla-feedback" class="content hidden">
+    <div class="section-title">Tu opinión sobre la clase</div>
+    <div class="aviso aviso-info"><span class="ic">🤫</span><div>Tu respuesta es <b>anónima</b> para tu profesor. Solo se muestra el promedio del grupo (mín. 3 respuestas).</div></div>
+    <div class="card">
+      <div class="mb-8" style="font-weight:600">¿Se entendió la clase?</div>
+      <div class="grid2" id="f1"></div>
+    </div>
+    <div class="card">
+      <div class="mb-8" style="font-weight:600">¿El taller tenía lo necesario?</div>
+      <div class="grid2" id="f2"></div>
+    </div>
+    <div class="card">
+      <div class="mb-8" style="font-weight:600">¿Te sentiste preparado para la práctica?</div>
+      <div class="grid2" id="f3"></div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="enviarFeedback()">Enviar</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="bn active" onclick="navegar('carnet',this)"><span class="icon">🪪</span>Carnet</button>
+    <button class="bn" onclick="navegar('clases',this)"><span class="icon">🗓️</span>Clases</button>
+    <button class="bn" onclick="navegar('examenes',this)"><span class="icon">📝</span>Exámenes</button>
+    <button class="bn" onclick="navegar('material',this)"><span class="icon">📚</span>Material</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     PROFESOR
+============================================================ -->
+<div id="vista-profesor" class="hidden">
+  <div class="side">
+    <div class="rail">
+      <button class="item active" onclick="navegarP('hoy',this)"><span class="icon">🏠</span>Hoy</button>
+      <button class="item" onclick="navegarP('sesiones',this)"><span class="icon">🗓️</span>Sesiones</button>
+      <button class="item" onclick="navegarP('examenesP',this)"><span class="icon">📝</span>Exámenes</button>
+      <button class="item" onclick="navegarP('calificar',this)"><span class="icon">✅</span>Calificar</button>
+      <button class="item" onclick="navegarP('notasC',this)"><span class="icon">📊</span>Notas</button>
+      <button class="item" onclick="navegarP('contenidoP',this)"><span class="icon">📚</span>Material</button>
+      <button class="item" onclick="salir()"><span class="icon">⏻</span>Salir</button>
+    </div>
+    <div class="content">
+
+      <!-- HOY -->
+      <div id="ph-hoy">
+        <div class="section-title">Hola, Prof. Carlos 👋</div>
+        <div class="card info-band">
+          <h3>LA CLASE DE HOY</h3>
+          <div class="sub"><b>Cohorte 2026-B</b> · Electricidad · Taller 2 · Mañana</div>
+          <div class="mt-8" style="font-size:14px">24 estudiantes</div>
+          <button class="btn btn-primary btn-lg mt-16" onclick="abrirSesion()">🔓 Abrir clase y pasar asistencia</button>
+        </div>
+        <div class="card">
+          <div class="list-item">
+            <div class="av">📝</div>
+            <div class="body"><div class="title">2 exámenes por calificar</div></div>
+            <button class="btn btn-ghost" onclick="navegarP('calificar',document.querySelector('.rail').children[3])">Ir →</button>
+          </div>
+          <div class="list-item">
+            <div class="av">📊</div>
+            <div class="body"><div class="title">Asistencia sáb pasado</div><div class="subtitle">21 de 24 presentes</div></div>
+          </div>
+          <div class="list-item">
+            <div class="av">❓</div>
+            <div class="body"><div class="title">Dudas de la semana: 6</div><div class="subtitle">3 sobre batería · 2 sobre alternador · 1 general</div></div>
+            <button class="btn btn-ghost" onclick="verDudas()">Ver →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SESIONES -->
+      <div id="ph-sesiones" class="hidden">
+        <div class="section-title">Sesiones</div>
+        <div class="list-item">
+          <div class="av">S2</div>
+          <div class="body"><div class="title">sáb 15 ago · Diagnóstico de batería</div><div class="subtitle">Cohorte 2026-B · Mañana</div>
+            <div class="chip chip-next">Programada</div></div>
+          <button class="btn btn-ghost" onclick="abrirSesion()">Abrir</button>
+        </div>
+        <div class="list-item">
+          <div class="av">S1</div>
+          <div class="body"><div class="title">sáb 08 ago · Ley de Ohm</div><div class="subtitle">Cohorte 2026-B</div>
+            <div class="chip chip-ok">Cerrada</div></div>
+          <button class="btn btn-ghost" onclick="verSesionDetalle()">Ver</button>
+        </div>
+      </div>
+
+      <!-- EXAMENES PROFESOR -->
+      <div id="ph-examenes" class="hidden">
+        <div class="section-title">Exámenes</div>
+        <button class="btn btn-primary mb-16" onclick="nuevoExamen()">＋ Crear examen</button>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><h3>Diagnóstico de batería</h3><div class="muted">20 pts · 10 preguntas</div></div>
+            <span class="badge badge-success">Habilitado</span>
+          </div>
+          <div class="mt-8" style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px">Editar</button>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px">Duplicar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Sistema de carga</h3><div class="muted">20 pts · 12 preguntas</div>
+          <span class="badge badge-neutral mt-8">Oculto</span>
+        </div>
+      </div>
+
+      <!-- CALIFICAR -->
+      <div id="ph-calificar" class="hidden">
+        <div class="section-title">Calificar redacciones</div>
+        <div class="aviso aviso-info"><span class="ic">📜</span><div>La rúbrica siempre está visible para que todos los profesores califiquen parecido.</div></div>
+        <div class="card">
+          <div class="muted mb-8">Pregunta (5 pts)</div>
+          <div style="font-weight:600;font-size:15px">¿Qué función cumple el alternador en el sistema de carga?</div>
+          <div class="mt-16 aviso aviso-warning" style="font-size:13px"><span class="ic">📋</span><div><b>Rúbrica:</b> Menciona generación de corriente, carga de batería (3 pts), regulación de voltaje (2 pts).</div></div>
+          <div class="mt-16" style="background:#f7f9fc;border-radius:10px;padding:12px;font-size:14px">
+            <b>Respuesta de Ana Torres:</b><br>El alternador convierte energía mecánica en corriente para recargar la batería mientras el motor gira...
+          </div>
+          <div class="grid2 mt-16">
+            <div class="field"><label>Puntaje (0-5)</label><input type="number" value="4" min="0" max="5"></div>
+            <div class="field"><label>Comentario</label><input placeholder="Opcional"></div>
+          </div>
+          <button class="btn btn-primary mt-8" onclick="calificarSiguiente()">Guardar y siguiente →</button>
+        </div>
+      </div>
+
+      <!-- NOTAS COHORTE -->
+      <div id="ph-notas" class="hidden">
+        <div class="section-title">Notas · Cohorte 2026-B</div>
+        <div class="field"><label>Peso de participación (mínimo 5%)</label><input type="number" value="10" min="5" max="100" style="width:100px;text-align:center"></div>
+        <table class="table mt-16">
+          <tr><th>Estudiante</th><th>Teoría</th><th>Práctica</th><th>Part.</th><th>Final</th></tr>
+          <tr><td>Ana Torres</td><td><input value="16"></td><td><input value="14"></td><td><input value="20"></td><td class="gray">15,50</td></tr>
+          <tr><td>Luis Hernández</td><td><input value="15"></td><td><input value="17"></td><td><input value="18"></td><td class="gray">16,10</td></tr>
+          <tr><td>María Pérez</td><td><input value="11"></td><td><input value="12"></td><td><input value="10"></td><td class="gray">11,40</td></tr>
+        </table>
+        <div class="mt-16 small muted">La nota final y el estado los calcula el servidor. Aquí solo se editan teoría, práctica y participación.</div>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div id="ph-contenido" class="hidden">
+        <div class="section-title">Subir material</div>
+        <div class="card">
+          <div class="field"><label>Título</label><input placeholder="Guía · Semana 3"></div>
+          <div class="field"><label>Módulo</label><select><option>Electricidad automotriz</option><option>Transmisión</option></select></div>
+          <div class="field"><label>Semana</label><input type="number" value="3"></div>
+          <div class="dropzone" onclick="document.getElementById('fileP').click()">📄 <b>Toca para subir archivo</b> (PDF, presentación, imagen)<br><span class="small">máx. 50 MB</span></div>
+          <input type="file" id="fileP" class="hidden" onchange="mostrarArchivoP(this)">
+          <div id="archivoP"></div>
+          <label class="toggle" style="margin-top:10px"><span class="pill"></span>Publicar ahora</label>
+          <button class="btn btn-primary mt-16" onclick="subirContenido()">Publicar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESCANEO (PANTALLA COMPLETA)
+============================================================ -->
+<div id="vista-escanear" class="hidden">
+  <div class="topbar">
+    <div class="logo"><div class="zr">ZR</div>Escanear · sáb 15 ago</div>
+    <button class="exit" onclick="volverProfesor()">←</button>
+  </div>
+  <div style="padding:16px;background:var(--zr-bg);min-height:calc(100vh - 74px)">
+    <div class="seg">
+      <button class="active" id="seg-asistencia" onclick="cambiarModo('asistencia')">Asistencia</button>
+      <button id="seg-refri" onclick="cambiarModo('refrigerio')">Refrigerio</button>
+    </div>
+    <div id="camara-sim" style="background:#000;border-radius:14px;min-height:46vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-direction:column;color:#8b93ad">
+      <div style="font-size:56px;opacity:.8">📷</div>
+      <div class="mt-8" style="font-size:15px">Simulación de cámara</div>
+      <div style="font-size:12px;opacity:.7;margin-top:4px">Toca un botón de abajo para simular un escaneo</div>
+    </div>
+    <div id="scan-resultado" class="scan-banner" style="background:#f1f5f9;color:#64748b;margin-top:14px">
+      <div style="font-size:15px">Esperando escaneo…</div>
+    </div>
+    <div class="counter">
+      <div><div class="num" id="scan-contador">18</div><div class="lbl">de 24 registrados</div></div>
+      <div style="text-align:right">
+        <div class="num" style="font-size:18px" id="scan-pendientes">0</div><div class="lbl">sin sincronizar</div>
+      </div>
+    </div>
+    <div class="grid2 mt-16">
+      <button class="btn btn-outline" onclick="simularEscaneo('ok')">✓ OK</button>
+      <button class="btn btn-ghost" onclick="buscarPorCedula()">Buscar por cédula</button>
+    </div>
+    <div class="grid2 mt-8">
+      <button class="btn btn-outline" onclick="simularEscaneo('duplicado')">Ya registrado</button>
+      <button class="btn btn-ghost" onclick="simularEscaneo('vencido')">Código vencido</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ADMIN
+============================================================ -->
+<div id="vista-admin" class="hidden">
+  <div class="side">
+    <div class="rail">
+      <button class="item active" onclick="navegarA('panel',this)"><span class="icon">📊</span>Panel</button>
+      <button class="item" onclick="navegarA('estudiantes',this)"><span class="icon">🧑‍🎓</span>Estudiantes</button>
+      <button class="item" onclick="navegarA('consentimientos',this)"><span class="icon">📋</span>Consent.</button>
+      <button class="item" onclick="navegarA('cohortes',this)"><span class="icon">🏷️</span>Cohortes</button>
+      <button class="item" onclick="navegarA('reportes',this)"><span class="icon">📈</span>Reportes</button>
+      <button class="item hidden" id="nav-config" onclick="navegarA('config',this)"><span class="icon">⚙️</span>Config</button>
+      <button class="item" onclick="salir()"><span class="icon">⏻</span>Salir</button>
+    </div>
+    <div class="content">
+
+      <!-- PANEL -->
+      <div id="pa-panel">
+        <div class="section-title">Panel</div>
+        <div class="grid2">
+          <div class="stat-card"><div class="num">96</div><div class="lbl">Estudiantes activos</div></div>
+          <div class="stat-card warn"><div class="num">3</div><div class="lbl">Consentimientos pendientes</div></div>
+          <div class="stat-card"><div class="num">21/24</div><div class="lbl">Asistencia último sábado</div></div>
+          <div class="stat-card"><div class="num">2</div><div class="lbl">Exámenes sin calificar</div></div>
+        </div>
+        <div class="mt-16 aviso aviso-error" id="aviso-consent"><span class="ic">⚠️</span><div><b>Hay 3 consentimientos pendientes.</b> Obligatorio por LOPNNA.
+          <a class="link" onclick="navegarA('consentimientos',document.getElementById('nav-cons'))">Revisar ahora →</a></div></div>
+      </div>
+
+      <!-- ESTUDIANTES -->
+      <div id="pa-estudiantes" class="hidden">
+        <div class="section-title">Estudiantes</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input placeholder="Buscar por nombre o cédula" style="flex:1;height:52px;border:1.5px solid var(--zr-border);border-radius:12px;padding:0 14px;font-size:15px">
+        </div>
+        <button class="btn btn-primary mb-16" onclick="importarCSV()">📥 Cargar CSV</button>
+        <div class="card">
+          <div class="list-item"><div class="av">AH</div><div class="body"><div class="title">Ana Hernández</div><div class="subtitle">V-30000001 · 17 años · Cohorte B · Mañana</div>
+            <div class="chip chip-yellow">Consent. pendiente</div></div></div>
+          <div class="list-item"><div class="av">LT</div><div class="body"><div class="title">Luis Torres</div><div class="subtitle">V-30000002 · 19 años · Cohorte A · Tarde</div>
+            <div class="chip chip-ok">Completo</div></div></div>
+          <div class="list-item"><div class="av">MP</div><div class="body"><div class="title">María Pérez</div><div class="subtitle">V-30000003 · 16 años · Cohorte B · Mañana</div>
+            <div class="chip chip-red">Sin consentimiento</div></div></div>
+        </div>
+      </div>
+
+      <!-- CONSENTIMIENTOS -->
+      <div id="pa-consentimientos" class="hidden">
+        <div class="section-title">Consentimientos pendientes</div>
+        <div class="aviso aviso-warning"><span class="ic">👩‍⚖️</span><div>Esta cola evita que la academia incumpla LOPNNA. Los menores de 15-17 no pueden activar su cuenta sin esto.</div></div>
+        <div class="card">
+          <div class="list-item"><div class="av">AH</div><div class="body"><div class="title">Ana Hernández · 17 años</div>
+            <div class="subtitle">Representante: Rosa Hernández · 📄 documento adjunto</div>
+            <div class="chip chip-yellow">Sin verificar</div></div>
+          <button class="btn btn-success" style="width:auto;min-height:44px;font-size:14px" onclick="verificarConsent(this)">✓ Verificar</button></div>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">MP</div><div class="body"><div class="title">María Pérez · 16 años</div>
+            <div class="subtitle">Representante: Carlos Pérez</div>
+            <div class="chip chip-red">Falta consentimiento</div></div>
+          <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="subirDocConsent(this)">Adjuntar</button></div>
+        </div>
+      </div>
+
+      <!-- COHORTES -->
+      <div id="pa-cohortes" class="hidden">
+        <div class="section-title">Cohortes</div>
+        <button class="btn btn-primary mb-16" onclick="nuevaCohorte()">＋ Crear cohorte</button>
+        <div class="card">
+          <div class="list-item"><div class="av">B</div><div class="body"><div class="title">Cohorte 2026-B · Sábado 8am</div>
+            <div class="subtitle">Prof. Carlos Rivas · Taller 2 · 24 estudiantes</div>
+            <div class="chip chip-info">Módulo: Electricidad (3 de 13)</div></div>
+          <button class="btn btn-ghost" onclick="avanzarModulo()">Avanzar →</button></div>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">A</div><div class="body"><div class="title">Cohorte 2026-A · Sábado 1pm</div>
+            <div class="subtitle">Prof. Lucía Díaz · Taller 1 · 21 estudiantes</div>
+            <div class="chip chip-info">Módulo: Transmisión (5 de 13)</div></div></div>
+        </div>
+      </div>
+
+      <!-- REPORTES -->
+      <div id="pa-reportes" class="hidden">
+        <div class="section-title">Reportes</div>
+        <div class="card">
+          <div class="list-item"><div class="av">1</div><div class="body"><div class="title">Asistencia por cohorte y sesión</div></div>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+          <div class="list-item"><div class="av">2</div><div class="body"><div class="title">Avance académico por módulo</div></div>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+          <div class="list-item"><div class="av">3</div><div class="body"><div class="title">Uso del repositorio de contenido</div></div>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+          <div class="list-item"><div class="av">4</div><div class="body"><div class="title">Exámenes sin calificar (antigüedad)</div></div>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+        </div>
+        <div class="card">
+          <h3>Filtros</h3>
+          <div class="field"><label>Sede</label><select><option>Todas</option><option>San Antonio</option><option>Caracas</option></select></div>
+          <div class="field"><label>Turno</label><select><option>Todos</option><option>Mañana</option><option>Tarde</option></select></div>
+          <div class="field"><label>Estado de competencia</label><select><option>Todos</option><option>Dominada</option><option>En desarrollo</option><option>Requiere refuerzo</option></select></div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div id="pa-config" class="hidden">
+        <div class="section-title">Configuración del sistema</div>
+        <div class="aviso aviso-warning"><span class="ic">⚙️</span><div>Solo <b>super_admin</b>. Todos los números de negocio viven aquí, no en el código.</div></div>
+        <div class="card">
+          <table class="table">
+            <tr><th>Clave</th><th>Valor</th><th>Público</th></tr>
+            <tr><td>module.passing_threshold_first</td><td><input value="10" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>module.passing_threshold_default</td><td><input value="12" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>exam.max_score</td><td><input value="20" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>attendance.qr_window_seconds</td><td><input value="30" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>feedback.micro_max_questions</td><td><input value="3" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>feedback.min_responses_to_show</td><td><input value="3" style="width:60px"></td><td>—</td></tr>
+          </table>
+          <button class="btn btn-primary mt-16" onclick="guardarConfig()">Guardar cambios</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODALES
+============================================================ -->
+<div id="modal-overlay" class="overlay hidden">
+  <div class="modal" id="modal-body"></div>
+</div>
+
+</div><!-- /phone -->
+
+<script>
+/* ============================================================
+   NAVEGACIÓN GENERAL
+============================================================ */
+let rolActual = null;
+let usuarioDemo = null;
+const VISTAS = ['login','registro','consentimiento','recuperar','estudiante','profesor','admin','escanear'];
+
+function mostrarVista(id){
+  VISTAS.forEach(v=>document.getElementById('vista-'+v).classList.add('hidden'));
+  document.getElementById('vista-'+id).classList.remove('hidden');
+  if(id==='phone'){}
+  window.scrollTo(0,0);
+}
+function ir(id){ mostrarVista(id); }
+function salir(){ pararQR(); rolActual=null; usuarioDemo=null; mostrarVista('login'); }
+
+/* ============================================================
+   LOGIN
+============================================================ */
+const DEMOS = {
+  'V-30000001':{rol:'estudiante',nombre:'Luis Hernández',cedula:'V-30000001'},
+  'V-30000002':{rol:'estudiante',nombre:'María Pérez',cedula:'V-30000002'},
+  'V-10000003':{rol:'profesor',nombre:'Prof. Carlos Rivas',cedula:'V-10000003'},
+  'V-10000005':{rol:'admin',nombre:'Admin ZR',cedula:'V-10000005'},
+  'V-10000001':{rol:'super_admin',nombre:'Dirección ZR',cedula:'V-10000001'},
+};
+function ingresar(){
+  const ced = document.getElementById('login-ced').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  if(!pass){ err.classList.remove('hidden'); return; }
+  const u = DEMOS[ced];
+  if(!u){ err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  usuarioDemo = u; rolActual = u.rol;
+  if(u.rol==='estudiante') entrarEstudiante();
+  else if(u.rol==='profesor') entrarProfesor();
+  else entrarAdmin();
+}
+/* ============================================================
+   REGISTRO
+============================================================ */
+function edadDesde(fecha){
+  const f = new Date(fecha); const hoy = new Date();
+  let e = hoy.getFullYear()-f.getFullYear();
+  const m = hoy.getMonth()-f.getMonth();
+  if(m<0||(m===0&&hoy.getDate()<f.getDate())) e--;
+  return e;
+}
+function registrar(){
+  const fecha = document.getElementById('reg-fecha').value;
+  const nom = document.getElementById('reg-nombre').value.trim();
+  const ced = document.getElementById('reg-ced').value.trim();
+  if(!fecha||!nom||!ced){ alert('Completa los campos obligatorios'); return; }
+  const e = edadDesde(fecha);
+  const sede = document.getElementById('reg-sede').value;
+  const turno = document.getElementById('reg-turno').value;
+  if(e<15){ alert('La academia acepta estudiantes a partir de 15 años.'); return; }
+  // Registro tipo
+  alert('✅ Cuenta creada: '+nom+' ('+ced+') · Sede: '+sede+' · Turno: '+turno);
+  usuarioDemo = {rol:'estudiante',nombre:nom,cedula:ced};
+  if(e<18){
+    mostrarVista('consentimiento');
+  } else {
+    rolActual='estudiante';
+    entrarEstudiante();
+  }
+}
+function toggleRepMetodo(){
+  const m = document.getElementById('rep-metodo').value;
+  document.getElementById('rep-doc-wrap').classList.toggle('hidden', m!=='digital');
+}
+function mostrarArchivo(inp){
+  const f = inp.files[0];
+  if(f) document.getElementById('archivo-subido').innerHTML =
+    '<div class="file-pill">📄 '+f.name+' · '+Math.round(f.size/1024)+' KB</div>';
+}
+function guardarConsentimiento(){
+  const n = document.getElementById('rep-nombre').value.trim();
+  if(!n){ alert('Escribe el nombre del representante'); return; }
+  alert('✅ Consentimiento registrado. El admin lo verificará.');
+  rolActual='estudiante';
+  entrarEstudiante();
+}
+function recuperar(){
+  const c = document.getElementById('rec-ced').value.trim();
+  if(!c){ alert('Escribe tu cédula'); return; }
+  document.getElementById('rec-ok').classList.remove('hidden');
+}
+/* ============================================================
+   ESTUDIANTE
+============================================================ */
+const pantallasEst = ['carnet','clases','examenes','presentar','progreso','material','notas','feedback'];
+function entrarEstudiante(){
+  document.getElementById('est-nombre').textContent = usuarioDemo.nombre;
+  document.getElementById('est-cedula').textContent = usuarioDemo.cedula;
+  document.getElementById('carnet-nombre').textContent = usuarioDemo.nombre;
+  document.getElementById('carnet-ced').textContent = usuarioDemo.cedula;
+  mostrarVista('estudiante');
+  navegar('carnet');
+  iniciarQR();
+}
+function navegar(p,el){
+  pantallasEst.forEach(x=>document.getElementById('pantalla-'+x).classList.add('hidden'));
+  document.getElementById('pantalla-'+p).classList.remove('hidden');
+  document.querySelectorAll('.bottom-nav .bn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(p==='feedback') renderEstrellas();
+  window.scrollTo(0,0);
+}
+/* QR animado estilo TOTP */
+let qrTimer = null;
+function iniciarQR(){ pararQR(); actualizarQR(); qrTimer=setInterval(actualizarQR,1000); }
+function pararQR(){ if(qrTimer){clearInterval(qrTimer);qrTimer=null;} }
+let segundosRestantes = 30;
+let modoQR = 'asistencia';
+function actualizarQR(){
+  segundosRestantes--;
+  if(segundosRestantes<0) segundosRestantes=29;
+  const codigo = String(Math.floor(100000+Math.random()*900000));
+  document.getElementById('qrCodeText').textContent = 'ZR1|'+usuarioDemo.cedula+'|'+codigo;
+  document.getElementById('qrTimer').textContent = 'Código válido por '+segundosRestantes+' s';
+  const bar = document.getElementById('qrBar');
+  bar.style.width = (segundosRestantes/30*100)+'%';
+  dibujarQR('ZR1|'+usuarioDemo.cedula+'|'+codigo);
+}
+function cambiarQR(modo,el){
+  modoQR = modo;
+  document.querySelectorAll('#pantalla-carnet .tabs button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+/* dibujar un QR falso pero visual */
+function dibujarQR(texto){
+  const cv = document.getElementById('qrCanvas');
+  const ctx = cv.getContext('2d');
+  const n = 21; const cell = cv.width/n;
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,cv.width,cv.height);
+  // patrón de posición (finders)
+  const finder = [[0,0],[n-7,0],[0,n-7]];
+  ctx.fillStyle='#21284F';
+  finder.forEach(([x,y])=>{
+    ctx.fillRect(x*cell,y*cell,7*cell,7*cell);
+    ctx.fillStyle='#fff';
+    ctx.fillRect((x+1)*cell,(y+1)*cell,5*cell,5*cell);
+    ctx.fillStyle='#21284F';
+    ctx.fillRect((x+2)*cell,(y+2)*cell,3*cell,3*cell);
+  });
+  // módulos pseudo-aleatorios deterministas
+  let seed = 7;
+  for(let i=0;i<texto.length;i++) seed = (seed*31 + texto.charCodeAt(i))>>>0;
+  const rand=()=>{ seed=(seed*1103515245+12345)>>>0; return seed/4294967296; };
+  for(let y=0;y<n;y++) for(let x=0;x<n;x++){
+    if(x<7&&y<7)continue; if(x>n-8&&y<7)continue; if(x<7&&y>n-8)continue;
+    if(rand()>0.52){ ctx.fillStyle=rand()>0.5?'#3869B1':'#21284F'; ctx.fillRect(x*cell,y*cell,cell,cell); }
+  }
+}
+/* ============================================================
+   EXAMEN INTERACTIVO
+============================================================ */
+const preguntasDemo = [
+  {tipo:'om',enunciado:'¿Qué mide un multímetro en modo voltaje?',ops:[{k:'A',t:'La corriente que circula'},{k:'B',t:'La diferencia de potencial entre dos puntos'},{k:'C',t:'La resistencia del circuito'},{k:'D',t:'La potencia consumida'}]},
+  {tipo:'vf',enunciado:'Un alternador genera corriente continua.',valor:false},
+  {tipo:'om',enunciado:'¿Cuál es la unidad de la resistencia eléctrica?',ops:[{k:'A',t:'Voltio'},{k:'B',t:'Amperio'},{k:'C',t:'Ohmio'},{k:'D',t:'Vatio'}]},
+];
+let pregIdx=0, pregResp=[null,null,null], pregTempIni;
+function navegar(p,el){
+  if(p==='presentar'){ pregIdx=0; pregResp=[null,null,null]; pregTempIni=Date.now(); renderPregunta(); }
+  pantallasEst.forEach(x=>document.getElementById('pantalla-'+x).classList.add('hidden'));
+  document.getElementById('pantalla-'+p).classList.remove('hidden');
+  if(el) el.classList.remove('active');
+  if(p==='feedback') renderEstrellas();
+  window.scrollTo(0,0);
+}
+function renderPregunta(){
+  const q = preguntasDemo[pregIdx];
+  document.getElementById('preg-actual').textContent = pregIdx+1;
+  document.getElementById('preg-total').textContent = preguntasDemo.length;
+  document.getElementById('preg-progress').style.width = ((pregIdx+1)/preguntasDemo.length*100)+'%';
+  const cuerpo = document.getElementById('pregunta-cuerpo');
+  let html = '<div class="mb-16" style="font-size:17px;font-weight:600">'+q.enunciado+'</div>';
+  if(q.tipo==='om'){
+    q.ops.forEach((o,i)=>{
+      const sel = pregResp[pregIdx]===o.k?'selected':'';
+      html+='<button class="opt '+sel+'" onclick="selPreg(\''+o.k+'\',this)"><span class="letter">'+o.k+'</span>'+o.t+'</button>';
+    });
+  } else {
+    html+='<div class="vf">';
+    const sv = pregResp[pregIdx]===true?'selected':'';
+    const sf = pregResp[pregIdx]===false?'selected':'';
+    html+='<button class="opt v '+sv+'" onclick="selVF(true,this)">✓ Verdadero</button>';
+    html+='<button class="opt f '+sf+'" onclick="selVF(false,this)">✗ Falso</button>';
+    html+='</div>';
+  }
+  cuerpo.innerHTML = html;
+}
+function selPreg(k,el){
+  pregResp[pregIdx]=k;
+  document.querySelectorAll('#pregunta-cuerpo .opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selVF(v,el){
+  pregResp[pregIdx]=v;
+  document.querySelectorAll('#pregunta-cuerpo .opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function pregAnterior(){ if(pregIdx>0){pregIdx--;renderPregunta();} }
+function pregSiguiente(){
+  if(pregIdx<preguntasDemo.length-1){ pregIdx++; renderPregunta(); }
+  else {
+    if(confirm('¿Seguro? No podrás cambiar tus respuestas.')){
+      const contestadas = pregResp.filter(r=>r!==null).length;
+      alert('✅ Examen entregado.\n\nRespondiste '+contestadas+' de '+preguntasDemo.length+' preguntas.\nLas objetivas se autocalifican al instante.\nLas de redacción las califica tu profesor.');
+      navegar('examenes');
+    }
+  }
+}
+/* ============================================================
+   FEEDBACK ESTRELLAS
+============================================================ */
+function renderEstrellas(){
+  for(let i=1;i<=3;i++){
+    let h='';
+    for(let s=1;s<=5;s++) h+='<button style="background:#eef1f7;border:none;border-radius:10px;padding:10px;font-size:26px;cursor:pointer" onclick="elijeEstrella('+i+','+s+',this)">★</button>';
+    document.getElementById('f'+i).innerHTML=h;
+  }
+}
+function elijeEstrella(preg,val,el){
+  el.parentElement.querySelectorAll('button').forEach(b=>b.style.color='#cbd5e1');
+  el.style.color='#EAB308';
+}
+function enviarFeedback(){
+  alert('✅ Gracias. Tu respuesta es anónima para tu profesor.');
+  navegar('clases');
+}
+/* ============================================================
+   PROFESOR
+============================================================ */
+function entrarProfesor(){
+  mostrarVista('profesor');
+  navegarP('hoy',document.querySelector('.rail .item'));
+}
+function navegarP(p,el){
+  ['hoy','sesiones','examenesP','calificar','notasC','contenidoP'].forEach(x=>{
+    const d=document.getElementById('ph-'+x); if(d) d.classList.add('hidden');
+  });
+  document.getElementById('ph-'+p).classList.remove('hidden');
+  document.querySelectorAll('.rail .item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function abrirSesion(){
+  mostrarVista('escanear');
+}
+function verDudas(){
+  abrirModal('<div class="section-title">Dudas de la semana</div>'+
+    '<div class="card"><div style="font-weight:700">3 × ¿Cómo medir densidad de la batería?</div><div class="muted small">Tema: batería</div></div>'+
+    '<div class="card"><div style="font-weight:700">2 × ¿Qué pasa si el alternador no regula?</div><div class="muted small">Tema: alternador</div></div>'+
+    '<div class="card"><div style="font-weight:700">1 × Duda general</div><div class="muted small">Tema: general</div></div>'+
+    '<button class="btn btn-primary" onclick="cerrarModal()">Clínica de dudas en clase</button>');
+}
+function verSesionDetalle(){
+  abrirModal('<div class="section-title">sáb 08 ago · Ley de Ohm</div>'+
+    '<div class="muted mb-16">Cohorte 2026-B</div>'+
+    '<div class="counter"><div><div class="num">21</div><div class="lbl">asistieron</div></div><div><div class="num">3</div><div class="lbl">faltaron</div></div></div>'+
+    '<button class="btn btn-outline mt-16" onclick="exportarCSV()">Exportar CSV</button>');
+}
+function nuevoExamen(){
+  abrirModal('<div class="section-title">Crear examen</div>'+
+    '<div class="field"><label>Título</label><input placeholder="Ej. Diagnóstico de batería"></div>'+
+    '<div class="field"><label>Módulo</label><select><option>Electricidad automotriz</option></select></div>'+
+    '<div class="field"><label>Puntaje máximo</label><input type="number" value="20"></div>'+
+    '<div class="aviso aviso-warning"><span class="ic">➕</span><div>Agrega preguntas de opción múltiple, verdadero/falso o redacción.</div></div>'+
+    '<div class="counter mb-16"><div><div class="num" style="font-size:18px">Puntos asignados: 18 / 20</div><div class="lbl">en rojo si no cuadra</div></div></div>'+
+    '<button class="btn btn-outline mb-8" onclick="agregarPregunta()">＋ Agregar pregunta</button>'+
+    '<button class="btn btn-primary" onclick="publicarExamen()">Publicar examen</button>');
+}
+function agregarPregunta(){
+  alert('Se agregó una pregunta de opción múltiple al borrador.');
+}
+function publicarExamen(){
+  alert('⚠️ La base rechazó la publicación: "La suma de los puntos (18) no coincide con el puntaje máximo (20)".\n\n(El botón está deshabilitado mientras no cuadre.)');
+}
+function calificarSiguiente(){
+  alert('✅ Calificación guardada. Queda 1 redacción por calificar.');
+}
+function subirContenido(){
+  alert('✅ Material publicado y visible para el módulo.');
+}
+function mostrarArchivoP(inp){
+  const f=inp.files[0];
+  if(f) document.getElementById('archivoP').innerHTML='<div class="file-pill">📄 '+f.name+' · '+Math.round(f.size/1024)+' KB</div>';
+}
+/* ============================================================
+   ESCANEO
+============================================================ */
+let modoEscaneo='asistencia';
+let contadorScan=18;
+function cambiarModo(m){
+  modoEscaneo=m;
+  document.getElementById('seg-asistencia').classList.toggle('active',m==='asistencia');
+  document.getElementById('seg-refri').classList.toggle('active',m==='refrigerio');
+  const r=document.getElementById('scan-resultado');
+  r.className='scan-banner'; r.style.background='#f1f5f9'; r.style.color='#64748b';
+  r.innerHTML='<div style="font-size:15px">Modo: <b>'+(m==='asistencia'?'Asistencia':'Refrigerio')+'</b> · esperando escaneo…</div>';
+}
+function simularEscaneo(tipo){
+  const r=document.getElementById('scan-resultado');
+  let nombre='Luis Hernández';
+  if(modoEscaneo==='refrigerio') nombre='María Pérez';
+  if(tipo==='ok'){
+    r.className='scan-banner scan-ok'; r.style.background='';
+    r.innerHTML='<div class="name">'+nombre+'</div><div class="sub">'+(modoEscaneo==='asistencia'?'Asistencia registrada ✓':'Refrigerio entregado ✓')+'</div>';
+    if(modoEscaneo==='asistencia') contadorScan++;
+    document.getElementById('scan-contador').textContent=contadorScan;
+    beep(true);
+  } else if(tipo==='duplicado'){
+    r.className='scan-banner scan-warn'; r.style.background='';
+    r.innerHTML='<div class="name" style="font-size:26px">'+nombre+'</div><div class="sub">Ya '+(modoEscaneo==='asistencia'?'registrado':'tiene refrigerio')+' (no es error)</div>';
+  } else {
+    r.className='scan-banner scan-err'; r.style.background='';
+    r.innerHTML='<div class="name" style="font-size:26px">Código vencido</div><div class="sub">Pídele al estudiante que muestre el nuevo</div>';
+    beep(false);
+  }
+  setTimeout(()=>{
+    r.className='scan-banner'; r.style.background='#f1f5f9'; r.style.color='#64748b';
+    r.innerHTML='<div style="font-size:15px">Esperando escaneo…</div>';
+  },2000);
+}
+function beep(ok){
+  try{ const ac=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(); const g=ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value=ok?880:320; g.gain.value=.2;
+    o.start();
+    if(ok){ o.frequency.setValueAtTime(880,ac.currentTime); o.frequency.setValueAtTime(1100,ac.currentTime+.15);}
+    setTimeout(()=>{o.stop();ac.close();},ok?400:600);
+  }catch(e){}
+}
+function buscarPorCedula(){
+  abrirModal('<div class="section-title">Buscar por cédula</div>'+
+    '<div class="field"><label>Cédula</label><input placeholder="V-12345678"></div>'+
+    '<div class="field"><label>Motivo del registro manual (obligatorio)</label><select><option>olvidó el teléfono</option><option>teléfono sin batería</option><option>otro</option></select></div>'+
+    '<button class="btn btn-primary" onclick="cerrarModal()">Registrar manualmente</button>'+
+    '<div class="mt-8 small muted">Queda auditado en el log. La base rechaza sin motivo.</div>');
+}
+function volverProfesor(){
+  pararQR();
+  mostrarVista('profesor');
+}
+/* ============================================================
+   ADMIN
+============================================================ */
+function entrarAdmin(){
+  mostrarVista('admin');
+  if(usuarioDemo.rol==='super_admin') document.getElementById('nav-config').classList.remove('hidden');
+  navegarA('panel',document.querySelectorAll('.rail .item')[0]);
+}
+function navegarA(p,el){
+  ['panel','estudiantes','consentimientos','cohortes','reportes','config'].forEach(x=>{
+    const d=document.getElementById('pa-'+x); if(d) d.classList.add('hidden');
+  });
+  document.getElementById('pa-'+p).classList.remove('hidden');
+  document.querySelectorAll('.rail .item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function verificarConsent(btn){
+  btn.textContent='✓ Verificado'; btn.disabled=true;
+  btn.parentElement.querySelector('.chip').textContent='Verificado';
+  btn.parentElement.querySelector('.chip').className='chip chip-ok';
+  alert('✅ Consentimiento verificado. El estudiante ya puede usar su cuenta.');
+}
+function subirDocConsent(btn){
+  abrirModal('<div class="section-title">Adjuntar consentimiento</div>'+
+    '<div class="dropzone" onclick="document.getElementById(\'fileC\').click()">📄 Toca para subir documento firmado</div>'+
+    '<input type="file" id="fileC" class="hidden" onchange="subirConsArchivo(this)">'+
+    '<div id="cons-arch"></div>'+
+    '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Guardar</button>');
+}
+function subirConsArchivo(inp){
+  const f=inp.files[0];
+  if(f) document.getElementById('cons-arch').innerHTML='<div class="file-pill">📄 '+f.name+'</div>';
+}
+function nuevaCohorte(){
+  abrirModal('<div class="section-title">Crear cohorte</div>'+
+    '<div class="field"><label>Nombre</label><input placeholder="Cohorte 2026-C"></div>'+
+    '<div class="field"><label>Profesor</label><select><option>Carlos Rivas</option><option>Lucía Díaz</option></select></div>'+
+    '<div class="field"><label>Salón</label><input placeholder="Taller 3"></div>'+
+    '<div class="field"><label>Turno</label><select><option>Mañana</option><option>Tarde</option></select></div>'+
+    '<button class="btn btn-primary" onclick="cerrarModal()">Crear</button>');
+}
+function avanzarModulo(){
+  if(confirm('¿Avanzar al siguiente módulo? Cambia el contenido y los exámenes visibles de todo el grupo.')){
+    alert('✅ Cohorte avanzó al siguiente módulo. El calendario se recalculó automáticamente.');
+  }
+}
+function importarCSV(){
+  abrirModal('<div class="section-title">Importar estudiantes (CSV)</div>'+
+    '<div class="muted mb-16">Columnas: nombre_completo,cedula,fecha_nacimiento,correo_contacto,telefono,cohorte</div>'+
+    '<div class="dropzone" onclick="document.getElementById(\'fileCSV\').click()">📥 Toca para seleccionar archivo CSV</div>'+
+    '<input type="file" id="fileCSV" class="hidden" onchange="subirCSV(this)">'+
+    '<div id="csv-preview" class="hidden"><div class="aviso aviso-error mt-16"><span class="ic">⚠️</span><div><b>Vista previa:</b> fila 4 tiene cédula con formato inválido. <b>No se importa nada</b> (todo o nada).</div></div></div>'+
+    '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Importar</button>');
+}
+function subirCSV(inp){
+  const f=inp.files[0];
+  if(f){ document.getElementById('csv-preview').classList.remove('hidden');
+    document.getElementById('csv-preview').style.display='block'; }
+}
+function exportarCSV(){
+  alert('📤 Archivo CSV generado y descargado.');
+}
+function guardarConfig(){
+  alert('✅ Configuración guardada. La app lee estos valores al instante, sin desplegar código.');
+}
+/* ============================================================
+   MODAL HELPER
+============================================================ */
+function abrirModal(html){
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+function cerrarModal(){
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+document.getElementById('modal-overlay').addEventListener('click',e=>{
+  if(e.target.id==='modal-overlay') cerrarModal();
+});
+/* Material sim */
+function verMaterial(){
+  abrirModal('<div class="section-title">Visor de material</div>'+
+    '<div style="background:#f7f9fc;border:1px solid var(--zr-border);border-radius:10px;height:280px;display:flex;align-items:center;justify-content:center;color:#9aa3bd;flex-direction:column">'+
+    '<div style="font-size:52px">📄</div><div class="mt-8">Vista previa del PDF (prototipo)</div></div>'+
+    '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Cerrar</button>');
+}
+/* inicio */
+mostrarVista('login');
+</script>
+</body>
+</html>

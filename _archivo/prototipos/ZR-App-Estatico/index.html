@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZR App - Plataforma Académica</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- PANTALLA 1: LOGIN -->
+<!-- ============================================ -->
+<div class="pantalla" id="pantalla-login">
+  <div class="contenedor">
+    
+    <div class="centrar mb-8">
+      <div class="logo-circular">ZR</div>
+      <h1 class="titulo-grande titulo-navy mt-4">ZR App</h1>
+      <p class="texto-caption">Plataforma académica ZR Mecademy</p>
+    </div>
+
+    <div class="grid-1 mb-6">
+      <button class="btn btn-primary mb-4" onclick="entrarComoEstudiante()">
+        <span class="nav-icon">👨‍🎓</span>
+        &nbsp;&nbsp;Entrar como Estudiante
+      </button>
+      <button class="btn btn-secondary mb-4" onclick="entrarComoAdmin()">
+        <span class="nav-icon">👔</span>
+        &nbsp;&nbsp;Entrar como Administrador
+      </button>
+    </div>
+
+    <div class="grid-2 mb-6">
+      <div class="tarjeta-info">
+        <h3 class="titulo-pequeno">¿Eres nuevo?</h3>
+        <p class="texto-caption">Regístrate en menos de 60 segundos</p>
+      </div>
+      <div class="tarjeta-info">
+        <h3 class="titulo-pequeno">¿Olvidaste contraseña?</h3>
+        <p class="texto-caption">Recupera el acceso con tu cédula</p>
+      </div>
+    </div>
+
+    <div class="aviso">
+      <p><strong>📋 Versión actual:</strong> Diseño estático - Funciona en cualquier navegador sin Docker ni instalación</p>
+      <p class="texto-caption">V 1.0 - ZR Mecademy 2025 - 12 ago 2026</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 2: CARNET (ESTUDIANTE) -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-carnet">
+  <div class="contenedor">
+    
+    <!-- Header con botón logout -->
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">📋 Mi Carnet</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <!-- Tarjeta Próximo Sábado -->
+    <div class="tarjeta-azul">
+      <h2 class="titulo-pequeno mb-2">PRÓXIMO SÁBADO · 15 de agosto</h2>
+      <p class="mb-2"><strong>Semana 2 · Diagnóstico de batería</strong></p>
+      <p class="mb-2"><strong>Para llegar preparado:</strong></p>
+      <p class="mb-4">Investiga los tipos de batería y cómo se mide su densidad.</p>
+      <button class="btn btn-primary">Ver práctica completa →</button>
+    </div>
+
+    <!-- Tarjeta Mi Progreso -->
+    <div class="tarjeta-azul">
+      <h2 class="titulo-pequeno mb-2">MI PROGRESO · Electricidad Automotriz</h2>
+      <p class="mb-2">Dominas <strong>2 de 4</strong> competencias</p>
+      <div class="mb-4">
+        <span class="estado estado-dominado">DOMINADAS</span>
+        <span class="estado estado-progreso">EN PROGRESO</span>
+        <span class="estado estado-pendiente">PENDIENTES</span>
+      </div>
+      <button class="btn btn-primary">Ver todas las competencias →</button>
+    </div>
+
+    <!-- El Carnet propiamente dicho -->
+    <div class="tarjeta">
+      <div class="flex mb-4" style="gap: 20px; align-items: flex-start;">
+        <div class="logo-circular" style="flex-shrink: 0;">JP</div>
+        <div style="flex: 1;">
+          <h3 class="titulo-pequeno mb-2">Juan Pérez</h3>
+          <p class="mb-1"><strong>Cédula:</strong> V-30000001</p>
+          <p class="mb-1"><strong>Cohorte:</strong> 2A</p>
+          <p class="mb-4"><strong>Módulo:</strong> Electricidad Automotriz</p>
+          
+          <div class="qr-box">
+            <div class="qr-texto">ZR1|V-30000001|482913</div>
+          </div>
+          
+          <p class="texto-caption centrar">Se regenera cada 30 segundos</p>
+          <div class="barra-totp">
+            <div class="barra-totp-fill"></div>
+          </div>
+          
+          <div class="mt-6 centrar">
+            <p class="texto-mediano"><strong>Módulos aprobados:</strong> 3 de 13</p>
+          </div>
+          
+          <div class="aviso mt-4">
+            <p><strong>⚠️ Aviso:</strong> No tienes consentimiento parental verificado</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Navegación inferior fija -->
+  <nav class="nav-inferior">
+    <div class="nav-botones">
+      <button class="nav-btn activo" onclick="irA('carnet')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Carnet</span>
+      </button>
+      <button class="nav-btn" onclick="irA('semana')">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Semana</span>
+      </button>
+      <button class="nav-btn" onclick="irA('examenes')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-label">Exámenes</span>
+      </button>
+      <button class="nav-btn" onclick="irA('material')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Material</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 3: SEMANA -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-semana">
+  <div class="contenedor">
+    
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">📅 Semana 2</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <h2 class="titulo-pequeno mb-4">Diagnóstico de batería</h2>
+    
+    <div class="aviso mb-6">
+      <p><strong>✅ Habilitado para el sábado</strong> - Has completado 4 de 6 actividades</p>
+      <p class="texto-caption">Solo te faltan 2 actividades para el próximo sábado</p>
+    </div>
+
+    <div class="grid-2 mb-6">
+      <!-- Lunes -->
+      <div class="tarjeta-azul" style="margin: 0;">
+        <h3 class="titulo-pequeno mb-4">LUNES</h3>
+        
+        <div class="grupo-campo">
+          <strong>✅ Micro-lección:</strong> Tipos de batería<br>
+          <span class="texto-caption">20 min · Nivel 1</span>
+          <span class="estado estado-dominado mt-2">COMPLETADA</span>
+        </div>
+        
+        <div class="grupo-campo">
+          <strong>✅ Simulación:</strong> Densímetro virtual<br>
+          <span class="texto-caption">15 min · Nivel 2</span>
+          <span class="estado estado-dominado">COMPLETADA</span>
+        </div>
+      </div>
+      
+      <!-- Martes -->
+      <div class="tarjeta-azul" style="margin: 0;">
+        <h3 class="titulo-pequeno mb-4">MARTES</h3>
+        
+        <div class="grupo-campo">
+          <strong>🔄 Caso simulado:</strong> Diagnóstico fallos<br>
+          <span class="texto-caption">30 min · Nivel 2</span>
+          <span class="estado estado-progreso">EN PROGRESO</span>
+        </div>
+        
+        <div class="grupo-campo">
+          <strong>❓ Duda obligatoria:</strong> Pregunta al instructor<br>
+          <span class="texto-caption">10 min</span>
+          <span class="estado estado-pendiente">PENDIENTE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Viernes: Autochequeo -->
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-4">VIERNES - Autochequeo</h3>
+      <p class="mb-4">Examen corto de 8 preguntas sobre la semana</p>
+      <div class="grid-2">
+        <div>
+          <p><strong>Tu puntaje:</strong> 6 de 8</p>
+          <p class="texto-caption">Mínimo aprobatorio: 5</p>
+        </div>
+        <div>
+          <button class="btn btn-primary">Reintentar autochequeo</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Navegación inferior fija -->
+  <nav class="nav-inferior">
+    <div class="nav-botones">
+      <button class="nav-btn" onclick="irA('carnet')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Carnet</span>
+      </button>
+      <button class="nav-btn activo" onclick="irA('semana')">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Semana</span>
+      </button>
+      <button class="nav-btn" onclick="irA('examenes')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-label">Exámenes</span>
+      </button>
+      <button class="nav-btn" onclick="irA('material')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Material</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 4: EXÁMENES -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-examenes">
+  <div class="contenedor">
+    
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">📝 Exámenes</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <h2 class="titulo-pequeno mb-4">Electricidad Automotriz</h2>
+    
+    <div class="grid-2 mb-6">
+      
+      <div class="tarjeta" style="margin: 0;">
+        <h3 class="titulo-pequeno mb-2">Diagnóstico de Batería</h3>
+        <p class="texto-caption mb-4">20 min · 10 preguntas</p>
+        <div class="mb-4">
+          <span class="estado estado-pendiente">SIN EMPEZAR</span>
+        </div>
+        <button class="btn btn-primary">Presentar examen</button>
+      </div>
+      
+      <div class="tarjeta" style="margin: 0;">
+        <h3 class="titulo-pequeno mb-2">Control de Entrada</h3>
+        <p class="texto-caption mb-4">15 min · 8 preguntas</p>
+        <div class="mb-4">
+          <span class="estado estado-progreso">EN PROGRESO</span>
+        </div>
+        <button class="btn btn-primary">Continuar examen</button>
+      </div>
+      
+    </div>
+
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-4">Tipos de pregunta</h3>
+      <div class="grid-2">
+        <div class="tarjeta-info">
+          <strong>🔘 Opción múltiple</strong>
+          <p class="texto-caption">De 2 a 6 opciones, una correcta</p>
+        </div>
+        <div class="tarjeta-info">
+          <strong>✅❌ Verdadero/Falso</strong>
+          <p class="texto-caption">Dos opciones únicamente</p>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="tarjeta-info">
+          <strong>📝 Redacción abierta</strong>
+          <p class="texto-caption">El profesor califica después</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Navegación inferior fija -->
+  <nav class="nav-inferior">
+    <div class="nav-botones">
+      <button class="nav-btn" onclick="irA('carnet')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Carnet</span>
+      </button>
+      <button class="nav-btn" onclick="irA('semana')">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Semana</span>
+      </button>
+      <button class="nav-btn activo" onclick="irA('examenes')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-label">Exámenes</span>
+      </button>
+      <button class="nav-btn" onclick="irA('material')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Material</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 5: MATERIAL -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-material">
+  <div class="contenedor">
+    
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">📖 Material</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <h2 class="titulo-pequeno mb-4">Repositorio de estudio</h2>
+    
+    <div class="grid-2 mb-6">
+      
+      <div class="tarjeta" style="margin: 0;">
+        <div class="bg-brand" style="height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">📄</div>
+        <div class="mt-4">
+          <h3 class="titulo-pequeno">Tipos de Batería</h3>
+          <p class="texto-caption">PDF · 2.3 MB</p>
+          <p class="texto-caption">Semana 2 · Diagnóstico</p>
+          <button class="btn btn-secondary btn-xs mt-4">Ver / Descargar</button>
+        </div>
+      </div>
+      
+      <div class="tarjeta" style="margin: 0;">
+        <div class="bg-success" style="height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 36px;">🎬</div>
+        <div class="mt-4">
+          <h3 class="titulo-pequeno">Video: Diagnóstico</h3>
+          <p class="texto-caption">MP4 · 12:45 min</p>
+          <p class="texto-caption">Semana 2 · Taller</p>
+          <button class="btn btn-secondary btn-xs mt-4">Reproducir video</button>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-2">No hay más material publicado aún</h3>
+      <p class="texto-caption">Tu profesor lo publicará para el próximo sábado</p>
+    </div>
+
+  </div>
+  
+  <!-- Navegación inferior fija -->
+  <nav class="nav-inferior">
+    <div class="nav-botones">
+      <button class="nav-btn" onclick="irA('carnet')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Carnet</span>
+      </button>
+      <button class="nav-btn" onclick="irA('semana')">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Semana</span>
+      </button>
+      <button class="nav-btn" onclick="irA('examenes')">
+        <span class="nav-icon">📝</span>
+        <span class="nav-label">Exámenes</span>
+      </button>
+      <button class="nav-btn activo" onclick="irA('material')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Material</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 6: PANEL ADMINISTRADOR -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-panel">
+  <div class="contenedor">
+    
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">📊 Panel de Administración</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <!-- 4 Tarjetas grandes -->
+    <div class="grid-2 mb-6">
+      
+      <div class="tarjeta-numero" style="border-top: 4px solid var(--zr-navy);">
+        <div class="numero texto-navy">102</div>
+        <p class="texto-caption">Estudiantes activos</p>
+      </div>
+      
+      <div class="tarjeta-numero" style="border-top: 4px solid var(--zr-warning);">
+        <div class="numero texto-warning">5</div>
+        <p class="texto-caption">Consentimientos pendientes</p>
+      </div>
+      
+      <div class="tarjeta-numero" style="border-top: 4px solid var(--zr-success);">
+        <div class="numero texto-success">96%</div>
+        <p class="texto-caption">Asistencia último sábado</p>
+      </div>
+      
+      <div class="tarjeta-numero" style="border-top: 4px solid var(--zr-warning);">
+        <div class="numero texto-warning">8</div>
+        <p class="texto-caption">Exámenes sin calificar</p>
+      </div>
+      
+    </div>
+
+    <!-- Sección de reportes -->
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-4">📊 Reportes Rápidos</h3>
+      <div class="grid-2 mb-6">
+        <button class="btn btn-secondary">Uso del repositorio</button>
+        <button class="btn btn-secondary">Avance académico</button>
+      </div>
+      
+      <h3 class="titulo-pequeno mb-4">📤 Exportar datos</h3>
+      <div class="grid-2">
+        <button class="btn btn-primary">CSV Asistencia</button>
+        <button class="btn btn-primary">CSV Calificaciones</button>
+      </div>
+    </div>
+
+    <!-- Tabla de estudiantes -->
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-4">👥 Últimos estudiantes</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Edad</th>
+            <th>Cohorte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Juan Pérez</td>
+            <td>V-30000001</td>
+            <td>17</td>
+            <td>2A</td>
+          </tr>
+          <tr>
+            <td>María Rodríguez</td>
+            <td>V-30000002</td>
+            <td>19</td>
+            <td>2A</td>
+          </tr>
+          <tr>
+            <td>Carlos Gómez</td>
+            <td>V-30000003</td>
+            <td>16</td>
+            <td>2B</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PANTALLA 7: HOY (PROFESOR) -->
+<!-- ============================================ -->
+<div class="pantalla oculto" id="pantalla-hoy">
+  <div class="contenedor">
+    
+    <div class="flex mb-4" style="justify-content: space-between; align-items: center;">
+      <h1 class="titulo-mediano">🏫 Clase de hoy</h1>
+      <button class="btn btn-secondary btn-xs" onclick="volverLogin()" style="width: auto; padding: 0 16px;">Salir</button>
+    </div>
+
+    <div class="tarjeta-azul">
+      <h2 class="titulo-pequeno mb-2">COHORTE 2A · Diagnóstico de Batería</h2>
+      <p class="mb-1"><strong>Salón:</strong> Taller 1</p>
+      <p class="mb-1"><strong>Estudiantes:</strong> 24</p>
+      <p class="mb-4"><strong>Hora:</strong> 08:00 - 12:00</p>
+      
+      <button class="btn btn-primary" style="background-color: var(--zr-success);">
+        ABRIR CLASE Y PASAR ASISTENCIA
+      </button>
+    </div>
+
+    <!-- Pantalla de escaneo -->
+    <div class="tarjeta">
+      <h3 class="titulo-pequeno mb-4">📷 Cámara de escaneo</h3>
+      
+      <div style="background-color: var(--zr-navy); height: 200px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 16px;">
+        <span style="font-size: 48px;">📹</span>
+      </div>
+      
+      <div class="aviso aviso-success">
+        <p><strong>✅ Juan Pérez registrado</strong></p>
+        <p class="texto-caption">Asistencia tomada a las 08:15</p>
+      </div>
+      
+      <div class="grid-2 mt-4">
+        <div class="tarjeta-info">
+          <p><strong>Asistencia: 18 / 24</strong></p>
+          <p class="texto-caption">Estudiantes registrados</p>
+        </div>
+        <div class="tarjeta-info">
+          <p><strong>🔄 Modo:</strong> Asistencia</p>
+          <p class="texto-caption">Cambiar a refrigerio</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2 mb-6">
+      <div class="tarjeta-info">
+        <h3>Pendientes</h3>
+        <p class="texto-caption">3 exámenes por calificar</p>
+      </div>
+      <div class="tarjeta-info">
+        <h3>Última sesión</h3>
+        <p class="texto-caption">22 de 24 asistieron</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

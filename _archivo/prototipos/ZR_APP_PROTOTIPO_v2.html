@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ZR App · Prototipo v2 (Mapa de Flujos Consolidado)</title>
+<style>
+/* ============================================================
+   ZR APP · PROTOTIPO v2
+   Alineado al Mapa de Flujos Consolidado (13/08/2026)
+   Fase 1 + Fase 2 MDV · Identidad ZR Mecademy
+   ============================================================ */
+:root{
+  --zr-navy:#21284F;--zr-blue-deep:#1E4D96;--zr-blue:#3869B1;--zr-blue-mid:#6590CB;
+  --zr-blue-light:#98BAE3;--zr-white:#FFFFFF;--zr-success:#16A34A;--zr-warning:#EAB308;
+  --zr-error:#DC2626;--zr-bg:#F5F7FB;--zr-surface:#FFFFFF;--zr-border:#C9D6EA;
+  --zr-text:#21284F;--zr-text-muted:#4A5578;--zr-btn-h:56px;--zr-radius:12px;--zr-gap:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Raleway','Segoe UI',system-ui,sans-serif;background:var(--zr-bg);color:var(--zr-text);font-size:16px;line-height:1.5}
+.hidden{display:none!important}
+.phone{width:100%;max-width:430px;margin:0 auto;min-height:100vh;background:var(--zr-bg);position:relative;box-shadow:0 0 40px rgba(33,40,79,.15)}
+@media(min-width:431px){body{padding:24px 0;background:#d8dee9}.phone{border-radius:28px;min-height:calc(100vh - 48px);overflow:hidden}}
+.topbar{background:var(--zr-navy);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:12px}
+.topbar .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.topbar .logo .zr{width:34px;height:34px;background:var(--zr-blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
+.topbar .meta{font-size:11px;color:#c9d6ea;text-align:right;line-height:1.3}
+.topbar .exit{cursor:pointer;color:#fff;background:rgba(255,255,255,.12);border:none;width:40px;height:40px;border-radius:10px;font-size:18px;flex-shrink:0}
+.auth{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(160deg,var(--zr-navy),var(--zr-blue-deep) 55%,var(--zr-blue))}
+.auth .brand{margin:auto;text-align:center;color:#fff;padding:32px 24px;width:100%;max-width:420px}
+.auth .brand .big{width:84px;height:84px;background:var(--zr-blue);border-radius:22px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800}
+.auth .brand h1{font-size:26px;margin-bottom:6px}
+.auth .brand p{color:#c9d6ea;font-size:14px}
+.auth .card{background:var(--zr-surface);border-radius:24px 24px 0 0;padding:28px 20px calc(28px + env(safe-area-inset-bottom));width:100%;max-width:430px;margin:0 auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--zr-text-muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;height:var(--zr-btn-h);border:1.5px solid var(--zr-border);border-radius:12px;padding:0 16px;font-size:16px;font-family:inherit;color:var(--zr-text);background:#fff}
+.field textarea{height:auto;padding:12px 16px;min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--zr-blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.field .hint{font-size:12px;color:var(--zr-text-muted);margin-top:4px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:var(--zr-btn-h);border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;padding:0 16px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--zr-blue);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--zr-blue);color:var(--zr-blue)}
+.btn-ghost{background:transparent;color:var(--zr-blue);font-weight:600}
+.btn-warn{background:var(--zr-warning);color:#4a3500}
+.btn-lg{min-height:64px;font-size:17px}
+.btn-success{background:var(--zr-success);color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.link{color:var(--zr-blue);text-decoration:none;font-weight:600;cursor:pointer}
+.center{text-align:center}.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}.mb-16{margin-bottom:16px}.mb-8{margin-bottom:8px}
+.muted{color:var(--zr-text-muted);font-size:14px}.small{font-size:13px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.badge-success{background:#dcfce7;color:#166534}.badge-warning{background:#fef3c7;color:#92400e}
+.badge-error{background:#fee2e2;color:#991b1b}.badge-info{background:#e0ecfa;color:#1e4d96}.badge-neutral{background:#eef1f7;color:#4a5578}
+.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:14px;font-size:14px;margin-bottom:14px}
+.aviso .ic{font-size:20px;line-height:1.3}
+.aviso-error{background:#fee2e2;color:#7f1d1d}.aviso-warning{background:#fef9c3;color:#713f12}
+.aviso-success{background:#dcfce7;color:#14532d}.aviso-info{background:#e0ecfa;color:#1e3a8a}
+.side{display:grid;grid-template-columns:72px 1fr;min-height:100vh;background:var(--zr-bg)}
+.side .rail{background:var(--zr-navy);display:flex;flex-direction:column;gap:6px;padding:16px 8px;align-items:stretch;position:sticky;top:0;height:100vh;overflow-y:auto}
+.rail .item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#c9d6ea;font-size:9.5px;padding:10px 4px;border-radius:10px;cursor:pointer;text-align:center;border:none;background:transparent;font-family:inherit;font-weight:600}
+.rail .item .icon{font-size:20px}
+.rail .item.active{background:var(--zr-blue-light);color:var(--zr-navy)}
+.rail .item:hover{background:rgba(255,255,255,.08);color:#fff}
+.content{padding:16px 16px calc(20px + env(safe-area-inset-bottom));max-width:700px;margin:0 auto;width:100%}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--zr-navy);display:grid;grid-template-columns:repeat(6,1fr);z-index:60;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav .bn{display:flex;flex-direction:column;align-items:center;gap:2px;color:#c9d6ea;font-size:9.5px;padding:10px 2px 8px;border:none;background:transparent;font-family:inherit;font-weight:600;cursor:pointer}
+.bottom-nav .bn .icon{font-size:20px}
+.bottom-nav .bn.active{color:var(--zr-blue-light)}
+.card{background:var(--zr-surface);border:1px solid var(--zr-border);border-radius:var(--zr-radius);padding:16px;margin-bottom:14px}
+.card h3{font-size:16px;margin-bottom:8px}
+.info-band{background:var(--zr-blue-light);color:var(--zr-navy);border-radius:12px;padding:14px;margin-bottom:14px}
+.info-band h3{font-size:15px;margin-bottom:4px}.info-band .sub{font-size:13px;opacity:.85}
+.list-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #edf1f8}
+.list-item:last-child{border-bottom:none}
+.list-item .av{width:44px;height:44px;border-radius:12px;background:var(--zr-blue-light);color:var(--zr-navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0}
+.list-item .body{flex:1;min-width:0}
+.list-item .title{font-weight:700;font-size:15px}
+.list-item .subtitle{font-size:13px;color:var(--zr-text-muted)}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-top:3px}
+.chip-ok{background:#dcfce7;color:#166534}.chip-miss{background:#eef1f7;color:#4a5578}
+.chip-next{background:#e0ecfa;color:#1e4d96}.chip-red{background:#fee2e2;color:#991b1b}.chip-yellow{background:#fef3c7;color:#92400e}
+.qr-wrap{border:3px solid var(--zr-navy);border-radius:14px;padding:14px;background:#fff;max-width:250px;margin:10px auto;position:relative}
+.qr-canvas{width:100%;aspect-ratio:1;display:block;border-radius:6px}
+.qr-bar{height:6px;border-radius:3px;background:var(--zr-blue);margin-top:10px;transition:width 1s linear}
+.qr-timer{font-size:12px;color:var(--zr-text-muted);text-align:center;margin-top:6px}
+.carnet-name{font-size:20px;font-weight:700;text-align:center}.carnet-cedula{font-size:15px;color:var(--zr-text-muted);text-align:center}
+.scan-banner{border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scan-banner .name{font-size:34px;font-weight:800;line-height:1.1}.scan-banner .sub{font-size:14px;margin-top:4px;opacity:.9}
+.scan-ok{background:var(--zr-success);color:#fff}.scan-warn{background:var(--zr-warning);color:#4a3500}.scan-err{background:var(--zr-error);color:#fff}
+.counter{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--zr-border);border-radius:12px;padding:14px}
+.counter .num{font-size:28px;font-weight:800;color:var(--zr-navy)}.counter .lbl{font-size:12px;color:var(--zr-text-muted)}
+.progress-bar{height:8px;background:#e3e9f3;border-radius:4px;overflow:hidden;margin-bottom:8px}
+.progress-bar .fill{height:100%;background:var(--zr-blue);border-radius:4px;transition:width .3s}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:60px;border:2px solid var(--zr-border);border-radius:12px;background:#fff;padding:12px 14px;margin-bottom:10px;font-size:15px;font-family:inherit;color:var(--zr-text);cursor:pointer}
+.opt .letter{width:30px;height:30px;border-radius:8px;background:#eef1f7;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.opt.selected{border-color:var(--zr-blue);background:#eef4fd}.opt.selected .letter{background:var(--zr-blue);color:#fff}
+.vf{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vf .opt{justify-content:center;min-height:110px;font-size:20px;font-weight:800;border-width:3px}
+.vf .opt.v{color:#166534}.vf .opt.f{color:#991b1b}
+.vf .opt.selected.v{border-color:var(--zr-success);background:#dcfce7}.vf .opt.selected.f{border-color:var(--zr-error);background:#fee2e2}
+.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--zr-border);border-radius:12px;overflow:hidden;font-size:13.5px}
+.table th{background:var(--zr-navy);color:#fff;text-align:left;padding:10px 10px;font-size:12px}
+.table td{padding:9px 10px;border-top:1px solid #edf1f8}
+.table td input{width:64px;height:38px;border:1.5px solid var(--zr-border);border-radius:8px;padding:0 8px;font-size:14px;text-align:center}
+.table .gray{color:#9aa3bd;font-weight:600}
+.overlay{position:fixed;inset:0;background:rgba(33,40,79,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:430px;padding:24px 20px calc(24px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:slideUp .25s}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.dropzone{border:2px dashed var(--zr-blue-mid);border-radius:12px;padding:22px;text-align:center;cursor:pointer;color:var(--zr-text-muted);background:#f7faff;margin-bottom:12px}
+.file-pill{display:flex;align-items:center;gap:8px;background:#eef1f7;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat-card{background:#fff;border:1px solid var(--zr-border);border-radius:12px;padding:16px}
+.stat-card .num{font-size:28px;font-weight:800;color:var(--zr-navy)}.stat-card .lbl{font-size:12px;color:var(--zr-text-muted);margin-top:2px}
+.stat-card.warn .num{color:var(--zr-error)}
+.mapa-comp{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:8px}
+.mapa-comp .dot{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:800}
+.mapa-comp .dot.ok{background:var(--zr-success)}.mapa-comp .dot.prog{background:var(--zr-blue-mid)}.mapa-comp .dot.pend{background:#cbd5e1;color:#64748b}
+.mapa-comp .t{flex:1;font-size:14px;font-weight:600}.mapa-comp .st{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+.st-dominada{background:#dcfce7;color:#166534}.st-progreso{background:#e0ecfa;color:#1e4d96}.st-pendiente{background:#eef1f7;color:#64748b}.st-refuerzo{background:#fee2e2;color:#991b1b}
+.tabs{display:flex;background:#eef1f7;border-radius:12px;padding:4px;margin-bottom:14px;gap:4px}
+.tabs button{flex:1;border:none;background:transparent;padding:10px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;color:var(--zr-text-muted)}
+.tabs button.active{background:#fff;color:var(--zr-navy);box-shadow:0 1px 4px rgba(33,40,79,.12)}
+.toggle{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--zr-border);border-radius:12px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit}
+.toggle .pill{width:42px;height:24px;border-radius:12px;background:#cbd5e1;position:relative;transition:.2s}
+.toggle .pill::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.toggle.on{background:var(--zr-blue);color:#fff;border-color:var(--zr-blue)}
+.toggle.on .pill::after{left:21px}
+.seg{display:flex;border-radius:12px;overflow:hidden;border:1.5px solid var(--zr-border);margin-bottom:14px}
+.seg button{flex:1;padding:12px;border:none;background:#fff;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;color:var(--zr-text-muted)}
+.seg button.active{background:var(--zr-blue);color:#fff}
+.section-title{font-size:18px;font-weight:800;margin:6px 0 12px}
+/* CICLO SEMANAL */
+.semana{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px}
+.semana .dia{border-radius:10px;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;background:#eef1f7;color:var(--zr-text-muted);cursor:pointer;border:2px solid transparent}
+.semana .dia.active{background:var(--zr-blue);color:#fff}
+.semana .dia .d{font-size:9px;opacity:.8;font-weight:600}
+.tarea{border-left:4px solid var(--zr-blue-mid);background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(33,40,79,.06)}
+.tarea .tl{font-weight:700;font-size:15px}.tarea .td{font-size:13px;color:var(--zr-text-muted);margin-top:2px}
+.tarea.lista{border-left-color:var(--zr-warning)}.tarea.hecha{border-left-color:var(--zr-success);opacity:.75}
+.tarea .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;display:inline-block;margin-bottom:6px}
+.tag-guia{background:#e0ecfa;color:#1e4d96}.tag-caso{background:#fef3c7;color:#92400e}.tag-duda{background:#f3e8ff;color:#6b21a8}.tag-diag{background:#fee2e2;color:#991b1b}
+.check-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #edf1f8;font-size:14.5px}
+.check-item:last-child{border:none}
+.check-item .box{width:26px;height:26px;border-radius:7px;border:2px solid var(--zr-border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;background:#fff;transition:.15s}
+.check-item .box.checked{background:var(--zr-success);border-color:var(--zr-success)}
+.check-item .crit{font-size:10px;font-weight:800;background:#fee2e2;color:#991b1b;padding:1px 6px;border-radius:999px;flex-shrink:0}
+.nivel{display:flex;gap:8px}
+.nivel button{flex:1;padding:10px;border-radius:10px;border:2px solid var(--zr-border);background:#fff;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit}
+.nivel button.active{border-color:var(--zr-blue);background:#eef4fd}
+.promedio-card{background:linear-gradient(135deg,var(--zr-navy),var(--zr-blue-deep));color:#fff;border-radius:14px;padding:18px;text-align:center;margin-bottom:14px}
+.promedio-card .num{font-size:42px;font-weight:800}.promedio-card .lbl{font-size:12px;color:#c9d6ea}
+.promedio-card .lect{display:flex;gap:8px;margin-top:12px}
+.promedio-card .lect div{flex:1;background:rgba(255,255,255,.12);border-radius:10px;padding:8px;font-size:10.5px;line-height:1.3}
+/* CÉDULA CON PREFIJO V- */
+.ced-field{display:flex;border:1.5px solid var(--zr-border);border-radius:12px;overflow:hidden;background:#fff}
+.ced-field:focus-within{border-color:var(--zr-blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.ced-field .prefix{flex-shrink:0;display:flex;align-items:center;padding:0 12px;font-weight:800;color:var(--zr-text-muted);background:#eef1f7;font-size:16px;border-right:1.5px solid var(--zr-border)}
+.ced-field input{flex:1;border:none;height:var(--zr-btn-h);padding:0 14px;font-size:16px;font-family:inherit;color:var(--zr-text);outline:none;background:transparent;min-width:0}
+/* CARNET DIGITAL */
+.carnet-card{background:linear-gradient(135deg,var(--zr-navy),var(--zr-blue-deep));color:#fff;border:none}
+.carnet-card .carnet-logo{width:44px;height:44px;border-radius:12px;background:var(--zr-blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-bottom:12px}
+.carnet-card .name{font-size:20px;font-weight:800;margin-bottom:4px}
+.carnet-card .carnet-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:8px 0;border-top:1px solid rgba(255,255,255,.15)}
+.carnet-card .carnet-row span{color:#c9d6ea;font-weight:600}
+.carnet-card .carnet-row b{text-align:right;font-weight:700;word-break:break-word}
+.carnet-card .carnet-hint{margin-top:10px;font-size:12px;color:#cdd8ee}
+/* SEMANA: 6 días */
+.semana{grid-template-columns:repeat(6,1fr)}
+.semana .dia .d{font-size:8px}
+/* DETALLE DÍA */
+.dia-card{border-left:4px solid var(--zr-blue-mid);background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(33,40,79,.06)}
+.dia-card .head{display:flex;align-items:center;gap:10px;cursor:pointer}
+.dia-card .head .chev{color:#9aa3bd;font-size:18px;transition:.2s;margin-left:auto}
+.dia-card.open .head .chev{transform:rotate(180deg)}
+.dia-card.open{border-left-color:var(--zr-blue)}
+.dia-card .body{display:none;margin-top:12px}
+.dia-card.open .body{display:block}
+.dia-card .tt{font-weight:700;font-size:15px;flex:1}
+.dia-card .meta{font-size:11px;color:var(--zr-text-muted);font-weight:600;margin-bottom:3px}
+.dia-card .cuerpo{border:1px dashed var(--zr-border);border-radius:10px;padding:12px 14px;background:#f7faff;font-size:13.5px;color:var(--zr-text)}
+.dia-card .cuerpo b{color:var(--zr-navy)}
+/* DUDAS */
+.duda-com{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.duda-com textarea{width:100%;border:1.5px solid var(--zr-border);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;resize:vertical;min-height:64px}
+.duda-item{background:#f3e8ff;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:13.5px}
+.duda-item .who{font-size:11px;color:#6b21a8;font-weight:700;margin-bottom:2px}
+/* EXAMEN */
+.ex-gen{border:2px dashed var(--zr-border);border-radius:12px;padding:22px;text-align:center;cursor:pointer;color:var(--zr-text-muted);background:#f7faff;margin-bottom:12px}
+.ex-gen.on{background:#eef4fd;border-color:var(--zr-blue);color:var(--zr-navy)}
+</style>
+</head>
+<body>
+<div class="phone">
+<!-- ============================ LOGIN ============================ -->
+<div id="vista-login" class="auth">
+  <div class="brand">
+    <div class="big">ZR</div>
+    <h1>ZR Mecademy</h1>
+    <p>Tu academia técnica automotriz</p>
+  </div>
+  <div class="card">
+    <div class="field"><label>Cédula</label><div class="ced-field"><span class="prefix">V-</span><input id="login-ced" inputmode="numeric" placeholder="30000001" oninput="this.value=this.value.replace(/\D/g,'').slice(0,8)"></div></div>
+    <div class="field"><label>Contraseña</label><input id="login-pass" type="password" placeholder="••••••••"></div>
+    <div id="login-error" class="aviso aviso-error hidden"><span class="ic">⚠️</span><div>Cédula o contraseña incorrecta</div></div>
+    <button class="btn btn-primary" onclick="ingresar()">Entrar</button>
+    <div class="center mt-16"><a class="link" onclick="ir('registro')">¿Eres nuevo? Regístrate</a></div>
+    <div class="center mt-8"><a class="link small" onclick="ir('recuperar')">¿Olvidaste tu contraseña?</a></div>
+    <div class="mt-24 aviso aviso-info"><span class="ic">🎛️</span>
+      <div><b>Modo demo:</b><br><code>V-30000001</code> estudiante · <code>V-10000003</code> profesor · <code>V-10000005</code> admin · <code>V-10000001</code> super_admin</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ REGISTRO ============================ -->
+<div id="vista-registro" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Inscribirme</div><button class="exit" onclick="ir('login')">✕</button></div>
+  <div class="content">
+    <div class="field"><label>Nombre completo</label><input id="reg-nombre" placeholder="Ej. Luis Hernández"></div>
+    <div class="field"><label>Cédula</label><div class="ced-field"><span class="prefix">V-</span><input id="reg-ced" inputmode="numeric" placeholder="30000001" oninput="this.value=this.value.replace(/\D/g,'').slice(0,8)"></div></div>
+    <div class="field"><label>Fecha de nacimiento</label><input id="reg-fecha" type="date"><div class="hint">Determina si hace falta consentimiento parental (15-17 años)</div></div>
+    <div class="field"><label>Correo de contacto</label><input id="reg-correo" type="email" placeholder="Si eres menor, pon el correo de tu representante"></div>
+    <div class="field"><label>Teléfono (opcional)</label><input id="reg-tel" placeholder="0412-0000000"></div>
+    <div class="field"><label>Sede</label><select id="reg-sede"><option>San Antonio de los Altos (SAAL)</option><option>Caracas (CCST)</option></select></div>
+    <div class="field"><label>Turno</label><select id="reg-turno"><option>Mañana (8:00 am)</option><option>Tarde (1:00 pm)</option></select></div>
+    <div class="field"><label>Contraseña</label><input id="reg-pass" type="password" placeholder="Mínimo 8 caracteres"></div>
+    <div class="field"><label>Repetir contraseña</label><input id="reg-pass2" type="password"></div>
+    <button class="btn btn-primary btn-lg" onclick="registrar()">Crear mi cuenta</button>
+  </div>
+</div>
+
+<!-- ============================ CONSENTIMIENTO ============================ -->
+<div id="vista-consentimiento" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Consentimiento</div></div>
+  <div class="content">
+    <div class="aviso aviso-warning"><span class="ic">👩‍⚖️</span><div>Como eres <b>menor de edad</b>, la ley exige que tu representante legal autorice tu cuenta (LOPNNA).</div></div>
+    <div class="card">
+      <h3>Datos del representante</h3>
+      <div class="field"><label>Nombre</label><input id="rep-nombre" placeholder="Nombre y apellido"></div>
+      <div class="field"><label>Cédula</label><input id="rep-ced" placeholder="V-12345678" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="field"><label>Correo</label><input id="rep-correo" type="email"></div>
+      <div class="field"><label>Teléfono</label><input id="rep-tel"></div>
+      <div class="field"><label>Método de consentimiento</label>
+        <select id="rep-metodo" onchange="toggleRepMetodo()"><option value="fisico">Firmó en papel en la sede</option><option value="digital">Subir documento firmado</option></select></div>
+      <div id="rep-doc-wrap" class="hidden">
+        <div class="dropzone" onclick="document.getElementById('fileInput').click()"><div style="font-size:28px">📄</div><div><b>Toca para subir</b> el documento firmado</div></div>
+        <input type="file" id="fileInput" class="hidden" onchange="mostrarArchivo(this)">
+        <div id="archivo-subido"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="guardarConsentimiento()">Guardar y entrar</button>
+  </div>
+</div>
+
+<!-- ============================ RECUPERAR ============================ -->
+<div id="vista-recuperar" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Recuperar</div><button class="exit" onclick="ir('login')">✕</button></div>
+  <div class="content">
+    <p class="mb-16 muted">Escribe tu cédula. Te enviaremos el enlace a tu correo de contacto.</p>
+    <div class="field"><label>Cédula</label><input id="rec-ced" placeholder="V-12345678"></div>
+    <button class="btn btn-primary" onclick="recuperar()">Enviar enlace</button>
+    <div id="rec-ok" class="aviso aviso-success hidden mt-16"><span class="ic">✅</span><div>Revisa tu correo de contacto (para menores, el del representante).</div></div>
+  </div>
+</div>
+
+<!-- ============================ ESTUDIANTE ============================ -->
+<div id="vista-estudiante" class="hidden">
+  <div class="topbar">
+    <div class="logo"><div class="zr">ZR</div>Mi app</div>
+    <div class="meta"><b id="est-nombre">Luis Hernández</b><br><span id="est-cedula">V-30000001</span></div>
+    <button class="exit" onclick="salir()">⏻</button>
+  </div>
+
+  <!-- INICIO: próximo sábado + progreso + carnet -->
+  <div id="pantalla-inicio" class="content">
+    <div class="card info-band">
+      <h3>📅 PRÓXIMO SÁBADO · 15 ago</h3>
+      <div class="sub"><b>Semana 2</b> · Diagnóstico de batería · Programa 2026-01 · Mañana</div>
+      <div class="mt-8" style="font-size:14px">Para llegar preparado:<br>Investiga los tipos de batería y cómo se mide su densidad.</div>
+      <button class="btn btn-outline mt-8" style="width:auto;min-height:48px;font-size:14px" onclick="navegarE('semana',this)">Ver preparación de la semana →</button>
+    </div>
+
+    <div class="card">
+      <h3 style="display:flex;justify-content:space-between;align-items:center">🎯 MI PROGRESO
+        <span class="badge badge-info" onclick="navegarE('pasaporte',this)" style="cursor:pointer">Ver pasaporte →</span></h3>
+      <div class="muted">Electricidad Automotriz · Módulo 3 de 13</div>
+      <div class="mt-8 mapa-comp" style="background:#eef1f7">
+        <div class="dot ok">✓</div><div class="t">Dominas 2 de 4 competencias</div>
+      </div>
+      <div class="mt-8 small muted">Promedio del módulo: <b>16,5 / 20</b></div>
+    </div>
+
+    <div class="card carnet-card">
+      <div class="carnet-logo">ZR</div>
+      <div class="name" id="carnet-nombre">Luis Hernández</div>
+      <div class="carnet-cedula" id="carnet-ced" style="color:#c9d6ea">V-30000001</div>
+      <div class="carnet-row"><span>PROGRAMA</span><b id="carnet-programa">2026-01 · Mecánica General</b></div>
+      <div class="carnet-row"><span>CARNET</span><b id="carnet-codigo">CCST-2026-01-001</b></div>
+      <div class="carnet-row"><span>SEDE / TURNO</span><b>Caracas (CCST) · Mañana</b></div>
+      <div class="carnet-hint">📷 Escanea el QR que muestra la administración para marcar tu asistencia o tu refrigerio.</div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="abrirEscaneoE()">📷 Escanear asistencia / refrigerio</button>
+  </div>
+
+  <!-- SEMANA: ciclo lunes a viernes -->
+  <div id="pantalla-semana" class="content hidden">
+    <div class="section-title">Semana 2 · Diagnóstico de batería</div>
+    <div class="semana" id="semana-nav">
+      <div class="dia" data-d="0"><div class="d">LUN</div>Guía</div>
+      <div class="dia" data-d="1"><div class="d">MAR</div>Caso sint.</div>
+      <div class="dia" data-d="2"><div class="d">MIÉ</div>Caso real</div>
+      <div class="dia" data-d="3"><div class="d">JUE</div>Dudas</div>
+      <div class="dia" data-d="4"><div class="d">VIE</div>Diag.</div>
+      <div class="dia" data-d="5"><div class="d">SÁB</div>Eval.</div>
+    </div>
+    <div id="semana-contenido"></div>
+  </div>
+
+  <!-- PASAPORTE: mapa de dominio híbrido -->
+  <div id="pantalla-pasaporte" class="content hidden">
+    <div class="promedio-card">
+      <div class="lbl">PROMEDIO DEL MÓDULO (lectura institucional)</div>
+      <div class="num">16,5</div>
+      <div class="lbl">de 20</div>
+      <div class="lect">
+        <div>🏆 Competencias dominadas: <b>2</b></div>
+        <div>📈 En desarrollo: <b>1</b></div>
+        <div>🔴 Requieren refuerzo: <b>1</b></div>
+      </div>
+      <div class="mt-8" style="font-size:10.5px;opacity:.85">Un solo cálculo con dos lecturas: nunca hay contradicción entre tu estado y tu promedio.</div>
+    </div>
+    <div class="section-title">Pasaporte · Electricidad Automotriz</div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)"><div class="dot ok">✓</div><div class="t">Ley de Ohm aplicada</div><span class="st st-dominada">Dominada</span></div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)"><div class="dot ok">✓</div><div class="t">Diagnóstico de batería</div><span class="st st-dominada">Dominada</span></div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)"><div class="dot prog">↻</div><div class="t">Sistema de carga: alternador</div><span class="st st-progreso">En desarrollo</span></div>
+    <div class="mapa-comp" style="background:#fff;border:1px solid var(--zr-border)"><div class="dot pend">·</div><div class="t">Lectura de diagramas eléctricos</div><span class="st st-refuerzo">Requiere refuerzo</span></div>
+    <div class="mt-16 aviso aviso-info"><span class="ic">🔒</span><div>Tu pasaporte es personal. Nadie más puede verlo, ni se compara con otros estudiantes.</div></div>
+  </div>
+
+  <!-- CLASES -->
+  <div id="pantalla-clases" class="content hidden">
+    <div class="section-title">Mis sábados</div>
+    <div class="list-item"><div class="av">2</div><div class="body"><div class="title">sáb 15 ago · Diagnóstico de batería</div><div class="subtitle">Semana 2 · Electricidad</div><div class="chip chip-next">Próximo</div></div></div>
+    <div class="list-item"><div class="av">1</div><div class="body"><div class="title">sáb 08 ago · Ley de Ohm aplicada</div><div class="subtitle">Semana 1 · Electricidad</div><div class="chip chip-ok">Asististe ✓</div></div></div>
+    <div class="mt-16 aviso aviso-info"><span class="ic">📝</span><div>Tu opinión sobre el módulo se pide <b>una sola vez, al cerrarlo</b>, no cada sábado.</div></div>
+    <button class="btn btn-outline" onclick="navegarE('feedback',this)">Opinar sobre el módulo actual</button>
+  </div>
+
+  <!-- DIAGNÓSTICA (viernes) -->
+  <div id="pantalla-diagnostica" class="content hidden">
+    <div class="section-title">Prueba diagnóstica · viernes</div>
+    <div class="aviso aviso-warning"><span class="ic">📊</span><div><b>Sin peso en la nota.</b> Mide qué tan preparado llega el grupo; tu profesor la usa para armar la clínica del sábado.</div></div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-weight:700">Pregunta <span id="d-actual">1</span> de <span id="d-total">3</span></div>
+        <span class="badge badge-neutral">04:15</span>
+      </div>
+      <div class="progress-bar"><div class="fill" id="d-progress" style="width:33%"></div></div>
+      <div id="d-cuerpo"></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-outline" style="flex:1" onclick="dAnterior()">←</button>
+        <button class="btn btn-primary" style="flex:1" onclick="dSiguiente()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEEDBACK FIN DE MÓDULO -->
+  <div id="pantalla-feedback" class="content hidden">
+    <div class="section-title">Tu opinión sobre el módulo</div>
+    <div class="aviso aviso-info"><span class="ic">🤫</span><div>Tu respuesta es <b>anónima</b> para tu profesor. Solo se muestra el promedio del grupo (mín. 3 respuestas).</div></div>
+    <div class="card"><div class="mb-8" style="font-weight:600">¿El contenido del módulo fue claro?</div><div class="grid2" id="f1"></div></div>
+    <div class="card"><div class="mb-8" style="font-weight:600">¿El taller tuvo el material necesario?</div><div class="grid2" id="f2"></div></div>
+    <div class="card"><div class="mb-8" style="font-weight:600">¿Recomendarías este módulo a otro estudiante?</div><div class="grid2" id="f3"></div></div>
+    <button class="btn btn-primary btn-lg" onclick="enviarFeedback()">Enviar</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="bn active" onclick="navegarE('inicio',this)"><span class="icon">🪪</span>Inicio</button>
+    <button class="bn" onclick="navegarE('semana',this)"><span class="icon">📅</span>Semana</button>
+    <button class="bn" onclick="navegarE('pasaporte',this)"><span class="icon">🎯</span>Progreso</button>
+    <button class="bn" onclick="abrirEscaneoE()"><span class="icon">📷</span>Escanear</button>
+    <button class="bn" onclick="navegarE('clases',this)"><span class="icon">🗓️</span>Sábados</button>
+    <button class="bn" onclick="navegarE('feedback',this)"><span class="icon">💬</span>Opinar</button>
+  </div>
+</div>
+
+<!-- ============================ ESCANEO ESTUDIANTE ============================ -->
+<div id="vista-escaneoE" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Escanear</div><button class="exit" onclick="volverEstudiante()">←</button></div>
+  <div style="padding:16px;background:var(--zr-bg);min-height:calc(100vh - 74px)">
+    <div class="aviso aviso-info"><span class="ic">📷</span><div>Apunta a la pantalla de la administración. Ella muestra el QR y decide si es <b>asistencia</b> o <b>refrigerio</b>. Tú solo escaneas.</div></div>
+    <div style="background:#000;border-radius:14px;min-height:40vh;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#8b93ad">
+      <div style="font-size:52px;opacity:.8">📷</div>
+      <div style="font-size:15px">Simulación de cámara</div>
+      <div style="font-size:12px;opacity:.7;margin-top:4px">Funciona sin internet: se sincroniza sola después</div>
+    </div>
+    <div id="scan-resultado-E" class="scan-banner" style="background:#f1f5f9;color:#64748b;margin-top:14px"><div style="font-size:15px">Esperando escaneo…</div></div>
+    <div class="grid2 mt-16">
+      <button class="btn btn-primary" onclick="simEscaneoE('ok')">✓ Escaneé el QR</button>
+      <button class="btn btn-outline" onclick="simEscaneoE('duplicado')">Ya lo marqué</button>
+    </div>
+    <div class="grid2 mt-8">
+      <button class="btn btn-ghost" onclick="simEscaneoE('vencido')">Código vencido</button>
+      <button class="btn btn-ghost" onclick="volverEstudiante()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ PROFESOR ============================ -->
+<div id="vista-profesor" class="hidden">
+  <div class="side">
+    <div class="rail">
+      <button class="item active" onclick="navegarP('hoy',this)"><span class="icon">🏠</span>Hoy</button>
+      <button class="item" onclick="navegarP('preparacion',this)"><span class="icon">📚</span>Pre-sábado</button>
+      <button class="item" onclick="navegarP('programa',this)"><span class="icon">🗓️</span>Programas</button>
+      <button class="item" onclick="navegarP('examenes',this)"><span class="icon">✍️</span>Exámenes</button>
+      <button class="item" onclick="navegarP('evaluacion',this)"><span class="icon">✅</span>Evaluar</button>
+      <button class="item" onclick="navegarP('pasaporteP',this)"><span class="icon">🎯</span>Pasaporte</button>
+      <button class="item" onclick="salir()"><span class="icon">⏻</span>Salir</button>
+    </div>
+    <div class="content">
+      <!-- HOY -->
+      <div id="ph-hoy">
+        <div class="section-title">Hola, Prof. Carlos 👋</div>
+        <div class="card info-band">
+          <h3>LA CLASE DE HOY · sáb 15 ago</h3>
+          <div class="sub"><b>Programa 2026-01</b> · Electricidad · Taller 2 · Mañana</div>
+          <div class="mt-8" style="font-size:14px">24 estudiantes · Diagnóstico de batería</div>
+          <button class="btn btn-primary btn-lg mt-16" onclick="abrirSesion()">🖥️ Mostrar QR (asistencia / refrigerio)</button>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">📋</div><div class="body"><div class="title">Evaluar práctica (checklist + defensa)</div><div class="subtitle">4 competencias esta semana</div></div>
+            <button class="btn btn-ghost" onclick="navegarP('evaluacion',document.querySelectorAll('.rail .item')[4])">Ir →</button></div>
+          <div class="list-item"><div class="av">❓</div><div class="body"><div class="title">Dudas de la semana: 6</div><div class="subtitle">3 batería · 2 alternador · 1 general</div></div>
+            <button class="btn btn-ghost" onclick="verDudas()">Ver →</button></div>
+          <div class="list-item"><div class="av">📊</div><div class="body"><div class="title">Diagnóstica del viernes</div><div class="subtitle">Promedio 14/20 · 5 estudiantes bajo la media</div></div>
+            <button class="btn btn-ghost" onclick="verDiagnostica()">Ver →</button></div>
+        </div>
+      </div>
+
+      <!-- PRE-SÁBADO -->
+      <div id="ph-preparacion" class="hidden">
+        <div class="section-title">Preparación pre-sábado</div>
+        <div class="aviso aviso-info"><span class="ic">🗓️</span><div>Ciclo de la semana: <b>lun</b> guía · <b>mar</b> caso sintético · <b>mié</b> caso real · <b>jue</b> dudas · <b>vie</b> diagnóstica</div></div>
+        <div class="card">
+          <h3>📘 Guía de investigación · Semana 2</h3>
+          <div class="muted mb-8">Tipos de batería y medición de densidad</div>
+          <button class="btn btn-outline" style="min-height:48px;font-size:14px" onclick="editarGuia()">Editar guía</button>
+        </div>
+        <div class="card">
+          <h3>🧩 Caso de taller de la semana</h3>
+          <div class="muted mb-8">Sintético: "El carro no arranca" (práctica) · Real: mismo caso del taller</div>
+          <button class="btn btn-primary" style="min-height:48px;font-size:14px" onclick="seleccionarCaso()">Seleccionar caso →</button>
+        </div>
+        <div class="card">
+          <h3>🤖 Banco de casos y preguntas con IA</h3>
+          <div class="muted">Caso semilla → IA genera variantes → <b>revisión humana antes de publicar</b>.</div>
+          <button class="btn btn-outline mt-8" style="min-height:48px;font-size:14px" onclick="bancoIA()">Abrir banco →</button>
+        </div>
+      </div>
+
+      <!-- PROGRAMAS -->
+      <div id="ph-programa" class="hidden">
+        <div class="section-title">Programas</div>
+        <div class="card">
+          <div class="list-item"><div class="av">P1</div><div class="body"><div class="title">Programa 2026-01 · Sábado 8am</div>
+            <div class="subtitle">Prof. Carlos Rivas · Taller 2 · 24 estudiantes</div>
+            <div class="chip chip-info">Módulo: Electricidad (3 de 13) · Semana 2</div></div>
+            <button class="btn btn-ghost" onclick="verCalendario()">Calendario →</button></div>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">P2</div><div class="body"><div class="title">Programa 2026-02 · Sábado 1pm</div>
+            <div class="subtitle">Prof. Lucía Díaz · Taller 1 · 21 estudiantes</div>
+            <div class="chip chip-info">Módulo: Transmisión (5 de 13) · Semana 3</div></div></div>
+        </div>
+        <div class="mt-16 aviso aviso-info"><span class="ic">🗓️</span><div>El módulo actual se calcula <b>solo</b> con el calendario definido al crear el programa. Nadie lo cierra a mano.</div></div>
+      </div>
+
+      <!-- EXÁMENES (motor estilo Moodle) -->
+      <div id="ph-examenes" class="hidden">
+        <div class="section-title">Exámenes</div>
+        <div class="aviso aviso-info"><span class="ic">🎓</span><div>Se comporta como el LMS de Moodle: <b>primero armas el banco de preguntas</b> por categoría, luego montas el examen eligiendo preguntas y puntajes. La diagnóstica del viernes se monta el <b>jueves/viernes</b> y va sin peso en la nota.</div></div>
+        <div class="card">
+          <h3>Prueba diagnóstica · Semana 2 (viernes)</h3>
+          <div class="muted mb-8">3 preguntas · sin peso · autocalificada · 1 intento</div>
+          <button class="btn btn-outline" style="min-height:48px;font-size:14px" onclick="montarDiagnostica()">📝 Montar / editar preguntas</button>
+        </div>
+        <div class="card">
+          <h3>Examen del módulo · Electricidad</h3>
+          <div class="muted mb-8">20 puntos · módulos 2+ aprueban con 12</div>
+          <button class="btn btn-outline" style="min-height:48px;font-size:14px" onclick="montarDiagnostica()">Montar examen →</button>
+        </div>
+        <button class="btn btn-primary mb-16" onclick="crearExamen()">＋ Crear examen (config estilo Moodle)</button>
+        <div class="section-title">Banco de preguntas</div>
+        <div class="card">
+          <div style="display:flex;gap:8px;margin-bottom:12px" class="tabs">
+            <button class="active">Batería (4)</button><button>Alternador (3)</button><button>General (2)</button>
+          </div>
+          <div class="list-item"><div class="av">MC</div><div class="body"><div class="title">¿Qué herramienta mide densidad de la batería?</div><div class="subtitle">Opción múltiple · 1 pt · categoría: Batería</div></div><span class="badge badge-neutral">en examen</span></div>
+          <div class="list-item"><div class="av">VF</div><div class="body"><div class="title">El alternador genera corriente continua.</div><div class="subtitle">Verdadero/Falso · 1 pt · categoría: Alternador</div></div><span class="badge badge-neutral">en examen</span></div>
+          <div class="list-item"><div class="av">EA</div><div class="body"><div class="title">¿En qué estado se mide el voltaje de reposo?</div><div class="subtitle">Emparejamiento · 2 pts · categoría: Batería</div></div><span class="badge badge-neutral">en examen</span></div>
+          <div class="list-item"><div class="av">RC</div><div class="body"><div class="title">Escribe la función del regulador de voltaje.</div><div class="subtitle">Respuesta corta · 2 pts · categoría: General</div></div><span class="badge badge-neutral">banco</span></div>
+          <button class="btn btn-outline mt-8" style="min-height:48px;font-size:14px" onclick="nuevaPregunta()">＋ Nueva pregunta</button>
+        </div>
+        <div class="mt-16 aviso aviso-info"><span class="ic">🔒</span><div>Como en Moodle, las respuestas correctas se <b>mezclan</b> por intento y el estudiante nunca ve la correcta: solo la vista del alumno.</div></div>
+      </div>
+
+      <!-- EVALUACIÓN EVALUATIVA -->
+      <div id="ph-evaluacion" class="hidden">
+        <div class="section-title">Evaluación evaluativa · sáb 15 ago</div>
+        <div class="aviso aviso-warning"><span class="ic">🔬</span><div>La nota del módulo nace del <b>checklist de práctica</b> + la <b>defensa técnica</b>. La diagnóstica del viernes NO cuenta.</div></div>
+        <div class="card">
+          <div class="muted mb-8">Estudiante: <b>Ana Torres</b></div>
+          <div style="font-weight:700;margin-bottom:6px">Checklist de práctica · Diagnóstico de batería</div>
+          <div class="check-item" onclick="marcarItem(this)"><div class="box">✓</div>Verifica densidad con el hidrómetro <span class="crit">CRÍTICO</span></div>
+          <div class="check-item" onclick="marcarItem(this)"><div class="box">✓</div>Mide voltaje en reposo y en carga</div>
+          <div class="check-item" onclick="marcarItem(this)"><div class="box">✓</div>Identifica sulfatación</div>
+          <div class="mt-8 muted small">Si un ítem crítico falla, el estado nunca puede ser «dominada», sin importar el puntaje.</div>
+        </div>
+        <div class="card">
+          <div style="font-weight:700;margin-bottom:6px">Defensa técnica (2-3 preguntas orales sorteadas)</div>
+          <div class="muted mb-8">Pregunta sorteada: «¿Qué función cumple el alternador?»</div>
+          <div class="nivel">
+            <button onclick="nivel(this,1)">1</button><button onclick="nivel(this,2)">2</button>
+            <button onclick="nivel(this,3)">3</button><button onclick="nivel(this,4)">4</button>
+          </div>
+          <div class="mt-8 small muted">Nivel 1 = no responde · Nivel 4 = domina el tema</div>
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="guardarEvaluacion()">Guardar evaluación →</button>
+      </div>
+
+      <!-- PASAPORTE PROFESOR -->
+      <div id="ph-pasaporteP" class="hidden">
+        <div class="section-title">Pasaporte · Programa 2026-01</div>
+        <div class="muted mb-16">Estado de todas las competencias de tus estudiantes</div>
+        <div class="card">
+          <div class="list-item"><div class="av">AT</div><div class="body"><div class="title">Ana Torres</div>
+            <div class="subtitle">Diagnóstico de batería: <b style="color:var(--zr-success)">Dominada</b> · 3 de 4 competencias</div></div>
+          <span class="badge badge-success">16,5</span></div>
+          <div class="list-item"><div class="av">LH</div><div class="body"><div class="title">Luis Hernández</div>
+            <div class="subtitle">Sistema de carga: <b style="color:var(--zr-error)">Requiere refuerzo</b></div></div>
+          <span class="badge badge-warning">11,0</span></div>
+        </div>
+        <button class="btn btn-outline" onclick="verReporteRiesgo()">Estudiantes en rojo/amarillo →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ MOSTRAR QR (ADMINISTRACIÓN) ============================ -->
+<div id="vista-escanear" class="hidden">
+  <div class="topbar"><div class="logo"><div class="zr">ZR</div>Mostrar QR · sáb 15 ago</div><button class="exit" onclick="volverDesdeQR()">←</button></div>
+  <div style="padding:16px;background:var(--zr-bg);min-height:calc(100vh - 74px)">
+    <div class="aviso aviso-info"><span class="ic">🖥️</span><div>Pon esta pantalla donde todos la vean. Los estudiantes <b>escanean con su app</b>. Tú eliges qué QR mostrar: asistencia o refrigerio.</div></div>
+    <div class="seg">
+      <button class="active" id="seg-asistencia" onclick="cambiarModo('asistencia')">🎟️ Asistencia</button>
+      <button id="seg-refri" onclick="cambiarModo('refrigerio')">🍽️ Refrigerio</button>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="muted" style="font-size:13px;font-weight:700" id="qrModoLabel">QR DE ASISTENCIA · Programa 2026-01</div>
+      <div class="qr-wrap">
+        <canvas id="qrCanvasAdmin" class="qr-canvas" width="250" height="250"></canvas>
+        <div class="qr-bar" id="qrAdminBar"></div>
+        <div class="qr-timer" id="qrAdminTimer">Código válido por 30 s</div>
+      </div>
+      <div class="small muted">El QR rota solo cada 30 s. Un escaneo vencido no es un error, se pide el nuevo.</div>
+    </div>
+    <div id="scan-resultado" class="scan-banner" style="background:#f1f5f9;color:#64748b"><div style="font-size:15px">Esperando escaneos de estudiantes…</div></div>
+    <div class="counter">
+      <div><div class="num" id="scan-contador">18</div><div class="lbl">de 24 ya marcaron</div></div>
+      <div style="text-align:right"><div class="num" style="font-size:18px" id="scan-pendientes">0</div><div class="lbl">sin sincronizar</div></div>
+    </div>
+    <div class="grid2 mt-16">
+      <button class="btn btn-outline" onclick="simularEscaneo('ok')">Luis escaneó ✓</button>
+      <button class="btn btn-ghost" onclick="buscarPorCedula()">Registro manual</button>
+    </div>
+    <div class="grid2 mt-8">
+      <button class="btn btn-outline" onclick="simularEscaneo('duplicado')">Duplicado</button>
+      <button class="btn btn-ghost" onclick="simularEscaneo('vencido')">QR vencido</button>
+    </div>
+    <div class="mt-16 aviso aviso-info"><span class="ic">📱</span><div>Los escaneos sin señal quedan en el teléfono del estudiante y se sincronizan solos. Reenviar un duplicado no crea dos marcas.</div></div>
+  </div>
+</div>
+
+<!-- ============================ ADMIN ============================ -->
+<div id="vista-admin" class="hidden">
+  <div class="side">
+    <div class="rail">
+      <button class="item active" onclick="navegarA('panel',this)"><span class="icon">📊</span>Panel</button>
+      <button class="item" onclick="mostrarQRAdmin()"><span class="icon">🖥️</span>QR</button>
+      <button class="item" onclick="navegarA('estudiantes',this)"><span class="icon">🧑‍🎓</span>Estud.</button>
+      <button class="item" onclick="navegarA('consentimientos',this)"><span class="icon">📋</span>Consent.</button>
+      <button class="item" onclick="navegarA('programasA',this)"><span class="icon">🏷️</span>Prog.</button>
+      <button class="item" onclick="navegarA('casos',this)"><span class="icon">🧩</span>Casos</button>
+      <button class="item" onclick="navegarA('reportes',this)"><span class="icon">📈</span>Reportes</button>
+      <button class="item hidden" id="nav-config" onclick="navegarA('config',this)"><span class="icon">⚙️</span>Config</button>
+      <button class="item" onclick="salir()"><span class="icon">⏻</span>Salir</button>
+    </div>
+    <div class="content">
+      <!-- PANEL -->
+      <div id="pa-panel">
+        <div class="section-title">Panel</div>
+        <div class="grid2">
+          <div class="stat-card"><div class="num">96</div><div class="lbl">Estudiantes activos</div></div>
+          <div class="stat-card warn"><div class="num">3</div><div class="lbl">Consentimientos pendientes</div></div>
+          <div class="stat-card"><div class="num">21/24</div><div class="lbl">Asistencia último sábado</div></div>
+          <div class="stat-card warn"><div class="num">8</div><div class="lbl">Comp. en refuerzo (riesgo)</div></div>
+        </div>
+        <div class="mt-16 aviso aviso-error" id="aviso-consent"><span class="ic">⚠️</span><div><b>Hay 3 consentimientos pendientes.</b> Obligatorio por LOPNNA. <a class="link" onclick="navegarA('consentimientos',document.querySelectorAll('.rail .item')[3])">Revisar →</a></div></div>
+      </div>
+
+      <!-- ESTUDIANTES -->
+      <div id="pa-estudiantes" class="hidden">
+        <div class="section-title">Estudiantes</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px"><input placeholder="Buscar por nombre o cédula" style="flex:1;height:52px;border:1.5px solid var(--zr-border);border-radius:12px;padding:0 14px;font-size:15px"></div>
+        <div class="grid2 mb-16">
+          <div class="field"><label>Sede</label><select><option>Todas</option><option>SAAL</option><option>CCST</option></select></div>
+          <div class="field"><label>Turno</label><select><option>Todos</option><option>Mañana</option><option>Tarde</option></select></div>
+        </div>
+        <button class="btn btn-primary mb-16" onclick="importarCSV()">📥 Cargar CSV</button>
+        <div class="card">
+          <div class="list-item"><div class="av">AH</div><div class="body"><div class="title">Ana Hernández</div><div class="subtitle">V-30000001 · 17 años · Prog. 2026-01 · Mañana</div><div class="chip chip-yellow">Consent. por verificar</div></div></div>
+          <div class="list-item"><div class="av">LT</div><div class="body"><div class="title">Luis Torres</div><div class="subtitle">V-30000002 · 19 años · Prog. 2026-02 · Tarde</div><div class="chip chip-ok">Completo</div></div></div>
+          <div class="list-item"><div class="av">MP</div><div class="body"><div class="title">María Pérez</div><div class="subtitle">V-30000003 · 16 años · Prog. 2026-01 · Mañana</div><div class="chip chip-red">Sin consentimiento</div></div></div>
+        </div>
+      </div>
+
+      <!-- CONSENTIMIENTOS -->
+      <div id="pa-consentimientos" class="hidden">
+        <div class="section-title">Consentimientos pendientes</div>
+        <div class="aviso aviso-warning"><span class="ic">👩‍⚖️</span><div>Esta cola evita que la academia incumpla LOPNNA. Los menores de 15-17 no pueden activar su cuenta sin esto.</div></div>
+        <div class="card">
+          <div class="list-item"><div class="av">AH</div><div class="body"><div class="title">Ana Hernández · 17 años</div><div class="subtitle">Representante: Rosa Hernández · 📄 documento adjunto</div><div class="chip chip-yellow">Sin verificar</div></div>
+            <button class="btn btn-success" style="width:auto;min-height:44px;font-size:14px" onclick="verificarConsent(this)">✓ Verificar</button></div>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">MP</div><div class="body"><div class="title">María Pérez · 16 años</div><div class="subtitle">Representante: Carlos Pérez</div><div class="chip chip-red">Falta consentimiento</div></div>
+            <button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="subirDocConsent(this)">Adjuntar</button></div>
+        </div>
+      </div>
+
+      <!-- PROGRAMAS -->
+      <div id="pa-programasA" class="hidden">
+        <div class="section-title">Programas</div>
+        <button class="btn btn-primary mb-16" onclick="crearPrograma()">＋ Crear programa</button>
+        <div class="card">
+          <div class="list-item"><div class="av">P1</div><div class="body"><div class="title">Programa 2026-01 · Sábado 8am</div>
+            <div class="subtitle">Prof. Carlos Rivas · 24 estudiantes · CCST</div>
+            <div class="chip chip-info">Módulo: Electricidad (3/13) · Semana 2</div></div>
+            <button class="btn btn-ghost" onclick="verCalendario()">Calendario</button></div>
+        </div>
+        <div class="mt-16 aviso aviso-info"><span class="ic">🗓️</span><div>El sistema calcula automáticamente en qué módulo y semana está cada programa desde su calendario. Las pausas corren el calendario completo hacia adelante.</div></div>
+      </div>
+
+      <!-- CATÁLOGO DE CASOS -->
+      <div id="pa-casos" class="hidden">
+        <div class="section-title">Catálogo de casos de taller</div>
+        <div class="aviso aviso-info"><span class="ic">🤖</span><div>Caso semilla → IA genera variantes → <b>revisión humana antes de publicar</b>.</div></div>
+        <button class="btn btn-primary mb-16" onclick="generarCaso()">🤖 Generar casos con IA</button>
+        <div class="card">
+          <div class="list-item"><div class="av">🧩</div><div class="body"><div class="title">"El carro no arranca" (batería)</div><div class="subtitle">Semilla · Revisado ✓</div></div>
+            <span class="badge badge-success">Publicado</span></div>
+          <div class="list-item"><div class="av">🧩</div><div class="body"><div class="title">"Luz de batería encendida"</div><div class="subtitle">Variante IA · Sin revisar</div></div>
+            <span class="badge badge-warning">Revisión</span></div>
+        </div>
+      </div>
+
+      <!-- REPORTES -->
+      <div id="pa-reportes" class="hidden">
+        <div class="section-title">Reportes</div>
+        <div class="card">
+          <h3 style="font-size:14px">Filtros cruzados</h3>
+          <div class="grid2">
+            <div class="field"><label>Sede</label><select><option>Todas</option><option>SAAL</option><option>CCST</option></select></div>
+            <div class="field"><label>Turno</label><select><option>Todos</option><option>Mañana</option><option>Tarde</option></select></div>
+          </div>
+          <div class="field"><label>Estado de competencia</label><select><option>Todos</option><option>Dominada</option><option>En desarrollo</option><option>Requiere refuerzo</option></select></div>
+        </div>
+        <div class="card">
+          <div class="list-item"><div class="av">1</div><div class="body"><div class="title">Asistencia por programa y sesión</div></div><button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+          <div class="list-item"><div class="av">2</div><div class="body"><div class="title">Avance académico (estados de competencia)</div></div><button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+          <div class="list-item"><div class="av">3</div><div class="body"><div class="title">Estudiantes en rojo/amarillo acumulado</div></div><button class="btn btn-outline" style="width:auto;min-height:44px;font-size:14px" onclick="exportarCSV()">CSV</button></div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div id="pa-config" class="hidden">
+        <div class="section-title">Configuración del sistema</div>
+        <div class="aviso aviso-warning"><span class="ic">⚙️</span><div>Solo <b>super_admin</b>. Todos los números de negocio viven aquí, no en el código.</div></div>
+        <div class="card">
+          <table class="table">
+            <tr><th>Clave</th><th>Valor</th><th>Público</th></tr>
+            <tr><td>module.passing_threshold_first</td><td><input value="10" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>module.passing_threshold_default</td><td><input value="12" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>exam.max_score</td><td><input value="20" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>attendance.qr_window_seconds</td><td><input value="30" style="width:60px"></td><td>✅</td></tr>
+            <tr><td>mastery.umbral_dominada</td><td><input value="80" style="width:60px"></td><td>—</td></tr>
+            <tr><td>mastery.umbral_desarrollo</td><td><input value="60" style="width:60px"></td><td>—</td></tr>
+            <tr><td>feedback.micro_max_questions</td><td><input value="3" style="width:60px"></td><td>✅</td></tr>
+          </table>
+          <button class="btn btn-primary mt-16" onclick="guardarConfig()">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ MODAL ============================ -->
+<div id="modal-overlay" class="overlay hidden"><div class="modal" id="modal-body"></div></div>
+</div>
+
+<script>
+/* ============ NAVEGACIÓN GLOBAL ============ */
+let rolActual=null,usuarioDemo=null;
+const VISTAS=['login','registro','consentimiento','recuperar','estudiante','escaneoE','profesor','admin','escanear'];
+function mostrarVista(id){VISTAS.forEach(v=>document.getElementById('vista-'+v).classList.add('hidden'));document.getElementById('vista-'+id).classList.remove('hidden');window.scrollTo(0,0)}
+function ir(id){mostrarVista(id)}
+function salir(){pararQRAdmin();rolActual=null;usuarioDemo=null;mostrarVista('login')}
+
+/* ============ LOGIN ============ */
+const DEMOS={
+  'V-30000001':{rol:'estudiante',nombre:'Luis Hernández',cedula:'V-30000001',sede:'Caracas (CCST)',turno:'Mañana',codigo:'CCST-2026-01-001',programa:'2026-01 · Mecánica General'},
+  'V-30000002':{rol:'estudiante',nombre:'María Pérez',cedula:'V-30000002',sede:'Caracas (CCST)',turno:'Mañana',codigo:'CCST-2026-01-002',programa:'2026-01 · Mecánica General'},
+  'V-10000003':{rol:'profesor',nombre:'Prof. Carlos Rivas',cedula:'V-10000003'},
+  'V-10000005':{rol:'admin',nombre:'Admin ZR',cedula:'V-10000005'},
+  'V-10000001':{rol:'super_admin',nombre:'Dirección ZR',cedula:'V-10000001'},
+};
+function ingresar(){
+  const num=document.getElementById('login-ced').value.replace(/\D/g,''),ced='V-'+num,pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-error');
+  if(!pass||num.length<6){err.classList.remove('hidden');return}
+  const u=DEMOS[ced]; if(!u){err.classList.remove('hidden');return}
+  err.classList.add('hidden');usuarioDemo=u;rolActual=u.rol;
+  if(u.rol==='estudiante')entrarEstudiante(); else if(u.rol==='profesor')entrarProfesor(); else entrarAdmin();
+}
+
+/* ============ REGISTRO ============ */
+function edadDesde(f){const d=new Date(f),h=new Date();let e=h.getFullYear()-d.getFullYear();const m=h.getMonth()-d.getMonth();if(m<0||(m===0&&h.getDate()<d.getDate()))e--;return e}
+function registrar(){
+  const f=document.getElementById('reg-fecha').value,n=document.getElementById('reg-nombre').value.trim(),num=document.getElementById('reg-ced').value.replace(/\D/g,'');
+  if(!f||!n||!num){alert('Completa los campos obligatorios');return}
+  const ced='V-'+num,e=edadDesde(f),sede=document.getElementById('reg-sede').value,turno=document.getElementById('reg-turno').value;
+  if(e<15){alert('La academia acepta estudiantes a partir de 15 años.');return}
+  alert('✅ Cuenta creada: '+n+' ('+ced+') · Sede: '+sede+' · Turno: '+turno);
+  usuarioDemo={rol:'estudiante',nombre:n,cedula:ced,sede:sede,turno:turno.split(' ')[0],codigo:'CCST-2026-02-'+num.slice(-3),programa:'2026-02 · Mecánica General'};
+  if(e<18){mostrarVista('consentimiento')}else{rolActual='estudiante';entrarEstudiante()}
+}
+function toggleRepMetodo(){const m=document.getElementById('rep-metodo').value;document.getElementById('rep-doc-wrap').classList.toggle('hidden',m!=='digital')}
+function mostrarArchivo(inp){const f=inp.files[0];if(f)document.getElementById('archivo-subido').innerHTML='<div class="file-pill">📄 '+f.name+' · '+Math.round(f.size/1024)+' KB</div>'}
+function guardarConsentimiento(){const n=document.getElementById('rep-nombre').value.trim();if(!n){alert('Escribe el nombre del representante');return}alert('✅ Consentimiento registrado. El admin lo verificará.');rolActual='estudiante';entrarEstudiante()}
+function recuperar(){const c=document.getElementById('rec-ced').value.trim();if(!c){alert('Escribe tu cédula');return}document.getElementById('rec-ok').classList.remove('hidden')}
+
+/* ============ ESTUDIANTE ============ */
+const pantallasE=['inicio','semana','pasaporte','clases','diagnostica','feedback'];
+function entrarEstudiante(){
+  document.getElementById('est-nombre').textContent=usuarioDemo.nombre;
+  document.getElementById('est-cedula').textContent=usuarioDemo.cedula;
+  document.getElementById('carnet-nombre').textContent=usuarioDemo.nombre;
+  document.getElementById('carnet-ced').textContent=usuarioDemo.cedula;
+  document.getElementById('carnet-codigo').textContent=usuarioDemo.codigo;
+  document.getElementById('carnet-programa').textContent=usuarioDemo.programa||'2026-01 · Mecánica General';
+  mostrarVista('estudiante');navegarE('inicio',document.querySelector('.bottom-nav .bn'));
+}
+function navegarE(p,el){
+  pantallasE.forEach(x=>document.getElementById('pantalla-'+x).classList.add('hidden'));
+  document.getElementById('pantalla-'+p).classList.remove('hidden');
+  document.querySelectorAll('.bottom-nav .bn').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(p==='feedback')renderEstrellas();
+  if(p==='diagnostica')iniciarDiagnostica();
+  if(p==='semana')renderSemana();
+  window.scrollTo(0,0);
+}
+
+/* ============ CICLO SEMANAL ============ */
+const SEMANA=[
+  {meta:'LUN 10 AGO',tag:'tag-guia',tagT:'📘 GUÍA',tt:'Guía de investigación · tipos de batería',
+   det:'<div class="cuerpo"><b>Investiga antes del sábado:</b> tipos de batería (plomo-ácido, libre de mantenimiento), qué es la densidad del electrolito y cómo se mide con el hidrómetro. Lleva tus apuntes al taller.</div>'},
+  {meta:'MAR 11 AGO',tag:'tag-caso',tagT:'🧩 CASO SINTÉTICO',tt:'"El carro no arranca" · práctica con respuesta de referencia',
+   det:'<div class="cuerpo"><b>Escenario:</b> un cliente llega con un carro que no arranca en la mañana.<br><b>Indicación:</b> plantea tu diagnóstico por escrito y compáralo con la respuesta de referencia. No es evaluado: es para que ensayes el razonamiento.</div>'},
+  {meta:'MIÉ 12 AGO',tag:'tag-caso',tagT:'🔧 CASO REAL',tt:'Caso del taller: batería sulfatada',
+   det:'<div class="cuerpo"><b>Este es el mismo caso que verás el sábado.</b> Un carro con batería sulfatada: terminales con cristales blancos, no arranca y la luz del tablero se apaga. Léelo y piensa qué medirías. No cuenta para nota.</div>'},
+  {meta:'JUE 13 AGO',tag:'tag-duda',tagT:'❓ DUDAS',tt:'Monta tus preguntas de la semana',
+   det:'<p style="font-size:13.5px;color:var(--zr-text-muted)">Escribe aquí lo que no te quedó claro. Tu profesor las agrupa por tema el jueves/viernes y las responde en la clínica del sábado. Nada bloquea tu acceso.</p><div class="duda-com"><textarea id="duda-texto" placeholder="¿Qué pregunta tienes?"></textarea><button class="btn btn-primary" style="min-height:48px;font-size:14px" onclick="enviarDuda()">Enviar duda</button></div><div id="duda-lista"></div>'},
+  {meta:'VIE 14 AGO',tag:'tag-diag',tagT:'📊 DIAGNÓSTICA',tt:'Prueba corta del viernes (sin peso en nota)',
+   det:'<div class="cuerpo"><b>3 preguntas objetivas, autocalificadas.</b> No cuenta en tu nota: mide cómo llega el grupo y tu profesor la usa para armar la clínica del sábado.</div><button class="btn btn-primary mt-8" style="min-height:48px;font-size:14px" onclick="navegarE(\'diagnostica\',document.querySelector(\'.bottom-nav .bn\').children[2])">Hacer diagnóstica →</button>'},
+  {meta:'SÁB 15 AGO',tag:'tag-caso',tagT:'✅ EVALUACIÓN',tt:'Evaluación evaluativa · checklist + defensa técnica',
+   det:'<div class="cuerpo"><b>Guía del caso real del sábado:</b><br>1) Verifica densidad con el hidrómetro<br>2) Mide voltaje en reposo y en carga<br>3) Identifica sulfatación<br><br>Tu profesor marca el checklist con ítems críticos y te hace <b>2-3 preguntas orales sorteadas (defensa, nivel 1-4)</b>. Eso genera el puntaje crudo que alimenta tu pasaporte y tu promedio.</div><button class="btn btn-outline mt-8" style="min-height:48px;font-size:14px" onclick="verModeloEvaluacion()">Ver cómo te evalúan →</button>'}
+];
+function renderSemana(){
+  const cont=document.getElementById('semana-contenido');let html='';
+  SEMANA.forEach((s,i)=>{
+    html+='<div class="dia-card" id="diasem-'+i+'">'
+      +'<div class="head" onclick="abrirDia('+i+')">'
+      +'<span class="tag '+s.tag+'">'+s.tagT+'</span>'
+      +'<div class="tt">'+s.tt+'</div><div class="chev">▾</div></div>'
+      +'<div class="meta">'+s.meta+'</div>'
+      +'<div class="body">'+s.det+'</div></div>';
+  });
+  cont.innerHTML=html;abrirDia(0);
+}
+function abrirDia(i){
+  document.querySelectorAll('.dia-card').forEach(c=>c.classList.remove('open'));
+  document.getElementById('diasem-'+i).classList.add('open');
+  document.querySelectorAll('#semana-nav .dia').forEach(x=>x.classList.toggle('active',+x.dataset.d===i));
+}
+function enviarDuda(){
+  const t=document.getElementById('duda-texto').value.trim();
+  if(!t){alert('Escribe tu duda primero');return}
+  document.getElementById('duda-lista').innerHTML+='<div class="duda-item"><div class="who">Tú · jue 13 ago · 4:10 pm</div>'+t+' · <b>agrupada para la clínica</b></div>';
+  document.getElementById('duda-texto').value='';
+  alert('✅ Duda enviada. Tu profesor la agrupa con las demás del mismo tema.');
+}
+function verModeloEvaluacion(){abrirModal('<div class="section-title">Evaluación del sábado</div>'+
+  '<div class="check-item"><div class="box" style="background:var(--zr-success);border-color:var(--zr-success);color:#fff">✓</div>Verificar densidad con hidrómetro <span class="crit">CRÍTICO</span></div>'+
+  '<div class="check-item"><div class="box"></div>Medir voltaje reposo/carga</div>'+
+  '<div class="check-item"><div class="box"></div>Identificar sulfatación</div>'+
+  '<div class="mt-16 small muted">El promedio y el estado de la competencia salen de un solo cálculo. Nadie aprueba con inasistencia.</div>'+
+  '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Entendido</button>')}
+/* diagnóstica */
+const DIAG=[{en:'¿Qué herramienta mide densidad de la batería?',ops:[['A','Hidrómetro'],['B','Multímetro'],['C','Lámpara de prueba']]},
+  {en:'Un alternador genera corriente continua.',vf:true},
+  {en:'¿En qué estado se mide el voltaje de reposo?',ops:[['A','Motor apagado'],['B','Motor encendido'],['C','Con carga máxima']]}];
+let dIdx=0,dResp=[null,null,null];
+function iniciarDiagnostica(){dIdx=0;dResp=[null,null,null];renderD()}
+function renderD(){
+  const q=DIAG[dIdx];document.getElementById('d-actual').textContent=dIdx+1;document.getElementById('d-total').textContent=DIAG.length;
+  document.getElementById('d-progress').style.width=((dIdx+1)/DIAG.length*100)+'%';
+  let html='<div class="mb-16" style="font-size:17px;font-weight:600">'+q.en+'</div>';
+  if(q.vf!==undefined){
+    const sv=dResp[dIdx]===q.vf?'selected':'';const sf=dResp[dIdx]===!q.vf?'selected':'';
+    html+='<div class="vf"><button class="opt v '+sv+'" onclick="selD(0,true)">✓ Verdadero</button><button class="opt f '+sf+'" onclick="selD(0,false)">✗ Falso</button></div>';
+  }else{
+    q.ops.forEach(o=>{const sel=dResp[dIdx]===o[0]?'selected':'';html+='<button class="opt '+sel+'" onclick="selD(0,\''+o[0]+'\')"><span class="letter">'+o[0]+'</span>'+o[1]+'</button>'});
+  }
+  document.getElementById('d-cuerpo').innerHTML=html;
+}
+function selD(_,v){dResp[dIdx]=v;document.querySelectorAll('#d-cuerpo .opt').forEach(o=>o.classList.remove('selected'));const t=event.target;if(t.tagName==='BUTTON')t.classList.add('selected')}
+function dAnterior(){if(dIdx>0){dIdx--;renderD()}}
+function dSiguiente(){
+  if(dIdx<DIAG.length-1){dIdx++;renderD()}
+  else{alert('✅ Diagnóstica enviada.\n\nResultado: 2 de 3 correctas.\nSin peso en la nota — solo orienta la clínica del sábado.');navegarE('semana',null);renderSemana()}
+}
+
+/* ============ PASAPORTE / FEEDBACK ============ */
+function renderEstrellas(){for(let i=1;i<=3;i++){let h='';for(let s=1;s<=5;s++)h+='<button style="background:#eef1f7;border:none;border-radius:10px;padding:10px;font-size:26px;cursor:pointer;color:#cbd5e1" onclick="elijeEstrella('+i+','+s+',this)">★</button>';document.getElementById('f'+i).innerHTML=h}}
+function elijeEstrella(p,val,el){el.parentElement.querySelectorAll('button').forEach(b=>b.style.color='#cbd5e1');el.style.color='#EAB308'}
+function enviarFeedback(){alert('✅ Gracias. Tu respuesta es anónima para tu profesor.');navegarE('clases',null)}
+
+/* ============ QR · ADMINISTRACIÓN MUESTRA / ESTUDIANTE ESCANEA ============ */
+let qrAdminTimer=null,segAdmin=30,sessionQRModo='asistencia',qrDesdeDesde=null;
+function dibujarQR(texto,canvasId){
+  const cv=document.getElementById(canvasId),ctx=cv.getContext('2d');const n=21,cell=cv.width/n;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);ctx.fillStyle='#21284F';
+  const finder=[[0,0],[n-7,0],[0,n-7]];
+  finder.forEach(([x,y])=>{ctx.fillRect(x*cell,y*cell,7*cell,7*cell);ctx.fillStyle='#fff';ctx.fillRect((x+1)*cell,(y+1)*cell,5*cell,5*cell);ctx.fillStyle='#21284F';ctx.fillRect((x+2)*cell,(y+2)*cell,3*cell,3*cell)});
+  let seed=7;for(let i=0;i<texto.length;i++)seed=(seed*31+texto.charCodeAt(i))>>>0;
+  const rand=()=>{seed=(seed*1103515245+12345)>>>0;return seed/4294967296};
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    if(x<7&&y<7)continue;if(x>n-8&&y<7)continue;if(x<7&&y>n-8)continue;
+    if(rand()>0.52){ctx.fillStyle=rand()>0.5?'#3869B1':'#21284F';ctx.fillRect(x*cell,y*cell,cell,cell)}
+  }
+}
+function pararQRAdmin(){if(qrAdminTimer){clearInterval(qrAdminTimer);qrAdminTimer=null}}
+function renderQRAdmin(){
+  segAdmin--;if(segAdmin<0)segAdmin=29;
+  const chk=String(Math.floor(100000+Math.random()*900000));
+  const texto='ZR1|SES|2026-01|'+sessionQRModo+'|'+chk;
+  document.getElementById('qrAdminCode')&&(document.getElementById('qrAdminCode').textContent=texto);
+  document.getElementById('qrAdminTimer').textContent='Código válido por '+segAdmin+' s';
+  document.getElementById('qrAdminBar').style.width=(segAdmin/30*100)+'%';
+  dibujarQR(texto,'qrCanvasAdmin');
+}
+function iniciarQRAdmin(){pararQRAdmin();segAdmin=30;renderQRAdmin();qrAdminTimer=setInterval(renderQRAdmin,1000)}
+function ahoraTextModo(){document.getElementById('qrModoLabel').textContent=(sessionQRModo==='asistencia'?'QR DE ASISTENCIA':'QR DE REFRIGERIO')+' · Programa 2026-01'}
+function cambiarModo(m){
+  sessionQRModo=m;
+  document.getElementById('seg-asistencia').classList.toggle('active',m==='asistencia');
+  document.getElementById('seg-refri').classList.toggle('active',m==='refrigerio');
+  ahoraTextModo();segAdmin=Math.min(segAdmin,29);
+  const r=document.getElementById('scan-resultado');
+  r.className='scan-banner';r.style.background='#f1f5f9';r.style.color='#64748b';
+  r.innerHTML='<div style="font-size:15px">QR de <b>'+(m==='asistencia'?'asistencia':'refrigerio')+'</b> visible · esperando escaneos…</div>';
+}
+function abrirSesion(){qrDesdeDesde='profesor';mostrarVista('escanear');iniciarQRAdmin();cambiarModo('asistencia');}
+function mostrarQRAdmin(){qrDesdeDesde='admin';mostrarVista('escanear');iniciarQRAdmin();cambiarModo('asistencia');}
+function volverDesdeQR(){pararQRAdmin();mostrarVista(qrDesdeDesde==='admin'?'admin':'profesor')}
+/* El estudiante solo escanea */
+function abrirEscaneoE(){mostrarVista('escaneoE')}
+function volverEstudiante(){mostrarVista('estudiante')}
+function simEscaneoE(tipo){
+  const r=document.getElementById('scan-resultado-E');const modo=sessionQRModo;
+  if(tipo==='ok'){
+    r.className='scan-banner scan-ok';r.style.background='';
+    r.innerHTML='<div class="name" style="font-size:26px">✓</div><div class="sub">'+(modo==='asistencia'?'Asistencia registrada':'Refrigerio entregado')+'. ¡Listo para la clase!</div>';
+  }else if(tipo==='duplicado'){
+    r.className='scan-banner scan-warn';r.style.background='';
+    r.innerHTML='<div class="name" style="font-size:26px">✓✓</div><div class="sub">Ya marcaste (no es error, es 1 sola vez)</div>';
+  }else{
+    r.className='scan-banner scan-err';r.style.background='';
+    r.innerHTML='<div class="name" style="font-size:26px">👀</div><div class="sub">El QR quedó fuera de los 30 s. Pide uno nuevo a la administración.</div>';
+  }
+  setTimeout(()=>{r.className='scan-banner';r.style.background='#f1f5f9';r.style.color='#64748b';r.innerHTML='<div style="font-size:15px">Esperando escaneo…</div>'},2500);
+}
+
+/* ============ PROFESOR ============ */
+function entrarProfesor(){mostrarVista('profesor');navegarP('hoy',document.querySelector('.rail .item'))}
+function navegarP(p,el){
+  ['hoy','preparacion','programa','examenes','evaluacion','pasaporteP'].forEach(x=>{const d=document.getElementById('ph-'+x);if(d)d.classList.add('hidden')});
+  document.getElementById('ph-'+p).classList.remove('hidden');
+  document.querySelectorAll('.rail .item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');window.scrollTo(0,0);
+}
+function verDudas(){abrirModal('<div class="section-title">Clínica de dudas · sáb 15 ago</div>'+
+  '<div class="aviso aviso-info"><span class="ic">🗣️</span><div>Dudas agrupadas por tema y frecuencia, no una por una. Resumes y respondes las repetidas.</div></div>'+
+  '<div class="card"><div style="font-weight:700">3 × ¿Cómo medir densidad de la batería?</div><div class="muted small">Tema: batería</div></div>'+
+  '<div class="card"><div style="font-weight:700">2 × ¿Qué pasa si el alternador no regula?</div><div class="muted small">Tema: alternador</div></div>'+
+  '<div class="card"><div style="font-weight:700">1 × Duda general</div><div class="muted small">Tema: general</div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Listo, las respondo en clase</button>')}
+function verDiagnostica(){abrirModal('<div class="section-title">Diagnóstica del viernes</div>'+
+  '<div class="promedio-card" style="margin-bottom:0"><div class="lbl">PROMEDIO DEL GRUPO</div><div class="num">14</div><div class="lbl">de 20</div></div>'+
+  '<div class="card mt-8"><div class="list-item"><div class="av">3</div><div class="body"><div class="title">Batería sulfatada</div><div class="subtitle">52% respondió mal</div></div></div>'+
+  '<div class="list-item"><div class="av">1</div><div class="body"><div class="title">Voltaje en reposo</div><div class="subtitle">90% correcto</div></div></div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Usar en la clínica</button>')}
+function editarGuia(){abrirModal('<div class="section-title">Editar guía · Semana 2</div>'+
+  '<div class="field"><label>Investigación previa (pre_practice_description)</label><textarea>Tipos de batería y cómo se mide su densidad.</textarea></div>'+
+  '<div class="field"><label>Práctica de taller (sábado)</label><textarea>Medición de densidad con hidrómetro y voltaje.</textarea></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Guardar</button>')}
+function seleccionarCaso(){abrirModal('<div class="section-title">Seleccionar caso de la semana</div>'+
+  '<div class="field"><label>Semana</label><select><option>Semana 2 · Batería</option><option>Semana 3 · Alternador</option></select></div>'+
+  '<div class="card"><div style="font-weight:700">🧩 Sintético (martes)</div><div class="muted">"El carro no arranca" · con respuesta de referencia</div></div>'+
+  '<div class="card"><div style="font-weight:700">🔧 Real (miércoles y sábado)</div><div class="muted">"Batería sulfatada" · el caso del taller</div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Publicar caso →</button>')}
+function bancoIA(){abrirModal('<div class="section-title">Banco de casos · IA</div>'+
+  '<div class="aviso aviso-warning"><span class="ic">🤖</span><div>Genera variantes de un caso semilla. <b>Ninguna se publica sin revisión técnica humana.</b></div></div>'+
+  '<div class="field"><label>Caso semilla</label><textarea>Batería con sulfatación, el cliente dice que no arranca por las mañanas.</textarea></div>'+
+  '<button class="btn btn-outline mb-8" onclick="generarVariantes()">Generar 3 variantes</button>'+
+  '<div id="variantes"></div>')}
+function generarVariantes(){document.getElementById('variantes').innerHTML='<div class="card"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V1 · "Luces tenues al arrancar"</div></div><div class="card"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V2 · "La batería hierve"</div></div><div class="card"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V3 · "Arranca con ayuda de pinzas"</div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Aprobar seleccionados</button>'}
+function verCalendario(){abrirModal('<div class="section-title">Calendario · Programa 2026-01</div>'+
+  '<div class="muted mb-16">Definido una sola vez al crear el programa. El sistema calcula el módulo/semana actual solo.</div>'+
+  '<div class="card"><div class="list-item"><div class="av">M3</div><div class="body"><div class="title">Electricidad automotriz</div><div class="subtitle">Semanas 9-12 · <b>Activo ahora (semana 2)</b></div></div></div>'+
+  '<div class="list-item"><div class="av">M4</div><div class="body"><div class="title">Transmisión</div><div class="subtitle">Semanas 13-16</div></div></div>'+
+  '<div class="list-item"><div class="av">M5</div><div class="body"><div class="title">Suspensión y frenos</div><div class="subtitle">Semanas 17-20</div></div></div></div>'+
+  '<button class="btn btn-outline" onclick="pausarCalendario()">⏸️ Insertar pausa (feriado)</button>')}
+function pausarCalendario(){alert('⏸️ Pausa insertada. Todo el calendario del programa se corrió hacia adelante automáticamente.');cerrarModal()}
+function marcarItem(el){const box=el.querySelector('.box');if(box.classList.contains('checked')){box.classList.remove('checked');box.textContent=''}else{box.classList.add('checked');box.textContent='✓'}}
+function nivel(btn,v){btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function guardarEvaluacion(){alert('✅ Evaluación guardada.\n\nEl checklist + la defensa generan el puntaje crudo, que alimenta el estado de la competencia y el promedio (un solo cálculo).');navegarP('pasaporteP',document.querySelectorAll('.rail .item')[5])}
+function verReporteRiesgo(){abrirModal('<div class="section-title">Estudiantes en riesgo</div>'+
+  '<div class="card"><div class="list-item"><div class="av">LH</div><div class="body"><div class="title">Luis Hernández</div><div class="subtitle">2 competencias en refuerzo · promedio 11,0</div></div><span class="badge badge-error">Riesgo</span></div>'+
+  '<div class="list-item"><div class="av">MP</div><div class="body"><div class="title">María Pérez</div><div class="subtitle">1 competencia en refuerzo</div></div><span class="badge badge-warning">Alerta</span></div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Plan de refuerzo</button>')}
+
+/* ============ SIMULACIÓN DE ESCANEOS (vista mostrar QR) ============ */
+let contadorScan=18;
+function simularEscaneo(tipo){
+  const r=document.getElementById('scan-resultado');let nombre=sessionQRModo==='asistencia'?'Luis Hernández':'María Pérez';
+  if(tipo==='ok'){
+    r.className='scan-banner scan-ok';r.style.background='';r.innerHTML='<div class="name">'+nombre+'</div><div class="sub">'+(sessionQRModo==='asistencia'?'Marcó asistencia con su app ✓':'Recogió su refrigerio ✓')+'</div>';
+    if(sessionQRModo==='asistencia')contadorScan++;document.getElementById('scan-contador').textContent=contadorScan;beep(true);
+  }else if(tipo==='duplicado'){
+    r.className='scan-banner scan-warn';r.style.background='';r.innerHTML='<div class="name" style="font-size:26px">'+nombre+'</div><div class="sub">Ya '+(sessionQRModo==='asistencia'?'registrado':'tiene refrigerio')+' (no es error)</div>';
+  }else{
+    r.className='scan-banner scan-err';r.style.background='';r.innerHTML='<div class="name" style="font-size:26px">QR vencido</div><div class="sub">El estudiante pide el nuevo QR (rota cada 30 s)</div>';beep(false);
+  }
+  setTimeout(()=>{r.className='scan-banner';r.style.background='#f1f5f9';r.style.color='#64748b';r.innerHTML='<div style="font-size:15px">Esperando escaneos de estudiantes…</div>'},2200);
+}
+function beep(ok){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=ok?880:320;g.gain.value=.2;o.start();if(ok){o.frequency.setValueAtTime(880,ac.currentTime);o.frequency.setValueAtTime(1100,ac.currentTime+.15)}setTimeout(()=>{o.stop();ac.close()},ok?400:600)}catch(e){}}
+function buscarPorCedula(){abrirModal('<div class="section-title">Registro manual por cédula</div>'+
+  '<div class="field"><label>Cédula</label><div class="ced-field"><span class="prefix">V-</span><input inputmode="numeric" placeholder="30000001"></div></div>'+
+  '<div class="field"><label>Motivo del registro manual (obligatorio)</label><select><option>olvidó el teléfono</option><option>teléfono sin batería</option><option>otro</option></select></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Registrar manualmente</button>'+
+  '<div class="mt-8 small muted">Queda auditado. La base rechaza sin motivo.</div>')}
+
+/* ============ EXÁMENES (motor estilo Moodle) ============ */
+function montarDiagnostica(){abrirModal('<div class="section-title">Montar diagnóstica · viernes (sin peso)</div>'+
+  '<div class="aviso aviso-info"><span class="ic">🎓</span><div>Como en Moodle: elige preguntas del <b>banco</b> y asígnales puntaje. El estudiante ve solo la vista del alumno.</div></div>'+
+  '<div class="card"><div class="list-item"><div class="av">MC</div><div class="body"><div class="title">¿Qué herramienta mide densidad?</div><div class="subtitle">1 pt</div></div><input type="checkbox" checked style="width:20px;height:20px"></div>'+
+  '<div class="list-item"><div class="av">VF</div><div class="body"><div class="title">El alternador genera corriente continua.</div><div class="subtitle">1 pt</div></div><input type="checkbox" checked style="width:20px;height:20px"></div>'+
+  '<div class="list-item"><div class="av">EA</div><div class="body"><div class="title">¿En qué estado se mide el voltaje de reposo?</div><div class="subtitle">1 pt</div></div><input type="checkbox" style="width:20px;height:20px"></div></div>'+
+  '<div class="field"><label>Mezclar respuestas por intento</label><select><option>✓ Sí (Moodle)</option><option>No</option></select></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Publicar para el viernes →</button>')}
+function crearExamen(){abrirModal('<div class="section-title">Configurar examen (estilo Moodle)</div>'+
+  '<div class="field"><label>Nombre</label><input placeholder="Examen del módulo · Electricidad"></div>'+
+  '<div class="field"><label>Categoría del banco</label><select><option>Electricidad · M3</option><option>Batería</option><option>Alternador</option></select></div>'+
+  '<div class="grid2"><div class="field"><label>Puntaje máximo</label><input value="20" inputmode="numeric"></div><div class="field"><label>Intentos</label><select><option>1</option><option>2</option><option>Ilimitados</option></select></div></div>'+
+  '<div class="field"><label>Tiempo límite</label><select><option>Sin límite</option><option>15 min</option><option>30 min</option><option>60 min</option></select></div>'+
+  '<div class="field"><label>Feedback al estudiante</label><select><option>Retroalimentación diferida (al cerrar)</option><option>Inmediata pregunta a pregunta</option><option>Sin feedback</option></select></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Crear y montar preguntas</button>')}
+function nuevaPregunta(){abrirModal('<div class="section-title">Nueva pregunta</div>'+
+  '<div class="field"><label>Tipo</label><select id="nptipo"><option value="mc">Opción múltiple</option><option value="vf">Verdadero/Falso</option><option value="ea">Emparejamiento</option><option value="rc">Respuesta corta</option></select></div>'+
+  '<div class="field"><label>Enunciado</label><textarea placeholder="Escribe la pregunta…"></textarea></div>'+
+  '<div class="field"><label>Puntaje</label><input value="1" inputmode="numeric" style="width:100px"></div>'+
+  '<div class="field"><label>Categoría</label><select><option>Batería</option><option>Alternador</option><option>General</option></select></div>'+
+  '<div class="aviso aviso-warning"><span class="ic">🔒</span><div>Como en Moodle, marcas la correcta aquí (solo tú la ves); el estudiante nunca la recibe.</div></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Guardar en el banco</button>')}
+
+/* ============ ADMIN ============ */
+function entrarAdmin(){mostrarVista('admin');if(usuarioDemo.rol==='super_admin')document.getElementById('nav-config').classList.remove('hidden');navegarA('panel',document.querySelectorAll('.rail .item')[0])}
+function navegarA(p,el){
+  ['panel','estudiantes','consentimientos','programasA','casos','reportes','config'].forEach(x=>{const d=document.getElementById('pa-'+x);if(d)d.classList.add('hidden')});
+  document.getElementById('pa-'+p).classList.remove('hidden');
+  document.querySelectorAll('.rail .item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');window.scrollTo(0,0);
+}
+function verificarConsent(btn){btn.textContent='✓ Verificado';btn.disabled=true;btn.parentElement.querySelector('.chip').textContent='Verificado';btn.parentElement.querySelector('.chip').className='chip chip-ok';alert('✅ Consentimiento verificado. El estudiante ya puede usar su cuenta.')}
+function subirDocConsent(btn){abrirModal('<div class="section-title">Adjuntar consentimiento</div>'+
+  '<div class="dropzone" onclick="document.getElementById(\'fileC\').click()">📄 Toca para subir documento firmado</div><input type="file" id="fileC" class="hidden" onchange="subirConsArchivo(this)"><div id="cons-arch"></div>'+
+  '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Guardar</button>')}
+function subirConsArchivo(inp){const f=inp.files[0];if(f)document.getElementById('cons-arch').innerHTML='<div class="file-pill">📄 '+f.name+'</div>'}
+function crearPrograma(){abrirModal('<div class="section-title">Crear programa</div>'+
+  '<div class="aviso aviso-info"><span class="ic">🏷️</span><div>El nombre se autoasigna: <b>AÑO-NN</b> (ej. 2026-03).</div></div>'+
+  '<div class="field"><label>Profesor</label><select><option>Carlos Rivas</option><option>Lucía Díaz</option></select></div>'+
+  '<div class="field"><label>Salón</label><input placeholder="Taller 3"></div>'+
+  '<div class="field"><label>Turno</label><select><option>Mañana</option><option>Tarde</option></select></div>'+
+  '<div class="field"><label>Fecha de inicio</label><input type="date"></div>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Crear y definir calendario</button>')}
+function verCalendarioA(){abrirModal('<div class="section-title">Calendario · Programa 2026-01</div>'+
+  '<div class="muted mb-16">Definido una sola vez. El sistema calcula el módulo actual comparando la fecha de hoy.</div>'+
+  '<button class="btn btn-outline mb-8" onclick="pausarCalendario()">⏸️ Insertar pausa</button>'+
+  '<button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>')}
+function generarCaso(){abrirModal('<div class="section-title">Generar casos con IA</div>'+
+  '<div class="field"><label>Caso semilla</label><textarea>Batería con sulfatación, no arranca por las mañanas.</textarea></div>'+
+  '<div class="field"><label>Módulo</label><select><option>Electricidad automotriz</option><option>Transmisión</option></select></div>'+
+  '<button class="btn btn-primary" onclick="generarVariantesA()">Generar 3 variantes</button><div id="variantesA"></div>')}
+function generarVariantesA(){document.getElementById('variantesA').innerHTML='<div class="card mt-8"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V1 · "Luces tenues al arrancar"</div></div><div class="card"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V2 · "La batería hierve"</div></div><div class="card"><div class="chip chip-yellow">EN REVISIÓN</div><div class="mt-8" style="font-weight:600">V3 · "Arranca con ayuda de pinzas"</div></div>'+
+  '<button class="btn btn-primary mt-8" onclick="cerrarModal()">Aprobar y guardar en banco</button>'}
+function importarCSV(){abrirModal('<div class="section-title">Importar estudiantes (CSV)</div>'+
+  '<div class="muted mb-16">Columnas: nombre_completo,cedula,fecha_nacimiento,correo_contacto,telefono,programa</div>'+
+  '<div class="dropzone" onclick="document.getElementById(\'fileCSV\').click()">📥 Toca para seleccionar archivo CSV</div><input type="file" id="fileCSV" class="hidden" onchange="subirCSV(this)">'+
+  '<div id="csv-preview" class="hidden"><div class="aviso aviso-error mt-16"><span class="ic">⚠️</span><div><b>Vista previa:</b> fila 4 tiene cédula con formato inválido. <b>No se importa nada</b> (todo o nada).</div></div></div>'+
+  '<button class="btn btn-primary mt-16" onclick="cerrarModal()">Importar</button>')}
+function subirCSV(inp){const f=inp.files[0];if(f){document.getElementById('csv-preview').classList.remove('hidden');document.getElementById('csv-preview').style.display='block'}}
+function exportarCSV(){alert('📤 Archivo CSV generado y descargado.')}
+function guardarConfig(){alert('✅ Configuración guardada. La app lee estos valores al instante, sin desplegar código.')}
+
+/* ============ MODAL ============ */
+function abrirModal(html){document.getElementById('modal-body').innerHTML=html;document.getElementById('modal-overlay').classList.remove('hidden')}
+function cerrarModal(){document.getElementById('modal-overlay').classList.add('hidden')}
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target.id==='modal-overlay')cerrarModal()});
+
+/* ============ INICIO ============ */
+mostrarVista('login');
+</script>
+</body>
+</html>

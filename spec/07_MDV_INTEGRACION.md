@@ -1,4 +1,26 @@
 # 07 · INTEGRACIÓN DEL MODELO DE DOMINIO VERIFICADO (MDV)
+
+> # ⚠️ PARCIALMENTE SUPERADO — LEE `spec/00_RECONCILIACION.md` PRIMERO
+>
+> El 20 de agosto de 2026 la dirección de ZR Mecademy decidió apartarse de tres puntos de
+> este documento. **Lo que aquí se describe sobre esos tres puntos ya no se implementa:**
+>
+> | Sección | Lo que dice aquí | Lo que se hace realmente |
+> |---|---|---|
+> | §3 Compuerta A | Bloquea la evaluación del sábado, cierra viernes 22:00 | **No bloquea.** Es solo una señal visual para el profesor |
+> | §3 Compuerta B | Rúbrica de 100 puntos, aprueba con 81 | **Escala 0-20**, aprueba con 12 (10 en módulo 1) |
+> | §2 Flujo semanal | Microlecciones, simulador, clínica por videollamada | **Ciclo basado en casos**: guía, caso sintético, caso real, dudas, diagnóstica |
+>
+> **Lo que sigue plenamente vigente de este documento:**
+> - Ítems críticos que no promedian (§8 Regla 2) — adaptado a escala 0-20.
+> - Defensa técnica y su efecto sobre el dominio (§3 Compuerta C).
+> - Estados de competencia: dominada / en desarrollo / requiere refuerzo (§4).
+> - Repetir no castiga; el mejor intento manda (§8 Regla 3).
+> - Los niveles de IA N0-N4 (§5).
+> - Que las reglas viven en la base de datos, no en el navegador.
+
+---
+
 > Este documento especifica cómo se integra la metodología MDV en ZR App.
 > Es el puente entre los documentos pedagógicos de `Metodologia/` y el código.
 >

@@ -19,7 +19,7 @@ Las clases son **los sábados**. Hay ~100 estudiantes activos, de 15 a 25 años.
 1. Registro e inicio de sesión con cédula.
 2. Consentimiento parental obligatorio para estudiantes de 15 a 17 años (ley LOPNNA).
 3. Carnet digital con código QR rotatorio.
-4. Asistencia: **el profesor escanea el QR del estudiante** (no al revés).
+4. Asistencia: **administración muestra un QR de un solo uso y el estudiante lo escanea**.
 5. Entrega de refrigerio marcada con el mismo escaneo.
 6. Exámenes digitales con autocalificación.
 7. Repositorio de material de estudio (PDFs).
@@ -79,6 +79,26 @@ usa el cliente oficial `@supabase/supabase-js`.
 
 ---
 
+## 3.5 SI ESTÁS AQUÍ PARA CONSTRUIR EL MVP → LEE `plan/` PRIMERO
+
+**Hay una entrega comprometida: sábado 5 de septiembre de 2026**, con una cohorte real.
+
+La carpeta `plan/` tiene el sprint completo. Léela **antes** que el resto de este archivo:
+
+| Archivo | Qué |
+|---|---|
+| `plan/00_LEEME.md` | Qué entra y qué no en el MVP |
+| `plan/01_ESTADO.md` | ⚠️ El repositorio y la base de datos **divergieron** |
+| `plan/02_SPRINT.md` | Los 15 días, tarea por tarea |
+| `plan/03_DATOS.md` | Qué debe entregar la academia y cuándo |
+| `plan/04_CONFIGURACION.md` | Qué se cambia sin tocar código |
+
+⚠️ **Corrección a §5 de este archivo:** dice que las 16 migraciones están «YA APLICADAS».
+**No lo están en `zr-prod`.** Esa base va por la migración 033 y tiene tablas que el
+repositorio no conoce. Ver `plan/01_ESTADO.md` antes de escribir SQL.
+
+---
+
 ## 4. ORDEN DE TRABAJO — NO TE SALTES PASOS
 
 Ejecuta en este orden exacto. Cada paso depende del anterior.
@@ -109,33 +129,62 @@ ZR App/
 ├── COLABORACION.md              ← cómo trabajan juntos el equipo y tú
 │
 ├── spec/                        ← LA ESPECIFICACIÓN. Es la verdad.
+│   ├── 00_RECONCILIACION.md     ← ⭐ LÉELO PRIMERO. Manda sobre todo lo demás.
 │   ├── 01_SETUP.md              ← comandos exactos para preparar todo
 │   ├── 02_CONTRATOS.md          ← tipos de TypeScript y formas de datos
 │   ├── 03_EDGE_FUNCTIONS.md     ← cada función con su entrada y salida exactas
 │   ├── 04_PANTALLAS.md          ← cada ruta con sus campos y estados
 │   ├── 05_PRUEBAS.md            ← qué probar y cómo
-│   └── 06_IDENTIDAD_VISUAL.md   ← colores, tipografía, medidas, voz y tono
+│   ├── 06_IDENTIDAD_VISUAL.md   ← colores, tipografía, medidas, voz y tono
+│   └── 07_MDV_INTEGRACION.md    ← ⚠️ parcialmente superado por 00_
+│
+├── lib/                         ← código TypeScript ya escrito contra spec/02
+│   ├── auth-helpers.ts
+│   ├── types.ts
+│   └── validators.ts
 │
 ├── supabase/
-│   ├── migrations/              ← 13 archivos SQL. COPIAR TAL CUAL, NO EDITAR.
+│   ├── migrations/              ← 16 archivos SQL YA APLICADOS. NO EDITAR NINGUNO.
+│   ├── functions/validate-scan/ ← Edge Function de validación de QR
 │   └── seed/seed_dev.sql        ← datos de prueba
 │
-├── tareas/                      ← 6 archivos, uno por sprint, con tareas atómicas
+├── tareas/                      ← tareas atómicas por sprint
 │   ├── SPRINT_0.md … SPRINT_5.md
+│   └── SPRINT_MDV_0.md … SPRINT_MDV_3.md
 │
-└── docs/                        ← contexto de negocio. Léelo si dudas del "por qué".
-    ├── 00_CONTEXTO_MAESTRO_AGENTE.md      reglas de negocio de la academia
-    ├── 08_AUDITORIA_TECNICA_Y_VIABILIDAD.md
-    ├── 09_DECISIONES_ARQUITECTONICAS.md   por qué cada cosa es como es
-    ├── 10_ESQUEMA_BASE_DATOS_V2.md        el esquema explicado en prosa
-    ├── 11_PLAN_EJECUCION_FASE1.md         el cronograma
-    └── 13_DISENO_DE_PRODUCTO_ESTUDIANTE.md  qué gana el estudiante y por qué
+├── tests/rls/                   ← pruebas de aislamiento entre estudiantes
+│
+├── Metodologia/                 ← los 3 documentos pedagógicos originales del MDV
+│
+├── docs/                        ← contexto de negocio. Léelo si dudas del "por qué".
+│   ├── 00_CONTEXTO_MAESTRO_AGENTE.md      reglas de negocio de la academia
+│   ├── 07_REGISTRO_DE_CAMBIOS_Y_GAPS_ABIERTOS.md  qué sigue sin decidirse
+│   ├── 08_AUDITORIA_TECNICA_Y_VIABILIDAD.md
+│   ├── 09_DECISIONES_ARQUITECTONICAS.md   por qué cada cosa es como es
+│   ├── 10_ESQUEMA_BASE_DATOS_V2.md        el esquema explicado en prosa
+│   ├── 11_PLAN_EJECUCION_FASE1.md         el cronograma
+│   └── 13_DISENO_DE_PRODUCTO_ESTUDIANTE.md  qué gana el estudiante y por qué
+│
+└── _archivo/                    ← histórico. NO es fuente de verdad, no lo sigas.
+    ├── prototipos/              prototipos v1, v2 y estático
+    └── docs-superados/          docs de stack y esquema que ya no aplican
 ```
 
 **Jerarquía cuando dos archivos se contradicen:**
-`supabase/migrations/*.sql` gana sobre `spec/` gana sobre `docs/`.
-Los documentos `01_` y `04_` de `docs/` están **superados** — describen un stack (FlutterFlow) y
-un esquema que ya no se usan. No los sigas.
+
+1. **`spec/00_RECONCILIACION.md`** — manda sobre todo lo demás en los temas que trata
+   (modelo de calificación, ciclo semanal, compuertas, QR). Léelo **primero**.
+2. `supabase/migrations/*.sql`
+3. `spec/`
+4. `docs/`
+
+⚠️ **`spec/07_MDV_INTEGRACION.md` está parcialmente superado.** Su rúbrica de 100 puntos
+(aprobación 81) y su compuerta A bloqueante **no se implementan** — ver `spec/00`. Lo que sigue
+vigente de ese documento: la idea de ítems críticos que no promedian, la defensa técnica, y los
+niveles de IA.
+
+Los documentos superados de `docs/` (`01_`, `04_`, `contexto_zr_app`) se movieron a
+`_archivo/docs-superados/`. No los uses.
 
 ---
 
@@ -197,9 +246,11 @@ npm run verify
 
 Cosas que parecen decisiones libres pero no lo son:
 
-- **El profesor escanea al estudiante, nunca al revés.** Si lo haces al revés, un alumno
-  fotografía el QR y lo manda por WhatsApp a un compañero ausente. Además así solo un teléfono
-  necesita señal, y en los talleres la señal es mala.
+- **Administración muestra el QR; el estudiante lo escanea.** El código es de un solo uso:
+  al escanearlo muere y se genera uno nuevo al instante para el siguiente estudiante. Por eso
+  fotografiarlo y mandarlo por WhatsApp no sirve — cuando el ausente lo intente, ese código
+  ya está quemado. El profesor no maneja ningún código: en su pantalla solo ve el conteo de
+  asistentes en vivo. Implementado en `supabase/migrations/016_qr_control.sql`.
 - **El escaneo debe funcionar sin internet.** Se guarda en el teléfono y se sincroniza después.
   La sincronización debe ser idempotente: mandar el mismo escaneo dos veces no crea dos
   asistencias.
