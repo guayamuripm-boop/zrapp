@@ -90,8 +90,11 @@ Los cuatro pasos, con barra de progreso:
 **El caso no produce nota.** Al terminar no hay puntaje, hay una comparación.
 
 ### 2.5 `/duda`
-Un tema (lista desplegable) y un texto: *«¿Qué es lo que no te quedó claro? Escríbelo como
-pregunta.»*
+**Solo texto libre.** Sin lista de temas.
+
+> *«¿Qué es lo que no te quedó claro? Escríbelo como pregunta.»*
+
+Dos puertas de entrada: al terminar un caso, y desde el inicio en cualquier momento.
 
 **No es anónima** — el profesor necesita saber a quién volver. Distinto del feedback de la
 clase, que sí lo es y que **no entra en Fase 0**.
@@ -145,11 +148,22 @@ Subir un PDF, ponerle título y asignarlo al módulo. Nada más.
 ### 4.1 `/hoy`
 Asistentes en vivo, con el contador subiendo solo.
 
-### 4.2 `/dudas` — el resumen
-**Las dudas agrupadas por tema, ordenadas por frecuencia.** Es el guion de la clínica del
-sábado: *«7 preguntaron por el orden de desconexión de bornes»*.
+### 4.2 `/dudas` — las tres preguntas
+No es una lista agrupada por tema. **La IA lee todas las dudas de la semana y redacta TRES
+preguntas que cubran lo que más se repitió.**
 
-Puede abrir un tema y leer las preguntas tal cual las escribieron.
+> *«De 31 dudas de esta semana, estas tres cubren la mayoría:»*
+> 1. ¿En qué orden se revisa un sistema antes de desmontar algo?
+> 2. ¿Cómo se sabe si un síntoma depende de la temperatura o del uso?
+> 3. ¿Qué se le pregunta a un cliente antes de tocar el vehículo?
+
+**Es el guion de la clínica del sábado.** El profesor responde tres cosas y cubre a casi todo
+el grupo, en vez de leer 31 preguntas sueltas.
+
+Debajo, **las dudas en crudo**, por si quiere leerlas tal cual las escribieron.
+
+> ⚠️ **Al modelo se le mandan solo los textos de las preguntas.** Nunca el nombre, la cédula ni
+> nada que identifique a quien preguntó — `metodologia/01_MODELO.md` §5.1. Son menores de edad.
 
 ### 4.3 `/casos`
 Solo el número: *«14 de 24 trabajaron el caso del martes»*. **Sin nombres** — decisión de §4.2
@@ -180,7 +194,43 @@ de `00_LEEME.md`.
 
 ---
 
-## 6. PLAN B DEL DÍA
+## 6. EL 5 DE SEPTIEMBRE SON ESTUDIANTES **NUEVOS**
+
+Dato confirmado el 24 de agosto: la cohorte del piloto **no es la que asiste el 29**. Son
+estudiantes nuevos, y el 5 de septiembre es su primer día en la academia.
+
+**Nadie va a llegar con la app instalada.** Nadie sabe qué es. Y ese día también hay que
+darles su cuenta.
+
+### 6.1 Por eso la coreografía se invierte
+
+| Lo que decía el plan original | Lo que se hace ahora |
+|---|---|
+| Llegan con la app instalada y escanean al entrar | **Registro manual al entrar.** Es la vía principal |
+| El QR es el registro | **El QR es una demostración**, después de instalar |
+| La instalación fue durante la semana | La instalación ocurre en clase, guiada |
+
+**El registro manual deja de ser el plan B y pasa a ser el plan A del primer día.** Eso no
+rompe el criterio de éxito: sigue sin haber papel, y queda registrado quién lo hizo y por qué.
+
+> Si el registro manual no está terminado, el 5 de septiembre **no se puede operar**. Sube de
+> «hace posible el criterio» a **imprescindible**.
+
+### 6.2 Lo que hay que preparar
+
+- [ ] **Las claves temporales impresas y recortadas**, una por estudiante, listas para repartir
+- [ ] Alguien que ayude a instalar, distinto de quien opera el registro
+- [ ] Un cartel con el enlace de la app, grande, para no dictarlo 24 veces
+- [ ] Contar con que la señal del taller va a sufrir con 24 teléfonos descargando a la vez
+
+### 6.3 A partir del lunes 7 ya es normal
+
+Con la app instalada y la cuenta activa, la semana del 7 al 11 funciona como está diseñada: el
+caso del día, el material y las dudas. **El sábado 12 sí se puede escanear al entrar.**
+
+---
+
+## 7. PLAN B DEL DÍA
 
 | Si falla | Qué se hace |
 |---|---|
@@ -189,16 +239,18 @@ de `00_LEEME.md`.
 | Se cae internet en el taller | Administración anota en su teléfono y carga al recuperar señal. **Sigue sin ser papel** |
 | Se cae Supabase completo | Lista impresa. **Es el único caso donde se acepta papel** |
 | No hay casos cargados | La clase sigue normal. Los casos empiezan el lunes 7 |
+| No se puede instalar la app en el taller | Se reparten las claves y se les pide instalarla en casa. La semana del 7 empieza igual |
 
 ---
 
-## 7. LISTA DE VERIFICACIÓN DEL VIERNES 4
+## 8. LISTA DE VERIFICACIÓN DEL VIERNES 4
 
 Si algo no se cumple, se avisa ese día. **No el sábado.**
 
 - [ ] Los estudiantes están cargados y pueden entrar
 - [ ] Al menos 20 de 24 tienen la app instalada
-- [ ] Administración mostró el QR y registró a alguien a mano **al menos una vez**
+- [ ] Administración mostró el QR y **registró a mano al menos a cinco personas seguidas**
+- [ ] Las claves temporales están impresas y recortadas
 - [ ] Tres teléfonos distintos escanearon correctamente **en el taller**
 - [ ] El estudiante A no puede ver nada del estudiante B
 - [ ] Hay al menos un caso cargado y alguien lo completó de punta a punta

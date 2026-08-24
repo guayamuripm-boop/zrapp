@@ -171,7 +171,9 @@ ZR App/
 │   ├── 00_LEEME.md              ← qué entra y qué no
 │   ├── 01_ENTREGABLE.md         ← pantalla por pantalla · qué se recorta si se atrasa
 │   ├── 02_PLAN.md               ← los 12 días, con fechas reales
-│   └── 03_CASOS.md              ← el banco de casos y la regla de seguridad del contenido
+│   ├── 03_CASOS.md              ← el banco de casos y la regla de seguridad del contenido
+│   ├── 04_ARQUITECTURA.md       ← carpetas, tablas, Edge Functions, entorno
+│   └── 05_QUE_NECESITO.md       ← los bloqueantes: accesos, contenido, decisiones
 │
 ├── plan/                        ← el sprint anterior y el alcance de Fase 1
 │   ├── 00_LEEME.md … 06_ENTREGABLE.md

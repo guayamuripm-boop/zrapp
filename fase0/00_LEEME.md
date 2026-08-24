@@ -44,12 +44,12 @@ Se decidió aun sabiéndolo. Lo que se hace para protegerlo está en §4 y en `0
 | 2 | Carnet digital | Estudiante |
 | 3 | **Material del módulo** — presentaciones y guías en PDF | Estudiante |
 | 4 | **El caso del día** — uno distinto de lunes a viernes | Estudiante |
-| 5 | **Mandar una duda** | Estudiante |
+| 5 | **Mandar una duda** — texto libre, al terminar un caso o cuando quiera | Estudiante |
 | 6 | **Mi módulo** — qué competencias se adquieren en él | Estudiante |
 | 7 | **Escanear el QR** — asistencia y refrigerio en el mismo evento | Estudiante |
 | 8 | **Mostrar el QR** y **registro manual** | Administración |
 | 9 | **Subir material** | Administración |
-| 10 | Asistentes en vivo · **resumen de dudas por tema** · cuántos trabajaron el caso | Profesor |
+| 10 | Asistentes en vivo · **las 3 preguntas que resumen las dudas** · cuántos trabajaron el caso | Profesor |
 
 ### 3.2 No entra
 
@@ -128,6 +128,9 @@ Es una pantalla de solo lectura que se carga con el módulo.
 | Los casos revisados y aprobados | Profesor + dirección | **Miércoles 2 de septiembre** | Se publican menos días de casos |
 | La cohorte: cédulas y fechas de nacimiento | Administración | Jueves 3 de septiembre | No hay con quién probar |
 
+> ⚠️ **La cohorte del piloto son estudiantes NUEVOS**, y el 29 de agosto no hay ensayo con
+> clase real. Eso cambia la coreografía del 5 de septiembre — ver `01_ENTREGABLE.md` §6.
+
 > ⚠️ **La presentación del módulo es lo primero y lo más urgente.** De ella salen las
 > competencias y los cinco casos. Sin ella, el 24 de agosto, no arranca la producción de
 > contenido y Fase 0 se cae a un piloto de asistencia.
@@ -141,6 +144,8 @@ Es una pantalla de solo lectura que se carga con el módulo.
 | `01_ENTREGABLE.md` | Pantalla por pantalla, criterio de éxito, y **qué se recorta si se atrasa** |
 | `02_PLAN.md` | Los 12 días, con las fechas reales verificadas contra el calendario |
 | `03_CASOS.md` | Cómo se escriben los casos. **La regla de seguridad del contenido** |
+| `04_ARQUITECTURA.md` | La estructura técnica completa: carpetas, tablas, funciones, entorno |
+| `05_QUE_NECESITO.md` | **Los bloqueantes.** Accesos, contenido y decisiones pendientes |
 
 Lo que no cambia sigue mandando: `spec/00_RECONCILIACION.md` para las reglas,
 `ZR_APP_PROTOTIPO_v10.html` para cómo se ve cada pantalla, `INGENIERIA.md` para el proceso.

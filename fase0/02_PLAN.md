@@ -10,7 +10,7 @@
 
 > **Se construye en un orden donde siempre hay algo que funciona.**
 
-La asistencia va primero, completa, y se prueba con una clase real **el sábado 29**. Si a
+La asistencia va primero, completa, y se exprime en el simulacro del **sábado 29**. Si a
 partir de ahí todo sale mal, lo que queda en pie es un piloto que cumple el criterio binario.
 El contenido se construye encima, en la segunda semana.
 
@@ -24,10 +24,14 @@ que saberlo el primer día, no el día 10.**
 
 | | L | M | X | J | V | **S** | D |
 |---|---|---|---|---|---|---|---|
-| **Ago** | **24** hoy | 25 | 26 | 27 | 28 | **29 ENSAYO** | 30 |
+| **Ago** | **24** hoy | 25 | 26 | 27 | 28 | **29 SIMULACRO** | 30 |
 | **Ago/Sep** | 31 | 1 | 2 | 3 | 4 | **5 PILOTO** | 6 |
 
-**Dos sábados.** El 29 es el ensayo con clase real; el 5 es el piloto.
+**Dos sábados.** El 29 es un **simulacro técnico sin estudiantes** — la clase de ese día es
+otra cohorte. El 5 es el piloto, **con estudiantes nuevos que ese día conocen la academia**.
+
+> ⚠️ Eso significa que **el 5 de septiembre es el primer contacto de la app con estudiantes
+> reales**. No hay ensayo previo con gente. Ver §Sábado 29 y `01_ENTREGABLE.md` §6.
 
 ---
 
@@ -115,7 +119,7 @@ Las cinco de `spec/00` §6.1. En Fase 0 hacen falta menos, pero se crean todas p
 
 ---
 
-## 🟡 Viernes 28 — Congelar para el ensayo
+## 🟡 Viernes 28 — Congelar para el simulacro
 
 - [ ] Cargar una cohorte de prueba con cédulas reales
 - [ ] Recorrido completo: estudiante, administración, profesor
@@ -123,19 +127,34 @@ Las cinco de `spec/00` §6.1. En Fase 0 hacen falta menos, pero se crean todas p
 
 ---
 
-## 🎯 Sábado 29 — ENSAYO CON CLASE REAL
+## 🎯 Sábado 29 — SIMULACRO TÉCNICO, SIN ESTUDIANTES
 
-**La fecha más importante del plan.** Solo asistencia.
+**No hay clase real.** La cohorte del 29 es otra, y el piloto será con estudiantes **nuevos**.
 
-- [ ] Los estudiantes escanean con sus propios teléfonos
-- [ ] Administración registra a mano a quien le falle
-- [ ] **Anotar todo lo que falle. No arreglar nada en el momento**
-- [ ] Preguntarle a 5 estudiantes qué no entendieron
+Eso cambia lo que este día puede darnos: ya no valida el comportamiento de 24 personas
+desconocidas, solo que la máquina funciona. **Hay que exprimirlo al máximo.**
+
+- [ ] **Reunir todos los teléfonos que se puedan** — equipo, familia, quien preste el suyo.
+      Mínimo 6, con al menos dos de gama baja y dos marcas distintas
+- [ ] **En el taller**, con su luz y su señal reales. No en la oficina
+- [ ] Recorrer la fila completa: mostrar el QR · escanear uno tras otro · ver subir el contador
+- [ ] Probar los tres resultados a propósito: correcto · repetido · código ya usado
+- [ ] **Registro manual cronometrado**: ¿de verdad son menos de 20 segundos?
+- [ ] Alguien que **no haya visto la app** intenta usarla sin que nadie le explique
+- [ ] **Anotar todo. No arreglar nada en el momento**
 
 **Terminado cuando:** hay una lista escrita de fallos y quedan 6 días para arreglarlos.
 
-> El ensayo sirve también para que **el profesor y administración usen la app antes del día**.
-> Nadie debería estar aprendiendo su pantalla el 5 de septiembre.
+> ⚠️ **Este día es también cuando el profesor y administración aprenden su pantalla.**
+> Nadie debería estar aprendiéndola el 5 de septiembre.
+
+### El riesgo que este cambio deja abierto
+
+El 5 de septiembre pasa a ser **el primer contacto de la app con estudiantes reales**, y encima
+con estudiantes **nuevos** que ese día conocen la academia. No van a llegar con la app
+instalada ni sabiendo qué es.
+
+**Mitigación:** ver `01_ENTREGABLE.md` §6.1 — la coreografía del día cambia.
 
 ---
 
@@ -183,11 +202,15 @@ Las cinco de `spec/00` §6.1. En Fase 0 hacen falta menos, pero se crean todas p
 ## 🟠 Miércoles 2 — Dudas
 
 ### F0-19 · El estudiante manda su duda
-- [ ] Tema y texto libre. No anónima
+- [ ] **Solo texto libre**, sin lista de temas
+- [ ] Dos puertas de entrada: al terminar un caso, y desde el inicio
 
-### F0-20 · El resumen del profesor
-- [ ] Agrupadas por tema, **ordenadas por frecuencia**
-- [ ] Puede abrir un tema y leerlas en crudo
+### F0-20 · Las tres preguntas del profesor
+- [ ] Edge Function `resumir-dudas` que llama a la API de Claude
+- [ ] Devuelve **3 preguntas** que cubren lo más repetido de la semana
+- [ ] **Solo se le mandan los textos al modelo** — nunca nombre ni cédula
+- [ ] Debajo, las dudas en crudo
+- [ ] **Salida manual:** si la función falla, el profesor ve las dudas en crudo y nada se rompe
 
 ### F0-21 · El conteo de casos
 - [ ] *«14 de 24 trabajaron el caso»*. **Sin nombres**
@@ -228,13 +251,16 @@ Las cinco de `spec/00` §6.1. En Fase 0 hacen falta menos, pero se crean todas p
 
 | Hora | Qué |
 |---|---|
-| **7:40 – 8:00** | Administración abre la sesión y muestra el QR. Cada estudiante escanea al entrar. A quien le falle el teléfono, registro manual |
+| **7:40 – 8:00** | Llegada. **Registro manual desde el primer minuto** — es la vía principal, no la de respaldo. Ver §6.1 de `01_ENTREGABLE.md` |
 | **8:00** | El profesor ve cuántos llegaron |
-| **Durante la clase** | Se le muestra al grupo la app: el material, el caso del lunes, cómo mandar una duda |
+| **~8:30** | Se presenta la app al grupo: se reparten las claves, se instala, se recorre |
+| **~9:00** | **Ahora sí, el QR.** Con la app ya instalada, cada uno escanea. Es una demostración, no el registro |
+| **Durante la clase** | Se les muestra el material, el caso del lunes y cómo mandar una duda |
 | **Al terminar** | Contar presentes contra filas en la tabla. **Anotar todo lo que falló** |
 
 - [ ] Alguien del equipo presente, con acceso a la base
 - [ ] Lista impresa de la cohorte, por si acaso
+- [ ] **Las claves temporales impresas y recortadas**, una por estudiante
 
 ---
 
@@ -245,6 +271,7 @@ Las cinco de `spec/00` §6.1. En Fase 0 hacen falta menos, pero se crean todas p
 | **La cámara no lee en el taller** | **Lunes 24** | Código de 6 dígitos en la pizarra |
 | Hallazgos de seguridad sin cerrar | Martes 25 | No se cargan datos reales hasta cerrarlos |
 | **No llega la presentación del módulo** | **Miércoles 26** | Se cae el contenido. Queda asistencia + material |
+| **Estudiantes nuevos sin la app el día 5** | Se sabe de antemano | Registro manual primero, instalación después. Ver `01_ENTREGABLE.md` §6.1 |
 | Falla algo en el ensayo | **Sábado 29** | Quedan 6 días |
 | Los casos no se revisan a tiempo | Miércoles 2 | Se publican menos días |
 | No se instala en gama media | Jueves 3 | Funciona igual desde el navegador |
