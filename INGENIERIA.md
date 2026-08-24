@@ -298,10 +298,30 @@ Auditado el 24 de agosto de 2026:
 | `main` está **4 commits atrás**. Todo el trabajo vive en ramas largas sin fusionar | `main` no representa el proyecto. Nadie puede clonarlo y entender dónde está |
 | Dos ramas apiladas (`reconciliacion-y-plan-mvp` → `organizacion-v10`), de semanas de vida | Contradice «vida corta». Son ramas de documentación, no de código, pero el efecto es el mismo |
 | **Sin tags.** Ninguna versión marcada | No hay forma de decir «esto es lo que había el día del piloto» |
-| **Sin CI.** Se añadió el 30 de julio y se eliminó el 11 de agosto | Las reglas de §4 y §5 dependen de que alguien se acuerde |
+| **Sin CI.** Se añadió el 30 de julio y se eliminó el 11 de agosto | Las reglas de §4 y §5 dependen de que alguien se acuerde. Ver §6.2.2 |
 
 La historia es **lineal** — no hay divergencia — así que las dos ramas se fusionan a `main`
 sin conflicto. Ver §6.4.
+
+### 6.2.2 Por qué el proyecto lleva un mes sin CI
+
+El commit del 11 de agosto se titula «Remover archivo workflow problemático». **El archivo no
+era problemático.** Al intentar restaurarlo el 24 de agosto, GitHub rechazó el push:
+
+```
+refusing to allow a Personal Access Token to create or update workflow
+`.github/workflows/ci.yml` without `workflow` scope
+```
+
+El token no tiene permiso para subir flujos de trabajo. Se borró el archivo para desatascar el
+push, y con él se fue la única red de seguridad automática del proyecto —
+la que impide que una tabla sin RLS o una clave de servicio filtrada lleguen a producción.
+
+**Estado:** el flujo está en `.github/ci-pendiente.yml`, con las instrucciones para activarlo
+en su cabecera. **Mientras no se active, las reglas de §4 y §5 se cumplen a mano.**
+
+> Es un buen ejemplo de por qué este documento insiste en verificar: un título de commit
+> asignó la culpa al archivo, y esa explicación sobrevivió un mes sin que nadie la comprobara.
 
 ### 6.3 Etiquetas
 

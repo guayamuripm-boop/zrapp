@@ -178,7 +178,7 @@ ZR App/
 │   ├── 02_MEDICION.md           ← los 8 indicadores y la línea base
 │   └── 03_PRODUCCION.md         ← cuánto cuesta montar una semana
 │
-├── .github/workflows/ci.yml     ← higiene siempre · verificación completa cuando haya app
+├── .github/ci-pendiente.yml     ← ⚠️ el CI, SIN activar. Instrucciones en su cabecera
 │
 ├── docs/                        ← contexto de negocio. Léelo si dudas del "por qué".
 │   ├── 00_CONTEXTO_MAESTRO_AGENTE.md      reglas de negocio de la academia

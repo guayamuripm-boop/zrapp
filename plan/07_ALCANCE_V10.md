@@ -108,6 +108,7 @@ Está desglosado tarea por tarea en `02_SPRINT.md`. Aquí solo el mapa de qué t
 |---|---|---|
 | **T-00** | Crear el proyecto `zr-dev` | Infraestructura |
 | **T-00b** | Resolver la cuenta del CLI y quién más despliega a `zr-prod` | — |
+| **T-00c** | **Activar el CI** — mover `.github/ci-pendiente.yml` a `.github/workflows/`. Requiere permiso `workflow` en el token | `.github/` |
 | **T-03** | Volcar el esquema real de `zr-prod` al repositorio como `000_esquema_base.sql` | `supabase/migrations/` |
 | **T-03b** | Descargar las 13 Edge Functions desplegadas al repositorio | `supabase/functions/` |
 | **T-06** | Cerrar los 3 hallazgos `ERROR` y la política de `student_qr_secrets` | 3 vistas + 1 tabla |

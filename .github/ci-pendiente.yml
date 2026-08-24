@@ -1,0 +1,201 @@
+# =============================================================================
+# ZR APP · Integración continua
+# =============================================================================
+# Las pruebas de acceso cruzado (test:rls) BLOQUEAN la fusión. No es negociable:
+# verifican que un estudiante no puede leer los datos personales de otro, y la
+# base contiene datos de menores de edad (LOPNNA).
+#
+# ============================ CÓMO ACTIVARLO ================================
+# Este archivo NO está activo. Para activarlo hay que moverlo a
+# `.github/workflows/ci.yml`, y eso requiere un permiso que el token actual no
+# tiene. Dos caminos:
+#
+#   A) Desde la web de GitHub (30 segundos, sin tocar el token):
+#      Add file › Create new file › nombre `.github/workflows/ci.yml`
+#      › pegar este contenido › Commit.
+#
+#   B) Dando al token el permiso `workflow` en
+#      github.com/settings/tokens, y luego:
+#      git mv .github/ci-pendiente.yml .github/workflows/ci.yml
+#      git commit -m "Activar el flujo de integración continua" && git push
+#
+# Historia: se añadió el 30 de julio de 2026 y se eliminó el 11 de agosto en un
+# commit titulado «Remover archivo workflow problemático». Al intentar
+# publicarlo de nuevo el 24 de agosto, GitHub lo rechazó con este mensaje:
+#
+#   refusing to allow a Personal Access Token to create or update workflow
+#   `.github/workflows/ci.yml` without `workflow` scope
+#
+# Es decir: el archivo nunca fue «problemático». El token no tenía permiso para
+# subirlo, y se borró para desatascar el push. El CI del proyecto lleva desde
+# entonces sin existir por una razón de permisos, no de ingeniería.
+#
+# Referencia: INGENIERIA.md §4 y §5
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Decide si ya hay aplicación que verificar.
+  # ---------------------------------------------------------------------------
+  contexto:
+    name: ¿Existe ya la aplicación?
+    runs-on: ubuntu-latest
+    outputs:
+      hay_app: ${{ steps.check.outputs.hay_app }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ -f package.json ]; then
+            echo "hay_app=true" >> "$GITHUB_OUTPUT"
+            echo "Hay package.json: se corre la verificación completa."
+          else
+            echo "hay_app=false" >> "$GITHUB_OUTPUT"
+            echo "Todavía no hay aplicación Next.js. Se omite la verificación completa."
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Corre siempre, incluso sin aplicación. Barato y atrapa errores reales.
+  # ---------------------------------------------------------------------------
+  higiene:
+    name: Higiene del repositorio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # La clave de servicio da acceso total a la base saltándose RLS.
+      # Nunca puede estar en el repositorio, ni en un ejemplo.
+      - name: Ninguna clave de servicio comprometida
+        run: |
+          if grep -rInE "(service_role_key|SUPABASE_SERVICE_ROLE_KEY)\s*[:=]\s*['\"]ey" \
+               --exclude-dir=.git --exclude-dir=_archivo . ; then
+            echo "::error::Hay una clave de servicio escrita en el repositorio."
+            exit 1
+          fi
+          echo "Limpio."
+
+      # Las 001-016 están archivadas y no se aplican. La siguiente es la 034.
+      - name: Ninguna migración archivada de vuelta
+        run: |
+          if ls supabase/migrations/0[0-3][0-3]_*.sql 2>/dev/null; then
+            echo "::error::Hay migraciones 001-033 en supabase/migrations/."
+            echo "Las 001-016 están superadas y la base ya va por la 033."
+            echo "Ver supabase/migrations/LEEME.md"
+            exit 1
+          fi
+          echo "Limpio."
+
+      # Toda migración que crea una tabla tiene que habilitar RLS en el mismo
+      # archivo. Es la regla 1 de CLAUDE.md y la que más caro sale saltarse.
+      - name: Toda migración que crea tabla habilita RLS
+        run: |
+          fallo=0
+          for f in supabase/migrations/*.sql; do
+            [ -e "$f" ] || continue
+            if grep -qiE "create table" "$f" && ! grep -qiE "enable row level security" "$f"; then
+              echo "::error file=$f::Crea una tabla y no habilita RLS."
+              fallo=1
+            fi
+          done
+          exit $fallo
+
+      # Documentación rota = alguien construye a partir de un archivo que no está.
+      - name: Ningún enlace roto en la documentación
+        run: |
+          fallo=0
+          git config core.quotepath false
+          for f in $(git ls-files '*.md' | grep -v '^_archivo/'); do
+            for destino in $(grep -oE '\]\([^)#:]+\.(md|html)\)' "$f" | sed 's/](//;s/)//'); do
+              base=$(dirname "$f")
+              if [ ! -e "$base/$destino" ] && [ ! -e "$destino" ]; then
+                echo "::error file=$f::Enlace roto: $destino"
+                fallo=1
+              fi
+            done
+          done
+          exit $fallo
+
+  # ---------------------------------------------------------------------------
+  # La verificación de verdad. Solo cuando ya hay aplicación.
+  # ---------------------------------------------------------------------------
+  verificar:
+    name: Verificación completa
+    needs: contexto
+    if: needs.contexto.outputs.hay_app == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Preparar la CLI de Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Levantar Supabase local
+        run: supabase start
+
+      - name: Aplicar migraciones y datos de prueba desde cero
+        run: supabase db reset
+
+      # Si alguna tabla queda sin RLS, se detiene aquí y no llega a producción.
+      - name: Verificar que ninguna tabla quedó sin RLS
+        run: |
+          RESULTADO=$(psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -tAc \
+            "select count(*) from pg_tables where schemaname='public' and rowsecurity = false;")
+          echo "Tablas sin RLS: $RESULTADO"
+          if [ "$RESULTADO" != "0" ]; then
+            echo "::error::Hay tablas sin Row Level Security. No se puede fusionar."
+            psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -c \
+              "select tablename from pg_tables where schemaname='public' and rowsecurity = false;"
+            exit 1
+          fi
+
+      - name: Comprobación de tipos
+        run: npm run typecheck
+
+      - name: Linter
+        run: npm run lint
+
+      - name: Pruebas unitarias y de reglas de negocio
+        run: npm run test
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_LOCAL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_LOCAL }}
+
+      - name: 🔒 Pruebas de acceso cruzado (BLOQUEAN LA FUSIÓN)
+        run: npm run test:rls
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_LOCAL }}
+
+      # Última red de seguridad: que la clave de servicio no acabe en el paquete
+      # que descarga el navegador. Si eso pasa, cualquiera lee toda la base.
+      - name: Verificar que no se filtró la clave de servicio
+        run: |
+          npm run build
+          if grep -rn "service_role" .next/static/ 2>/dev/null; then
+            echo "::error::La clave service_role aparece en el paquete del navegador."
+            exit 1
+          fi
+          echo "Limpio: la clave de servicio no está expuesta."
