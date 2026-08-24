@@ -92,7 +92,7 @@ La carpeta `plan/` tiene el sprint completo. Léela **antes** que el resto de es
 | `plan/03_DATOS.md` | Qué debe entregar la academia y cuándo |
 | `plan/04_CONFIGURACION.md` | Qué se cambia sin tocar código |
 | `plan/05_DIAGNOSTICO.md` | El diagnóstico de entrada del primer día |
-| `plan/06_ENTREGABLE.md` | **Qué se entrega el 5 de septiembre. Manda sobre el alcance** |
+| `plan/06_ENTREGABLE.md` | ⚠️ Superado por `fase0/` — describía un piloto solo de asistencia |
 | `plan/07_ALCANCE_V10.md` | **El alcance completo derivado del prototipo v10, en tres niveles** |
 
 ⚠️ **El repositorio y la base de datos divergieron.** `zr-prod` va por la migración 033 y el
@@ -167,7 +167,13 @@ ZR App/
 │   ├── functions/validate-scan/ ← 1 de las 13 desplegadas. Faltan 12 por descargar
 │   └── seed/seed_dev.sql        ← datos de prueba
 │
-├── plan/                        ← ⭐ EL SPRINT VIGENTE. Empieza por aquí
+├── fase0/                       ← ⭐⭐ EL ENTREGABLE DEL 5 DE SEPTIEMBRE. Manda sobre el alcance
+│   ├── 00_LEEME.md              ← qué entra y qué no
+│   ├── 01_ENTREGABLE.md         ← pantalla por pantalla · qué se recorta si se atrasa
+│   ├── 02_PLAN.md               ← los 12 días, con fechas reales
+│   └── 03_CASOS.md              ← el banco de casos y la regla de seguridad del contenido
+│
+├── plan/                        ← el sprint anterior y el alcance de Fase 1
 │   ├── 00_LEEME.md … 06_ENTREGABLE.md
 │   └── 07_ALCANCE_V10.md        ← el producto completo, en tres niveles
 │
@@ -202,7 +208,7 @@ ZR App/
 1. **El estado real de `zr-prod`** — lo que existe de verdad. Consúltalo, no lo supongas.
 2. **`spec/00_RECONCILIACION.md`** — manda en los temas que trata (modelo de calificación,
    ciclo semanal, compuertas, QR). Léelo **primero** de los documentos.
-3. **`plan/06_ENTREGABLE.md`** — el alcance de la entrega vigente.
+3. **`fase0/00_LEEME.md`** — el alcance del 5 de septiembre. Supera a `plan/06`.
 4. **`ZR_APP_PROTOTIPO_v10.html`** — cómo se ve y se comporta cada pantalla.
 5. `spec/`
 6. `docs/`

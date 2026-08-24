@@ -3,8 +3,9 @@
 > completo: 12 vistas, 31 paneles, 182 funciones, 4.404 líneas.
 >
 > **Este documento dice QUÉ se construye y en qué orden.**
-> `06_ENTREGABLE.md` sigue mandando sobre el alcance del **5 de septiembre**.
-> Este manda sobre todo lo que viene después.
+> ⚠️ **`fase0/00_LEEME.md` manda sobre el alcance del 5 de septiembre** — dirección decidió el
+> 24 de agosto entregar Fase 0 completa, no solo asistencia.
+> Este documento manda sobre todo lo que viene después.
 
 ---
 

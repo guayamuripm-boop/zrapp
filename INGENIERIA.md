@@ -483,7 +483,7 @@ En este orden exacto:
 |---|---|---|
 | 1 | **El estado real de `zr-prod`** | Qué existe de verdad |
 | 2 | **`spec/00_RECONCILIACION.md`** | Calificación, ciclo semanal, compuertas, QR |
-| 3 | **`plan/06_ENTREGABLE.md`** | El alcance de la entrega vigente |
+| 3 | **`fase0/00_LEEME.md`** | El alcance del 5 de septiembre (supera a `plan/06`) |
 | 4 | **`ZR_APP_PROTOTIPO_v10.html`** | Cómo se ve y se comporta cada pantalla |
 | 5 | **`spec/`** | El resto del contrato técnico |
 | 6 | **`docs/`** | El porqué de las decisiones |

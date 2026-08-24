@@ -4,6 +4,17 @@
 
 ---
 
+> ## ⚠️ SUPERADO POR `fase0/` — 24 DE AGOSTO DE 2026
+>
+> Dirección decidió entregar **Fase 0** el 5 de septiembre: material, caso diario, dudas,
+> competencias del módulo **y** la asistencia. Este documento describía un piloto **solo de
+> asistencia**.
+>
+> **El alcance del 5 de septiembre lo manda ahora `fase0/00_LEEME.md`.**
+> Lo que sigue vigente de aquí es el criterio binario de éxito, el plan B y la coreografía del
+> día, todo recogido en `fase0/01_ENTREGABLE.md`.
+
+
 ## 1. QUÉ ES, EN UNA FRASE
 
 > Una aplicación instalable que la cohorte del piloto usa en su primera clase, con la que
