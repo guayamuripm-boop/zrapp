@@ -77,12 +77,24 @@ arreglarla, no explicárselo de palabra.
 - [ ] `git clone` del repositorio.
 - [ ] Leer `AGENTS.md` completo. **Es obligatorio, no opcional.**
 - [ ] Leer `docs/08_AUDITORIA_TECNICA_Y_VIABILIDAD.md` §0 y §6 (por qué el proyecto es así).
+- [ ] Leer `INGENIERIA.md` completo — **es el proceso**.
+- [ ] Abrir `ZR_APP_PROTOTIPO_v10.html` en el navegador y recorrer los cuatro roles
+      (las cédulas de prueba están en `spec/04` §0.3).
+- [ ] Leer `plan/07_ALCANCE_V10.md` — qué se construye y en qué orden.
 - [ ] Seguir `spec/01_SETUP.md` de principio a fin.
-- [ ] Correr `supabase db reset` y ver 13 módulos, 12 estudiantes, 4 menores.
-- [ ] Correr `npm run test:rls` y ver las 13 pruebas en verde.
 - [ ] Instalar Claude Code y abrirlo en la carpeta del proyecto.
-- [ ] Entrar al tablero de Trello.
 - [ ] Guardar las claves desde el gestor de contraseñas.
+
+> ⚠️ **Tres pasos de esta lista no se pueden completar todavía**, y no es culpa de quien entra:
+>
+> | Paso | Por qué |
+> |---|---|
+> | `supabase db reset` con sus conteos | `supabase/migrations/` está vacía hasta que se vuelque el esquema de `zr-prod` (T-03) |
+> | `npm run test:rls` | No hay `package.json`: la aplicación Next.js no existe todavía (T-07) |
+> | Entrar al tablero de Trello | El tablero se archivó. La planificación vive en `plan/` |
+>
+> **Se vuelven obligatorios en cuanto T-03 y T-07 estén hechas.** Hasta entonces, quien entra
+> se pone al día leyendo y recorriendo el prototipo.
 
 **Si termina la lista, está listo para tomar tareas.** Si algo falló, se corrige la
 documentación en ese momento: la próxima persona no debería tropezar con lo mismo.
@@ -91,13 +103,14 @@ documentación en ese momento: la próxima persona no debería tropezar con lo m
 
 ## 4. CÓMO SE REPARTE EL TRABAJO
 
-Las tareas ya vienen numeradas y con dueño sugerido en `tareas/SPRINT_*.md`.
+Las tareas vienen numeradas y con criterio de terminado en **`plan/02_SPRINT.md`** (el sprint
+vigente) y **`plan/07_ALCANCE_V10.md`** (todo lo que viene después, por épicos).
 
 | Prefijo | Quién la toma | Ejemplos |
 |---|---|---|
-| Base de datos, Edge Functions, RLS, CI, despliegue | **Técnico backend (T1)** | T-003, T-106, T-203, T-307 |
-| Pantallas, componentes, PWA, cámara, cola sin conexión | **Técnico frontend (T2)** | T-103, T-205, T-306, T-401 |
-| Decisiones, datos reales, coordinación con la academia | **Tú (DP)** | T-501, T-506, T-507 |
+| Base de datos, Edge Functions, RLS, CI, despliegue | **Técnico backend (T1)** | T-03, T-04, T-05, T-06 |
+| Pantallas, componentes, PWA, cámara | **Técnico frontend (T2)** | T-08, T-09, T-10, T-11, T-12 |
+| Decisiones, datos reales, coordinación con la academia | **Tú (DP)** | T-02, T-17, T-19, T-19b |
 
 **Trabajen en paralelo, no en fila.** Backend y frontend de un mismo sprint casi nunca chocan:
 el contrato entre los dos ya está escrito en `spec/02_CONTRATOS.md` y
@@ -109,28 +122,31 @@ para que nadie tenga que esperar a que el otro termine.
 ## 5. EL CICLO DE UNA TAREA
 
 ```
-Trello: mover a "En progreso"
+Marcar la tarea como empezada en plan/02_SPRINT.md
    ↓
-git checkout -b tarea/T-205-pantalla-escaneo
+git checkout -b T-10-pantalla-escaneo
    ↓
 Trabajar (con Claude Code o a mano)
    ↓
 npm run verify          ← si falla, no sigas
    ↓
-git push + abrir Pull Request
+Probar en un teléfono real  ← esto no se salta nunca
    ↓
-Trello: mover a "En revisión"
+git push + abrir Pull Request
    ↓
 El otro revisa y aprueba
    ↓
 Merge a main → se despliega solo
    ↓
-Trello: "Hecho" (o "Probado en sábado real" si aplica)
+Marcar [x] en plan/02_SPRINT.md
 ```
+
+> El detalle completo del ciclo, con la disciplina de migraciones y la definición de
+> terminado, está en **`INGENIERIA.md`** §2 y §9.
 
 ### Nombres de rama
 ```
-tarea/T-205-pantalla-escaneo
+T-10-pantalla-escaneo
 fix/T-203-ventana-totp
 ```
 
@@ -187,7 +203,7 @@ coincide con lo que espera el frontend.
 ### Al empezar cada sesión conmigo
 Basta con esto:
 ```
-Lee AGENTS.md y tareas/SPRINT_2.md. Vamos a hacer T-205.
+Lee AGENTS.md e INGENIERIA.md. Vamos a hacer T-10 de plan/02_SPRINT.md.
 ```
 Yo cargo el contexto que necesito. No hace falta pegarme documentos.
 
@@ -227,7 +243,8 @@ reunión del lunes. Con cinco semanas de plazo, un bloqueo de tres días es el 8
 3. **Nadie edita una migración ya aplicada.** Se crea una nueva.
 4. **Nadie crea una tabla sin RLS y sin su prueba de acceso cruzado.**
 5. **Nadie comparte claves por chat.**
-6. **Nadie agrega una función que no esté en `tareas/`.** Va al backlog de Fase 1.5.
+6. **Nadie agrega una función que no esté en `plan/`.** Va al backlog del nivel siguiente
+   (`plan/07_ALCANCE_V10.md`).
 7. **Si las pruebas de RLS fallan, no se publica.** No hay excepción y no hay urgencia que la
    justifique: es una fuga de datos de menores de edad.
 
@@ -246,12 +263,13 @@ reunión del lunes. Con cinco semanas de plazo, un bloqueo de tres días es el 8
 
 ---
 
-## 10. LOS TRES DOCUMENTOS QUE IMPORTAN
+## 10. LOS DOCUMENTOS QUE IMPORTAN
 
-Si alguien solo va a leer tres cosas:
+Si alguien solo va a leer cuatro cosas:
 
 1. **`AGENTS.md`** — las 10 reglas absolutas y el orden de trabajo.
-2. **`tareas/SPRINT_<n>.md`** — qué toca ahora, con criterio de verificación.
-3. **`spec/`** — la respuesta a cualquier "¿y esto cómo va?".
+2. **`INGENIERIA.md`** — cómo se construye, se prueba y se despliega.
+3. **`plan/02_SPRINT.md`** — qué toca ahora, con criterio de verificación.
+4. **`ZR_APP_PROTOTIPO_v10.html`** — cómo se ve y se comporta cada pantalla.
 
 Todo lo demás es contexto: útil para entender el porqué, innecesario para el día a día.

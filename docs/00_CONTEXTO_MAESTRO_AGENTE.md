@@ -207,7 +207,8 @@ Ver detalle de la pregunta en `02_MODULO_FINANCIAMIENTO.md` sección 9 y en
    (append-only log), nunca solo un campo de balance mutable.
 4. Todo módulo con contenido generado por usuarios requiere cola de moderación antes de
    publicación pública, dado el público menor de edad.
-5. Preferencia por backend-as-a-service (Supabase) + frontend low-code (FlutterFlow) en fases
+5. ⚠️ *(Superado — el frontend es Next.js, no FlutterFlow. Ver `docs/08` §y `CLAUDE.md` §3.)*
+   Preferencia por backend-as-a-service (Supabase) + frontend low-code (FlutterFlow) en fases
    1 y 2 para velocidad; ver `01_STACK_TECNICO_LOWCODE.md` para justificación completa.
 
 

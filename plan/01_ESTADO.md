@@ -20,8 +20,8 @@ repositorio no lo refleja.
 > Desde el 23 de agosto de 2026 las migraciones 001-016 están en
 > `_archivo/migraciones-superadas/`. **La siguiente migración del proyecto es la 034.**
 
-⚠️ **`CLAUDE.md` dice que las 16 migraciones están "YA APLICADAS". No lo están** — al menos
-no en `zr-prod`. Están escritas.
+~~⚠️ **`CLAUDE.md` dice que las 16 migraciones están "YA APLICADAS". No lo están.**~~
+✅ **Corregido el 23 de agosto de 2026** en `CLAUDE.md`, `AGENTS.md` y `spec/00` §6.
 
 ---
 

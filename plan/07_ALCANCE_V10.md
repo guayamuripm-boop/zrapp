@@ -126,7 +126,8 @@ Está desglosado tarea por tarea en `02_SPRINT.md`. Aquí solo el mapa de qué t
 | Tarea | Qué | Toca |
 |---|---|---|
 | **T-01** | **Probar la cámara en el taller, con 3 teléfonos.** Riesgo máximo | — |
-| **T-04** | Migración: `qr_codes` de un solo uso. Retirar el modelo rotativo | `qr_codes`, `system_config` |
+| **T-04** | Migración: `qr_codes` de un solo uso. Retirar `attendance.qr_window_seconds` y `qr_drift_tolerance` | `qr_codes`, `system_config` |
+| **T-04b** | Migración: crear las 5 claves de `system_config` que faltan y el prototipo ya usa — `spec/00` §6.1 | `system_config` |
 | **T-09** | Administración muestra el QR. Muere al usarse, aparece otro | Edge `provision-qr` |
 | **T-10** | El estudiante escanea. Asistencia **y** refrigerio en el mismo evento | Edge `validate-scan`, `claim-snack`, `attendance_events` |
 | **T-10b** | **Registro manual con motivo.** Sin esto el criterio es imposible | `attendance_events` |
@@ -270,6 +271,7 @@ Contra las 29 tablas de `zr-prod`.
 | Tabla | Para | Nivel |
 |---|---|---|
 | `qr_codes` | El código de un solo uso | **N1** |
+| *(no es tabla)* `system_config` | **Faltan 5 claves y sobran 2** — `spec/00` §6.1 | **N1** |
 | `entry_diagnostics` | El diagnóstico de entrada | **N1** |
 | `performance_evaluations` | La evaluación del sábado | N2 |
 | `rubric_templates`, `rubric_criteria` | El checklist con ítems críticos | N2 |

@@ -1,6 +1,11 @@
 # FLUJOS DE USUARIO POR ROL — ZR APP
 > Documento complementario a `00_CONTEXTO_MAESTRO_AGENTE.md`. Mapea pantalla por pantalla y
 > estado por estado el recorrido de cada rol. Un agente de código debe usar este archivo para
+> ⚠️ **PARCIALMENTE SUPERADO.** Este documento deriva pantallas para FlutterFlow y Retool,
+> que **ya no se usan** — el stack es Next.js + Supabase (`CLAUDE.md` §3), y las pantallas
+> están especificadas en `spec/04_PANTALLAS.md` a partir del prototipo v10.
+> **Lo que sigue siendo válido son los flujos de usuario**, no las herramientas.
+>
 > derivar rutas/pantallas de FlutterFlow (estudiante) y vistas de Retool (profesor/admin), y
 > los diagramas Mermaid como referencia de máquina de estados al diseñar tablas y triggers.
 

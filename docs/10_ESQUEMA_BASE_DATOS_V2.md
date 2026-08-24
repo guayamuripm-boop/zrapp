@@ -483,6 +483,10 @@ asignadas · `todo` = todas las filas · `—` = sin acceso.
 
 | # | Archivo | Contenido |
 |---|---|---|
+> ⚠️ **Esta tabla es histórica.** Describe las migraciones 001-016 del repositorio, que
+> **nunca se aplicaron a `zr-prod`** y están archivadas en `_archivo/migraciones-superadas/`.
+> La base va por la **033** y la siguiente es la **034**. Ver `plan/01_ESTADO.md`.
+
 | 001 | `001_extensions_and_enums.sql` | `pgcrypto`, `pg_cron`; todos los tipos enumerados |
 | 002 | `002_identity.sql` | `profiles`, `students`, `teachers`, `admins`, disparador de sincronía con `auth.users`, función `age_years`, vista `v_students` |
 | 003 | `003_academic_structure.sql` | `programs`, `modules`, `cohorts`, `learning_guides`, `class_sessions` |

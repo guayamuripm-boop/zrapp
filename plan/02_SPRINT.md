@@ -4,6 +4,25 @@
 
 ---
 
+> ## ⚠️ ESTADO REAL AL 24 DE AGOSTO DE 2026
+>
+> **Este plan arrancaba el jueves 21. Hoy es lunes 24 y no se ha ejecutado ninguna tarea.**
+> Verificado contra `zr-prod`: última migración el **15 de agosto**, cero líneas de aplicación.
+>
+> | Tarea | Estado real |
+> |---|---|
+> | T-01 · Probar la cámara **[RIESGO MÁXIMO]** | ❌ Sin hacer |
+> | T-02 · Confirmar quién toca `zr-prod` | ❌ Sin hacer — **y hay indicios de otro repositorio** |
+> | T-03 · Volcar el esquema | ❌ Sin hacer |
+> | T-04 a T-06 · Migraciones y seguridad | ❌ Sin hacer |
+> | T-07 · Proyecto Next.js | ❌ Sin hacer |
+>
+> **Se perdieron los 3 días de colchón del plan.** Lo que sí se hizo en su lugar fue ordenar el
+> repositorio: `plan/07_ALCANCE_V10.md`, `INGENIERIA.md` y `metodologia/`.
+>
+> **Las fechas de abajo son las originales y ya no cuadran.** El orden de las tareas sigue
+> siendo válido; los días hay que recorrerlos. Ver §RESUMEN DE RIESGOS al final.
+
 ## CÓMO LEER ESTE PLAN
 
 - **Los días con 🔴 son irrecuperables.** Si se atrasan, se atrasa la entrega.
@@ -45,7 +64,7 @@ código numérico de 6 dígitos, NFC, o lista manual del profesor.
 - [ ] Exportar el esquema de `zr-prod`
 - [ ] Guardar como `supabase/migrations/000_esquema_base.sql`
 - [ ] Mover las migraciones 001 a 016 a `_archivo/migraciones-superadas/`
-- [ ] Corregir `CLAUDE.md`: ya no son 16 migraciones aplicadas
+- [x] Corregir `CLAUDE.md`: ya no son 16 migraciones aplicadas ✅ *hecho el 23 ago*
 
 **Terminado cuando:** el repositorio refleja lo que está vivo.
 

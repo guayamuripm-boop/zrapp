@@ -7,6 +7,16 @@
 
 ---
 
+> ⚠️ **Este documento describe 7 funciones. En `zr-prod` hay 13 desplegadas y activas**
+> (verificado el 23 de agosto de 2026). Las seis que **no** están especificadas aquí:
+>
+> `create-student` · `approve-professor` · `delete-account` · `request-rehabilitation` ·
+> `approve-rehabilitation` · `respond-rehabilitation`
+>
+> Hay que descargarlas, leerlas y especificarlas — o retirarlas si no corresponden al alcance
+> vigente. **Nueve de las trece tienen `verify_jwt: false`**, lo que hay que revisar una por
+> una. Tarea T-03b en `plan/07` §3.
+
 ## Plantilla común
 
 Todas las funciones empiezan igual. Copia esta base:

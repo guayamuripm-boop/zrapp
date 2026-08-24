@@ -355,7 +355,8 @@ como Guías de Aprendizaje físicas. El trabajo es transcribirlas, no inventarla
 
 **Administración muestra el QR en una pantalla. El estudiante lo escanea con su teléfono.**
 
-Flujo exacto (implementado en `supabase/migrations/016_qr_control.sql`):
+Flujo exacto (definido en `_archivo/migraciones-superadas/016_qr_control.sql`, que **no se
+aplica**: se reescribe como migración 034 con el modelo de un solo uso):
 
 1. Administración abre la sesión del día y muestra un QR grande en pantalla.
 2. El estudiante escanea con la cámara de su teléfono.
@@ -588,14 +589,67 @@ al mes. La frecuencia de uso es un criterio de agrupación tan válido como el t
 
 | # | Qué hay que hacer | Dónde | Estado |
 |---|---|---|---|
-| 1 | Migración **017**: umbrales a escala 0-20 (aprueba 10/12), retirar efecto vinculante de compuerta A, ítem crítico como alerta | `supabase/migrations/017_*.sql` | Pendiente de aprobación |
-| 2 | Añadir a `system_config`: `nota.aprueba_modulo_1 = 10`, `nota.aprueba_modulo_n = 12`, `nota.escala_max = 20`, `practica.peso_checklist = 0.7`, `practica.peso_defensa = 0.3` | migración 017 | Pendiente |
+| 1 | Migración **034**: umbrales a escala 0-20 (aprueba 10/12), retirar efecto vinculante de compuerta A, ítem crítico como alerta | `supabase/migrations/034_*.sql` | Pendiente de aprobación |
+| 2 | Alinear `system_config` — ver §6.1, verificado contra `zr-prod` el 24 de agosto | migración 034 | **Parcial** |
 | 3 | Corregir la regla del QR en `CLAUDE.md` y `AGENTS.md` | raíz | **Hecho** |
 | 4 | Marcar `spec/07_MDV_INTEGRACION.md` como parcialmente superado | `spec/07` | **Hecho** |
-| 5 | Corregir el prototipo: hoy usa 40/60 en vez de 50/50, y topa la nota por ítem crítico en vez de solo alertar | prototipo v10 | Pendiente |
+| 5 | Corregir el prototipo: 40/60 → 50/50, e ítem crítico como alerta y no como tope | prototipo v10 | ✅ **Hecho** — verificado el 24 ago: el v10 usa `peso_teoria: 0.50` e `item_critico_topa: false` |
 
-**Regla 6 del proyecto:** las migraciones 001-016 ya están aplicadas y **no se editan**.
-Todo ajuste va en la 017.
+> ⚠️ **CORRECCIÓN DEL 24 DE AGOSTO DE 2026.** Este documento afirmaba que las migraciones
+> 001-016 estaban aplicadas y que el ajuste iba en la 017. **Las dos cosas son falsas.**
+>
+> Las 001-016 **nunca llegaron a `zr-prod`**, que va por la **033**. Están archivadas en
+> `_archivo/migraciones-superadas/` y no se aplican. **La siguiente migración es la 034.**
+>
+> Lo que sí sigue vigente es la regla: una migración aplicada **no se edita**, se crea la
+> siguiente. Ver `INGENIERIA.md` §3 y `plan/01_ESTADO.md`.
+
+---
+
+## 6.1 `system_config` REAL — VERIFICADO EL 24 DE AGOSTO DE 2026
+
+Consultado directamente contra `zr-prod`. **No coincide con lo que este documento pedía.**
+
+### Lo que existe y está bien — solo con otro nombre
+
+| Clave en `zr-prod` | Valor | Equivale a |
+|---|---|---|
+| `module.passing_threshold_first` | **10** | `nota.aprueba_modulo_1` |
+| `module.passing_threshold_default` | **12** | `nota.aprueba_modulo_n` |
+| `exam.max_score` | **20** | `nota.escala_max` |
+| `exam.individual_passing_score` | 10 | — |
+| `module.participation_weight_min` | 0,05 | — |
+| `feedback.min_responses_to_show` | **3** | La regla de los 3 del profesor |
+| `feedback.micro_max_questions` | 3 | — |
+| `grading.sla_hours` | 72 | — |
+| `app.support_channel` | *texto* | — |
+
+> **Los valores son correctos.** Lo que cambia es el nombre de la clave. **Se usan los nombres
+> que ya están en la base** — renombrarlos rompería las 13 Edge Functions desplegadas. Este
+> documento se adapta a la base, no al revés.
+
+### Lo que FALTA y el prototipo v10 ya usa
+
+El prototipo tiene estos cinco valores escritos en su `CONFIG`. **Ninguno existe en
+`system_config`.** Sin ellos no se puede calcular una nota práctica ni una nota de módulo sin
+romper la regla 5 (ningún número de negocio en el código):
+
+| Clave que hay que crear | Valor | Para qué |
+|---|---|---|
+| `practica.peso_checklist` | 0,70 | La nota práctica |
+| `practica.peso_defensa` | 0,30 | La nota práctica |
+| `modulo.peso_teoria` | 0,50 | La nota del módulo |
+| `modulo.peso_practica` | 0,50 | La nota del módulo |
+| `nota.umbral_dominada` | 16 | El estado *dominada* del mapa de competencias |
+
+### Lo que SOBRA y hay que retirar
+
+| Clave | Valor | Por qué se retira |
+|---|---|---|
+| `attendance.qr_window_seconds` | 30 | Son del **QR rotativo**, descartado. El modelo es de |
+| `attendance.qr_drift_tolerance` | 1 | **un solo uso** — §5 de este documento |
+
+**Las tres cosas van en la migración 034.**
 
 ---
 

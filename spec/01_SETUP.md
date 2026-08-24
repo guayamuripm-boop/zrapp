@@ -74,11 +74,18 @@ supabase start
 
 Guarda lo que imprime: `API URL`, `anon key`, `service_role key`.
 
+> ⚠️ **Este paso todavía no funciona.** `supabase/migrations/` está vacía: las 001-016 se
+> archivaron porque nunca se aplicaron a `zr-prod`, que va por la 033.
+>
+> **Antes hay que volcar el esquema real** de `zr-prod` a `000_esquema_base.sql`
+> (`plan/07` §3, tarea T-03). Hasta entonces `db reset` deja la base vacía y los conteos de
+> abajo dan cero.
+
 ```bash
 supabase db reset
 ```
 
-Este comando borra la base local, aplica las 13 migraciones en orden y carga los datos de
+Este comando borra la base local, aplica las migraciones en orden y carga los datos de
 prueba. **Si falla, no sigas: el problema está en el SQL y hay que resolverlo antes.**
 
 ---
@@ -89,7 +96,11 @@ prueba. **Si falla, no sigas: el problema está en el SQL y hay que resolverlo a
 supabase db reset && psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -c "select count(*) as modulos from public.modules; select count(*) as estudiantes from public.students; select count(*) as menores from public.v_students where is_minor; select count(*) as bloqueados from public.v_students_blocked;"
 ```
 
-Resultado esperado: **13 módulos, 12 estudiantes, 4 menores, 2 bloqueados**.
+Resultado esperado **una vez exista `000_esquema_base.sql`**: 13 módulos, 12 estudiantes,
+4 menores, 2 bloqueados.
+
+> Los conteos salen de `supabase/seed/seed_dev.sql`. En `zr-prod` los números reales hoy son
+> distintos: 13 módulos, **0 estudiantes**, 0 profesores. Ver `plan/01_ESTADO.md` §3.
 
 Verifica que RLS está activa en todas las tablas:
 
