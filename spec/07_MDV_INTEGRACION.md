@@ -22,7 +22,7 @@
 ---
 
 > Este documento especifica cómo se integra la metodología MDV en ZR App.
-> Es el puente entre los documentos pedagógicos de `Metodologia/` y el código.
+> Es el puente entre los documentos pedagógicos del MDV (`_archivo/metodologia-lowcode/`, archivados: su parte técnica de Moodle no aplica) y el código.
 >
 > **Regla de oro:** las reglas de negocio MDV viven en la base de datos (triggers,
 > funciones, RLS) y en Edge Functions. El frontend solo pregunta y muestra.
@@ -173,7 +173,7 @@ lo degrada. El mejor intento manda. Repetir no castiga.
 
 **Implementación para el piloto:** el tutor IA es un enlace externo (`system_config.mdv.ia_tutor_url`).
 No se construye dentro de ZR App. Las instrucciones del tutor están en
-`Metodologia/MDV-implementacion-tecnica-lowcode.md` §6.2.
+`_archivo/metodologia-lowcode/MDV-implementacion-tecnica-lowcode.md` §6.2.
 
 ---
 
