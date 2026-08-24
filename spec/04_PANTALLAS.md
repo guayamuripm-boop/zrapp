@@ -1,463 +1,460 @@
 # 04 · PANTALLAS Y RUTAS
-> Cada ruta con sus campos exactos, sus estados y su comportamiento.
-> Construye en el orden de las tareas, no en el orden de este documento.
+> **Derivado de `ZR_APP_PROTOTIPO_v10.html`.** El prototipo es la especificación visual y de
+> comportamiento. Cuando este documento y el prototipo se contradigan, **manda el prototipo** y
+> se corrige este documento.
+>
+> Reescrito el 23 de agosto de 2026. La versión anterior se perdió por un daño de codificación
+> y describía un alcance más estrecho que el del prototipo. Está en
+> `_archivo/docs-superados/04_PANTALLAS_dañado.md`, solo como referencia histórica.
 
 ---
 
-## 0. REGLAS DE DISE�'O �?" APLICAN A TODA PANTALLA
+## 0. CÓMO SE USA ESTE DOCUMENTO
 
-La app se usa **de pie, en un taller, con las manos sucias o con guantes**. No es una app de
-escritorio adaptada a móvil.
+1. Abre el prototipo en el navegador y entra con la cédula del rol que vas a construir (§0.3).
+2. Busca la pantalla en este documento.
+3. Construye. Si algo no está descrito aquí, míralo en el prototipo. Si tampoco está ahí,
+   **pregunta** — no lo inventes.
 
-| Regla | Valor concreto |
+### 0.1 Reglas que aplican a toda pantalla
+
+| Regla | Valor |
 |---|---|
-| Ancho de referencia | 360 px. Diseña ahí primero |
-| Altura mínima de un botón | 56 px (`min-h-14`) |
-| Tamaño mínimo de texto | 16 px (`text-base`). Nunca menos |
-| Área táctil mínima | 48 �- 48 px |
-| Zona de acciones principales | Tercio inferior de la pantalla, alcanzable con el pulgar |
-| Contraste | Mínimo 4.5:1. Se usa a la luz del día, en un taller |
-| Texto por pantalla | Lo mínimo. Un icono grande vale más que un párrafo |
-| Estado de carga | Toda acción con red muestra un indicador. Nunca una pantalla congelada |
-| Estado de error | Siempre en español, siempre con qué hacer después |
-| Estado vacío | Siempre explica por qué está vacío y qué hacer |
+| Ancho de diseño | **360 px**. Si no funciona a 360, no está terminada |
+| Área táctil mínima | 48 × 48 px |
+| Tamaño de texto mínimo | 14 px (`spec/06` §5) |
+| Color | Solo tokens de `spec/06` §4. Ningún hex escrito en un componente |
+| Idioma | Español de Venezuela. Coma decimal (`16,5`), fechas `sáb 15 ago 2026` |
+| Números de negocio | Se leen de `system_config`. **Nunca escritos en el código** (regla 5) |
+| Estados obligatorios | Toda pantalla que carga datos define: cargando · vacío · error · con datos |
+| Navegación | Barra inferior de **5 botones** en los cuatro roles. Con etiqueta de texto, no solo ícono |
 
-**Paleta, tipografía y logo: ver `spec/06_IDENTIDAD_VISUAL.md`.** Son los oficiales del
-Manual de Identidad ZR Mecademy 2025 y no se modifican. Resumen para tenerlo a mano:
+### 0.2 Las cuatro barras inferiores
 
-| Uso | Color |
+Salen literales del prototipo. **Cinco botones, ni uno más.**
+
+| Rol | Botones |
 |---|---|
-| Barras y texto | `#21284F` azul noche |
-| Botón de acción principal | `#3869B1` azul de marca |
-| Fondos de tarjeta informativa | `#98BAE3` azul claro |
-| Fondo de página | `#F5F7FB` |
-| �?xito / Advertencia / Error | `#16A34A` · `#EAB308` · `#DC2626` *(capa funcional, solo estados)* |
+| Estudiante | Inicio · Semana · Material · Progreso · Perfil |
+| Profesor | Hoy · Estudio · Alumnos · Reportes · Perfil |
+| Administración | Inicio · Alumnos · Asistir · Consent. · Perfil |
+| Dirección | Inicio · Alumnos · Módulos · Grupos · Perfil |
 
-Tipografías: **Raleway** para títulos y cifras grandes, **Roboto** para todo lo demás.
+Las pantallas que no están en la barra (dudas, antes de la clase, salud, notas por módulo)
+son **hijas** de una pestaña: se llega a ellas desde su pestaña padre y el botón de esa
+pestaña se queda marcado como activo. En el prototipo esto es el mapa `parentTab`.
 
----
+### 0.3 Cédulas del prototipo para probar
 
-## 1. ESTRUCTURA DE RUTAS
+| Cédula | Rol |
+|---|---|
+| `V-30000001` | Estudiante (Luis Hernández — va aprobando) |
+| `V-30000003` | Estudiante (María Pérez — **en riesgo**, para ver los estados rojos) |
+| `V-10000003` | Profesor |
+| `V-10000005` | Administración |
+| `V-10000004` | Dirección |
+
+### 0.4 Estructura de rutas
 
 ```
 app/
-�"o�"?�"? layout.tsx                      raíz, fuentes, metadatos de la PWA
-�"o�"?�"? page.tsx                        redirige según el rol
-�"o�"?�"? login/page.tsx
-�"o�"?�"? registro/page.tsx
-�"o�"?�"? registro/consentimiento/page.tsx
-�"o�"?�"? recuperar/page.tsx
-�",
-�"o�"?�"? (estudiante)/
-�",   �"o�"?�"? layout.tsx                  navegación inferior de 4 botones
-�",   �"o�"?�"? carnet/page.tsx             pantalla de inicio
-�",   �"o�"?�"? clases/page.tsx
-�",   �"o�"?�"? examenes/page.tsx
-�",   �"o�"?�"? examenes/[examId]/page.tsx
-�",   �"o�"?�"? contenido/page.tsx
-�",   �"o�"?�"? contenido/[moduleId]/page.tsx
-�",   �"o�"?�"? notas/page.tsx
-�",   �""�"?�"? feedback/[sessionId]/page.tsx
-�",
-�"o�"?�"? (profesor)/
-�",   �"o�"?�"? layout.tsx                  navegación lateral
-�",   �"o�"?�"? hoy/page.tsx                pantalla de inicio del profesor
-�",   �"o�"?�"? escanear/[sessionId]/page.tsx
-�",   �"o�"?�"? sesiones/page.tsx
-�",   �"o�"?�"? examenes/page.tsx
-�",   �"o�"?�"? examenes/nuevo/page.tsx
-�",   �"o�"?�"? examenes/[examId]/editar/page.tsx
-�",   �"o�"?�"? calificar/page.tsx
-�",   �"o�"?�"? notas/[cohortId]/page.tsx
-�",   �""�"?�"? contenido/page.tsx
-�",
-�"o�"?�"? (admin)/
-�",   �"o�"?�"? layout.tsx
-�",   �"o�"?�"? panel/page.tsx
-�",   �"o�"?�"? estudiantes/page.tsx
-�",   �"o�"?�"? estudiantes/nuevo/page.tsx
-�",   �"o�"?�"? consentimientos/page.tsx
-�",   �"o�"?�"? cohortes/page.tsx
-�",   �"o�"?�"? reportes/page.tsx
-�",   �""�"?�"? configuracion/page.tsx      solo super_admin
-�",
-�""�"?�"? api/
-    �""�"?�"? auth/callback/route.ts
+  layout.tsx                          fuentes locales, metadatos de la PWA
+  page.tsx                            entrada — redirige según el rol
+  (publico)/
+    login/page.tsx
+    registro/page.tsx
+    registro/consentimiento/page.tsx
+  (estudiante)/
+    layout.tsx                        barra inferior de 5 botones
+    inicio/page.tsx
+    semana/page.tsx
+    material/page.tsx
+    material/[moduleId]/page.tsx
+    progreso/page.tsx
+    perfil/page.tsx
+    examen/[examId]/page.tsx          pantalla completa, sin barra
+    caso/[casoId]/page.tsx            pantalla completa, sin barra
+    escanear/page.tsx                 pantalla completa, sin barra
+  (profesor)/
+    layout.tsx
+    hoy/page.tsx
+    hoy/antes/page.tsx
+    hoy/dudas/page.tsx
+    estudio/page.tsx
+    estudio/semana/[n]/page.tsx
+    alumnos/page.tsx
+    alumnos/[studentId]/page.tsx
+    reportes/page.tsx
+    perfil/page.tsx
+    evaluar/[studentId]/page.tsx      pantalla completa, sin barra
+  (admin)/
+    layout.tsx
+    panel/page.tsx
+    alumnos/page.tsx
+    alumnos/[studentId]/page.tsx
+    asistencia/page.tsx
+    codigos/page.tsx
+    consentimientos/page.tsx
+    perfil/page.tsx
+    qr/page.tsx                       pantalla completa, sin barra
+  (direccion)/
+    layout.tsx
+    inicio/page.tsx
+    inicio/salud/page.tsx
+    inicio/feedback/page.tsx
+    alumnos/page.tsx
+    alumnos/notas/page.tsx
+    modulos/page.tsx
+    curriculo/page.tsx
+    curriculo/estudio/page.tsx
+    grupos/page.tsx
+    perfil/page.tsx
 ```
 
-**`middleware.ts` en la raíz** protege las rutas: si no hay sesión �?' `/login`. Si el rol no
-corresponde al grupo de rutas �?' redirige a la pantalla de inicio de su rol.
+**El middleware protege por grupo de ruta.** Sin sesión → `/login`. Con sesión pero en el
+grupo equivocado → a su propia pantalla de inicio. El rol se lee del servidor, **nunca de un
+parámetro ni de `localStorage`** (regla 9).
 
 ---
 
-## 2. PANTALLAS P�sBLICAS
+## 1. PANTALLAS PÚBLICAS
+
+### `/` — entrada
+Cuatro elementos: isotipo, «ZR Mecademy», «Inscribirme por primera vez», «Ya tengo cuenta ·
+Entrar». Aviso: *«Entras con el mismo usuario del sitio — no necesitas otra cuenta.»*
+
+> El botón **Aula Virtual** de `zrmecademy.com` apunta aquí. Ver `spec/00` §5.1.
 
 ### `/login`
-| Campo | Tipo | Validación |
-|---|---|---|
-| Cédula | texto | `V-12345678`, se convierte a mayúsculas sola |
-| Contraseña | contraseña | mínimo 8 caracteres |
+| Campo | Detalle |
+|---|---|
+| Prefijo | Botón que alterna `V-` / `E-`. Por defecto `V-` |
+| Cédula | Solo dígitos, mínimo 6 |
+| Contraseña | Mínimo 8 |
 
-Botón grande: **Entrar**. Enlace pequeño: *¿Olvidaste tu contraseña?* �?' `/recuperar`.
-Enlace: *¿Eres nuevo? Regístrate* �?' `/registro`.
+La cédula se convierte a un correo interno para autenticar contra Supabase. **Un solo mensaje
+de error para cualquier fallo:** *«Cédula o contraseña incorrecta»* — nunca *«esa cédula no
+existe»*, porque eso confirma qué cédulas están registradas.
 
-**Comportamiento:** convierte la cédula a correo con `cedulaAEmail()` y llama a
-`signInWithPassword`. Si falla, mensaje único: *"Cédula o contraseña incorrecta"* �?" nunca
-digas cuál de las dos falló.
+Al entrar redirige: estudiante → `/inicio` · profesor → `/hoy` · admin → `/panel` ·
+dirección → `/inicio`.
 
-Al entrar, redirige según el rol: estudiante �?' `/carnet`, profesor �?' `/hoy`,
-admin y super_admin �?' `/panel`.
+**Contraseña temporal:** si el perfil está marcado como temporal, redirige a cambio
+obligatorio antes de cualquier otra pantalla.
 
-### `/registro`
-Un solo formulario, sin pasos, para que un mayor de edad termine en menos de 60 segundos.
+### `/registro` — dos pasos
+**Paso 1:** código de inscripción (empieza con `ZR-`) · nombre completo · cédula · fecha de
+nacimiento · contraseña.
+**Paso 2:** correo · teléfono · sede · turno.
 
-| Campo | Tipo | Nota |
-|---|---|---|
-| Nombre completo | texto | |
-| Cédula | texto | formato `V-12345678` |
-| Fecha de nacimiento | fecha | **determina si hace falta consentimiento** |
-| Correo de contacto | correo | *"Si eres menor de 18, pon el correo de tu representante"* |
-| Teléfono | teléfono | opcional |
-| Contraseña | contraseña | |
-| Repetir contraseña | contraseña | debe coincidir |
-
-**Comportamiento:**
-1. Validar con `registroSchema`.
-2. `signUp` con el correo sintético y los metadatos.
-3. Insertar la fila en `students` con `birth_date`.
-4. **Si la edad calculada es menor de 18** �?' redirigir a `/registro/consentimiento`.
-5. Si no �?' llamar a `provision-qr` y redirigir a `/carnet`.
+> ⚠️ El registro propio **no entra en el MVP del 5 de septiembre**: las cuentas las carga
+> administración. El código por WhatsApp requiere integrar Odoo. Ver `plan/06` §5.
 
 ### `/registro/consentimiento`
-Pantalla obligatoria para 15-17 años. **No se puede saltar.**
+Si la edad calculada de la fecha de nacimiento es **menor de 18**, esta pantalla es
+obligatoria antes de crear la cuenta (LOPNNA). Datos del representante, parentesco, y subida
+del documento firmado. Queda `pendiente` hasta que administración lo verifica.
 
-Encabezado explicativo: *"Como eres menor de edad, la ley exige que tu representante legal
-autorice tu cuenta."*
+---
 
-| Campo | Tipo |
+## 2. ESTUDIANTE
+
+### `/inicio`
+La pantalla más importante de la app. Orden obligatorio (`spec/06` §10.3):
+**lo que viene → mi progreso → lo que tengo que hacer hoy.**
+
+**2.1 · Tira de la semana.** Seis botones, lunes a sábado, con su etiqueta:
+`Guía · Sintét. · Real · Dudas · Diag. · Eval.` Cada día tiene tres estados:
+`done` (ya pasó) · `today` (hoy) · `future` (con candado 🔒).
+
+Los días futuros **se pueden mirar pero no trabajar**: el botón de acción queda deshabilitado
+y aparece el aviso *«Esta actividad se abre el [día]»*. Es la compuerta semanal como
+**señal, no como bloqueo** (`spec/00` §3).
+
+**2.2 · Tarjeta del día.** Cambia según el día de la semana:
+
+| Día | Título | Acción |
+|---|---|---|
+| Lunes | Lee la guía de la semana | Abrir guía |
+| Martes | Practica con el caso sintético | Ver el caso → `/caso` |
+| Miércoles | Lee el caso real del taller | Leer caso → `/caso` |
+| Jueves | Manda tus dudas de la semana | Enviar mi duda (modal) |
+| Viernes | Diagnóstica corta del viernes | Hacer diagnóstica → `/examen` |
+| Sábado | ¡Nos vemos en el taller! | Marcar asistencia → `/escanear` |
+
+**2.3 · Dos indicadores.** Ambos llevan a `/progreso`:
+- *Competencias dominadas* — `N/total`
+- *Promedio del módulo* — sobre 20. **Si está por debajo del umbral de aprobación, el borde y
+  la cifra van en rojo.**
+
+**2.4 · Exámenes.** El examen del módulo aparece siempre mientras esté abierto, con la
+etiqueta *«Cuenta 50%»*. La diagnóstica **solo aparece el viernes**, etiquetada *«Opcional ·
+no cuenta para tu nota»*.
+
+**2.5 · Asistencia.** El botón «Marcar asistencia» **solo existe el sábado**. El resto de la
+semana no aparece — no sirve de nada.
+
+**2.6 · Banner de feedback.** Solo visible si dirección activó el feedback para ese programa
+y módulo (`spec/00` §7).
+
+### `/semana`
+Calendario mensual real (lunes primero, sábados resaltados, navegable por mes), tarjeta
+«Próximo sábado» con tema y hora, y la lista de los seis días con su estado
+(`Cursado` / `Hoy` / `Pendiente`).
+
+### `/material`
+Guías, presentaciones y PDF del módulo. Módulo actual y anteriores en pestañas. Cada apertura
+registra una vista en `content_views`.
+
+### `/progreso`
+**3.1 · Tarjeta de promedio.** Cifra grande sobre 20 y el mensaje explícito:
+*«Vas aprobando · se aprueba con 12»* o *«Por debajo de 12 · necesitas subir»*.
+Debajo: dominadas · en desarrollo · requieren refuerzo.
+
+**3.2 · Mapa de competencias.** Una fila por competencia con su fecha, su nota y su estado:
+
+| Estado | Cuándo |
 |---|---|
-| Nombre del representante | texto |
-| Cédula del representante | texto |
-| Correo del representante | correo |
-| Teléfono del representante | teléfono |
-| Método | opciones: *Firmó en papel en la sede* / *Subir documento firmado* |
-| Documento | archivo (solo si eligió subirlo) �?' bucket `consentimientos` |
+| 🏆 Dominada | nota ≥ `umbral_dominada` (16) |
+| 📈 En desarrollo | nota ≥ umbral de aprobación |
+| 🔴 Requiere refuerzo | por debajo del umbral |
+| · Pendiente | todavía no se evalúa |
 
-Al guardar: insertar en `parental_consents` con `consent_type = 'account_creation'`, luego
-actualizar `students.onboarding_status = 'completo'`.
+Si falló un ítem crítico, se muestra ⚠️ junto a la nota. **El ítem crítico avisa, no topa la
+nota** (`spec/00` §2.4).
 
-**Si el disparador de la base rechaza el cambio**, muestra el error de LOPNNA y no continúes.
-Ese rechazo es la red de seguridad: nunca lo desactives.
+**Sin puntos, sin niveles, sin insignias y sin comparación entre estudiantes.**
 
----
+**3.3 · Notas del módulo.** Examen teórico (50%) · Evaluación práctica (50%) · Promedio, con
+la cuenta escrita: `16 × 50% + 15 × 50% = 15,5`.
 
-## 3. PANTALLAS DEL ESTUDIANTE
+**3.4 · «Ver qué falló y por qué».** Es la razón de ser de esta pantalla (`spec/00` §5.4).
+Abre el detalle de la práctica del sábado: paso por paso del checklist con ✓/✗, **una frase
+concreta de qué pasó en cada paso** y a qué sección de qué guía ir a repasar; las respuestas
+orales con su nivel de 1 a 4; el comentario del profesor; y la nota con su desglose.
 
-Navegación inferior fija, 4 botones grandes con icono y etiqueta:
-**Carnet · Clases · Exámenes · Material**
+Si falló un ítem crítico, aviso al final: *«No te baja la nota, pero es de los que importan en
+un taller real.»*
 
-### `/carnet` �?" pantalla de inicio
-Es la pantalla más usada de la app. Debe cargar rápido y **funcionar sin internet**.
+**3.5 · Participación.** Días que trabajó en la semana, sobre 5.
 
-**El orden de las tarjetas no es negociable** (razón en `docs/13_` §9): las dos primeras son
-del estudiante, la tercera es de la academia. Si el carnet va primero, la app se percibe como
-un trámite.
+### `/perfil`
+Carnet digital (nombre, cédula, programa, código, sede, turno, foto), datos de contacto,
+preferencias y cerrar sesión. **El carnet debe verse sin señal una vez cargado.**
 
-**1 · Tarjeta «Próximo sábado»** �?" lo único accionable de la pantalla.
-Datos de la vista `v_proximo_sabado`. Fondo `--zr-blue-light`, texto `--zr-navy`.
-```
-�"O�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"�
-�", �Y". PR�"XIMO SÁBADO · 15 de agosto         �",
-�", Semana 2 · Diagnóstico de batería        �",
-�",                                          �",
-�", Para llegar preparado:                   �",
-�", Investiga los tipos de batería y cómo    �",
-�", se mide su densidad.                     �",
-�",                                  Ver �?� �",
-�""�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"~
-```
-Si no hay sesión próxima: *"No tienes clase programada por ahora."*
-Si la guía no está digitalizada (`pre_practice_description` vacío): se muestra solo la fecha y
-el módulo, **sin inventar texto**.
-
-**2 · Tarjeta «Mi progreso»** �?" resumen, con enlace a `/progreso`.
-```
-�"O�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"�
-�", �YZ� MI PROGRESO · Electricidad Automotriz �",
-�", �-��-��-��-<  Dominas 2 de 4 competencias        �",
-�",                              Ver todas �?� �",
-�""�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"~
-```
-
-**3 · El carnet propiamente dicho:**
-- Foto o iniciales, nombre completo, cédula.
-- Cohorte y módulo actual.
-- **El código QR, grande, al menos el 60% del ancho**, con marco `--zr-navy`. Debajo, una barra
-  que se vacía en 30 segundos y el código se regenera solo.
-- Contador: *"Módulos aprobados: 3 de 13"*.
-- Aviso en `--zr-warning` si hay consentimiento pendiente.
-
-### `/progreso` �?" mapa de dominio
-Lee de la vista `v_mi_dominio`. Muestra **todas** las competencias del módulo, incluidas las
-que aún no tienen fila en `mastery_map` (salen como pendientes). Nunca una pantalla vacía.
-
-```
-M�"DULO 3 · ELECTRICIDAD AUTOMOTRIZ
-Dominas 2 de 4 competencias
-
-SEMANA 1
-�o. Ley de Ohm aplicada
-   Verificado en práctica de taller · 8 ago
-
-SEMANA 2
-�o. Diagnóstico de batería
-   Verificado en práctica de taller · 15 ago
-
-SEMANA 3
-�Y"" Sistema de carga: alternador
-   En progreso
-
-SEMANA 4
-�o Lectura de diagramas eléctricos
-   Pendiente
-```
-
-Colores: `--zr-success` para dominado, `--zr-blue-mid` para en progreso, `--zr-border` para
-pendiente. **Sin porcentajes, sin barras de nivel, sin puntos.** Es una lista de cosas que
-sabes hacer, no un videojuego.
-
-**Nunca muestres una comparación con otros estudiantes.** Ni promedio del grupo, ni posición.
-El mapa es personal.
-
-**Cómo se genera el QR:**
-```ts
-// El secreto se guardó cifrado al registrarse. No se pide de nuevo.
-import { TOTP, Secret } from 'otpauth'
-const totp = new TOTP({ secret: Secret.fromBase32(secreto), digits: 6, period: 30 })
-const codigo = `ZR1|${cedula}|${totp.generate()}`
-```
-
-Se regenera cada segundo para actualizar la barra; el código cambia cada 30.
-
-### `/clases`
-Lista de sesiones de la cohorte, la más reciente arriba.
-
-Cada fila: fecha (`sáb 15 ago`), módulo, semana, y una insignia de estado:
-�o. **Asististe** · �o **No registrada** · �Y.� **Próxima**.
-
-Si la sesión está `cerrada` y no ha dado feedback, un botón: **Opinar sobre esta clase** �?'
-`/feedback/[sessionId]`.
-
-### `/examenes`
-Solo exámenes con estado `habilitado`, `cerrado` o `calificado`.
-
-Cada tarjeta: título, módulo, estado y acción.
-
-| Estado del intento | Qué muestra |
+### `/examen/[examId]` — pantalla completa
+| Elemento | Detalle |
 |---|---|
-| Sin empezar | Botón **Presentar examen** |
-| En progreso | Botón **Continuar** + *"Empezaste hace X"* |
-| Entregado, sin calificar | *"Entregado. Esperando calificación"* |
-| Calificado | La nota, en grande: `16,5 / 20` en verde o rojo |
+| Cronómetro | Cuenta atrás desde `exams.duration_minutes`. Amarillo a los 5 min, rojo al último |
+| Progreso | Barra por preguntas respondidas |
+| Preguntas | **Una por pantalla.** Opciones como botones grandes |
+| Avance | No deja pasar sin elegir opción |
+| Tiempo agotado | Entrega automática de lo respondido, avisando cuántas quedaron sin responder |
 
-### `/examenes/[examId]`
-**Una pregunta por pantalla.** Nunca todas juntas: en un teléfono es ilegible.
+**La corrección ocurre en la Edge Function `submit-attempt`, nunca en el navegador** (regla 2).
+El cliente **nunca** recibe `correct_answer`: lee de `v_exam_questions_student` (regla 3).
 
-Arriba: barra de progreso `Pregunta 3 de 10`. Si el examen tiene límite, el tiempo restante.
+**Al terminar:** nota sobre 20, estado (🏆 / 📈 / 🔴), y la **revisión pregunta por pregunta**
+con la respuesta dada y la correcta. El estudiante ve por qué falló, no solo que falló.
 
-Cuerpo según el tipo:
-- **Opción múltiple:** tarjetas grandes, una por opción, tocables completas.
-- **Verdadero/falso:** dos botones enormes, mitad y mitad de la pantalla.
-- **Redacción abierta:** área de texto con contador de caracteres.
+Al salir del examen, **el cronómetro se detiene**. No puede seguir corriendo de fondo.
 
-Abajo: **Anterior** y **Siguiente**. En la última pregunta, **Entregar examen** en ámbar, con
-confirmación: *"¿Seguro? No podrás cambiar tus respuestas."*
+### `/caso/[casoId]` — pantalla completa
+El ciclo de razonamiento en cuatro pasos, con barra de progreso:
 
-**Guardado automático:** cada respuesta se guarda en `exam_answers` al cambiar de pregunta. Si
-se cae la señal o se cierra la app, no se pierde nada.
+1. **¿Cuál es tu primera hipótesis?** — opciones
+2. **¿Qué medirías primero?** — opciones
+3. **Explica tu razonamiento** — texto libre
+4. **¿Qué tan seguro estás?** — escala de confianza
 
-Al entregar: llamar a `submit-attempt` y mostrar el resultado. Si quedan redacciones por
-calificar, decir: *"Tu profesor calificará las preguntas abiertas."*
+**La referencia no se revela hasta completar los cuatro pasos.** Si intenta saltarlos:
+*«La idea es que compares tu razonamiento con el de referencia — no vale saltarlo.»*
 
-> **Lee las preguntas siempre de `v_exam_questions_student`.** Si consultas
-> `exam_questions` directamente, la respuesta correcta viaja al navegador y el examen queda
-> resuelto para cualquiera que abra las herramientas de desarrollo.
+**Calibración de confianza** (`spec/00` §5.5.1). Al revelar, se le devuelve el cruce entre lo
+que acertó y lo seguro que estaba:
 
-### `/contenido` y `/contenido/[moduleId]`
-Lista de módulos con material. Dentro, agrupado por semana.
+| Acertó | Confianza | Mensaje |
+|---|---|---|
+| Sí | Alta | *Tu confianza estaba bien calibrada* |
+| Sí | Baja | *Sabías más de lo que creías* |
+| No | Alta | *Estabas seguro y no era* — el caso que más conviene revisar |
+| No | Baja | *Dudabas, y con razón* |
 
-Cada elemento: icono según tipo, título, tamaño. Al tocar: visor de PDF con zoom, o descarga.
-Al abrir, registrar en `content_views`.
+El objeto del caso **no siempre es un carro**: puede ser una muestra, una pieza o un equipo.
+La etiqueta y el campo se adaptan al tipo de objeto.
 
-### `/notas`
-Tabla por módulo: nombre, teoría, práctica, participación, nota final, estado.
-Debajo de la nota final, el umbral: *"Aprueba con 12"*.
-
-### `/feedback/[sessionId]`
-Máximo 3 preguntas, una debajo de otra, escala de 1 a 5 con caritas o estrellas grandes.
-Debe responderse en menos de 20 segundos. Botón: **Enviar**.
-Después: *"Gracias. Tu respuesta es anónima para tu profesor."* �?" y es verdad, la base lo
-garantiza.
+### `/escanear` — pantalla completa
+Ver §5.1: es la misma mecánica, del lado del estudiante.
 
 ---
 
-## 4. PANTALLAS DEL PROFESOR
+## 3. PROFESOR
 
-### `/hoy` �?" pantalla de inicio
-Lo que el profesor necesita el sábado a las 8 de la mañana, sin buscar nada:
+### `/hoy`
+Asistencia en vivo (contador que sube solo), la clase del día, y **«Lo que puedes hacer
+ahora»** — las acciones disponibles según el momento. Enlaces a `/hoy/antes` y `/hoy/dudas`.
 
-1. **Tarjeta grande: la clase de hoy.** Cohorte, módulo, salón, cantidad de estudiantes.
-   Botón enorme: **Abrir clase y pasar asistencia** �?' cambia la sesión a `abierta` y navega a
-   `/escanear/[sessionId]`.
-2. Contador: *"N exámenes por calificar"* �?' `/calificar`.
-3. Resumen de la última sesión: cuántos asistieron de cuántos.
+### `/hoy/antes`
+**Dónde está fallando el grupo** — agregados de la semana, para preparar la clase.
+**Lo que preguntaron esta semana** — dudas agrupadas por tema, con su frecuencia.
 
-Si no hay clase hoy: *"No tienes clase programada hoy"* y un enlace a `/sesiones`.
+### `/hoy/dudas`
+El resumen para la clínica del sábado: las dudas agrupadas por tema.
 
-### `/escanear/[sessionId]` �?" la pantalla crítica
-Es la que se usa de pie, con una mano, apurado, mientras entran los estudiantes.
+### `/estudio`
+Material del módulo que dicta, cómo se evalúa (checklist con sus ítems críticos y banco de
+preguntas de defensa), y acceso a montar la semana.
 
-**Disposición:**
-- **Arriba, 70% de la pantalla:** la cámara en vivo. Sin marcos decorativos.
-- **Franja de resultado, muy grande:**
-  - �o. Verde, nombre del estudiante en letra grande, más un pitido corto.
-  - �s�️ Amarillo: *"Ya registrado"* (no es un error, no alarma a nadie).
-  - �O Rojo, el motivo del catálogo de errores, más un pitido doble.
-  - El resultado permanece 2 segundos y vuelve a escanear solo.
-- **Abajo:** contador `Asistencia: 18 / 24`, un botón **Buscar por cédula** y el indicador de
-  cola sin conexión.
+### `/estudio/semana/[n]`
+El editor de la semana. Cuatro campos: tema/competencia del sábado, descripción del caso real
+del taller, teoría base *(«para que la IA no invente»)*, y el número de semana.
 
-**Modo refrigerio:** un interruptor arriba cambia entre *Asistencia* y *Refrigerio*. En modo
-refrigerio, llama a `claim-snack` en vez de a `validate-scan`. Todo lo demás es igual.
+Acciones: **Generar borradores con IA** · **Guardar como borrador** · **Enviar a dirección
+para revisar** · **Ver como lo ve el estudiante**.
 
-**Sin conexión �?" obligatorio:**
-```ts
-// 1. Cada escaneo entra a IndexedDB con synced: false
-// 2. Se intenta enviar de inmediato
-// 3. Si falla por red, se queda en la cola y se muestra "N sin sincronizar"
-// 4. Al volver la conexión (evento 'online'), se reintenta en orden
-// 5. La respuesta { duplicate: true } cuenta como éxito y limpia la cola
-```
-El contador de pendientes **siempre visible**. El profesor tiene que poder ver de un vistazo
-si algo quedó sin subir.
+> El profesor y dirección **pueden cargar la semana los dos** (`spec/00` §5.1.1).
+> Dirección aprueba antes de publicar.
 
-**Búsqueda por cédula (respaldo manual):** abre una lista de los estudiantes de la cohorte con
-un buscador. Al elegir uno, pide obligatoriamente un motivo (*"olvidó el teléfono"*,
-*"teléfono sin batería"*, *"otro"*) y registra con `method = 'manual'`. Queda auditado.
-
-### `/sesiones`
-Lista de sesiones de sus cohortes. Acciones: abrir, cerrar, reprogramar, ver asistencia.
-
-### `/examenes`, `/examenes/nuevo`, `/examenes/[examId]/editar`
-Constructor de exámenes. Datos del examen arriba; lista de preguntas debajo, reordenables.
-
-Al agregar una pregunta se elige el tipo primero, y el formulario cambia:
-- Opción múltiple: enunciado, de 2 a 6 opciones, marcar cuál es la correcta, puntos.
-- Verdadero/falso: enunciado, cuál es la correcta, puntos.
-- Redacción abierta: enunciado, rúbrica, puntos.
-
-**Indicador permanente:** `Puntos asignados: 18 / 20`. En rojo si no cuadra.
-El botón **Publicar examen** está deshabilitado mientras no sume exacto. Si aun así se
-intenta, la base lo rechaza �?" esa es la garantía real.
-
-### `/calificar`
-Cola de redacciones abiertas sin puntaje, la más antigua primero.
-
-Por cada una: enunciado, **la rúbrica siempre visible al lado**, la respuesta del estudiante,
-un campo de puntaje (0 al máximo de la pregunta) y un campo de comentario.
-Botones: **Guardar y siguiente**.
-
-El nombre del estudiante se muestra; no es anónimo (a diferencia del feedback).
-
-### `/notas/[cohortId]`
-Tabla editable: una fila por estudiante, columnas teoría, práctica y participación.
-Arriba, un control para el **peso de participación** de esa cohorte (mínimo 5%).
-La nota final y el estado se muestran calculados, **en gris, no editables**: los calcula la
-base de datos.
-
-### `/contenido`
-Subir material: archivo, título, módulo, semana, publicar ahora o en una fecha.
-
----
-
-## 5. PANTALLAS DE ADMINISTRACI�"N
-
-### `/panel`
-Cuatro tarjetas con números grandes:
-- Estudiantes activos
-- **Consentimientos pendientes** (en rojo si hay alguno)
-- Asistencia del último sábado
-- Exámenes sin calificar
-
-### `/estudiantes`
-Tabla con buscador por nombre o cédula. Filtros: cohorte, estado, menores de edad.
-Columnas: nombre, cédula, edad, cohorte, estado de registro, consentimiento.
-Acciones: ver, editar, cambiar de cohorte, suspender.
-Botones: **Nuevo estudiante** y **Cargar CSV**.
-
-**Carga por CSV** �?" columnas exactas, en este orden:
-```
-nombre_completo,cedula,fecha_nacimiento,correo_contacto,telefono,cohorte
-```
-Antes de importar, muestra una vista previa con los errores marcados por fila. Nunca importes
-a medias: o entra todo el archivo o no entra nada.
-
-### `/consentimientos`
-Cola de la vista `v_students_blocked`. Por cada menor: nombre, edad, si falta el consentimiento
-o si falta verificarlo, el documento adjunto si lo hay, y el botón **Verificar**.
-
-Esta pantalla es la que evita que la academia incumpla LOPNNA. Debe ser imposible de ignorar:
-si hay pendientes, sale un aviso en `/panel`.
-
-### `/cohortes`
-Crear cohortes, asignar profesor y salón, avanzar de módulo, ver estudiantes.
-
-**Avanzar de módulo** pide confirmación explícita, porque cambia el contenido y los exámenes
-visibles de todo el grupo.
+### `/alumnos`
+Tabla de los estudiantes del módulo con su nota. Filas expandibles. Los que están por debajo
+del umbral se marcan en rojo. Desde aquí se entra a la ficha y a la evaluación práctica.
 
 ### `/reportes`
-Cuatro reportes, todos con botón **Exportar a CSV**:
-1. Asistencia por cohorte y por sesión.
-2. Avance académico: aprobados, reprobados y en curso por módulo.
-3. Uso del repositorio: qué material se abre y cuál no.
-4. Exámenes pendientes de calificar, con antigüedad en horas.
+Salud del programa, distribución de notas del módulo, y **feedback anónimo**.
 
-### `/configuracion` �?" solo `super_admin`
-Tabla editable de `system_config`. Por cada clave: descripción, valor actual, campo de edición
-y quién la cambió por última vez. Debajo, el historial de cambios.
+> ⚠️ **El profesor nunca ve el feedback individual.** Solo el promedio del grupo, y solo si
+> hay **3 o más respuestas**. Las respuestas abiertas no se proyectan ni se muestran
+> atribuidas.
 
-**Toda la aplicación lee de aquí.** Cambiar un umbral es editar una fila, no desplegar código.
+### `/evaluar/[studentId]` — pantalla completa
+**Toda la evaluación del sábado ocurre en una sola pantalla** (`spec/00` §5.3). Sin navegar,
+sin perder lo hecho:
+
+1. **Checklist** — un toque por paso. Los ítems críticos van marcados `CRÍTICO`.
+2. **Defensa técnica** — cada pregunta con su nivel de 1 a 4:
+   *No supiste · Respuesta superficial · Correcta · La dominas*.
+3. **Comentario** del profesor.
+
+La nota se calcula `checklist × 70% + defensa × 30%`, sobre 20, con los pesos leídos de
+`system_config`. **El cálculo va en el servidor, no en el navegador** (regla 2).
+
+Fallar un ítem crítico **genera una alerta, no topa la nota**.
 
 ---
 
-## 6. LA PWA
+## 4. ADMINISTRACIÓN
 
-**`app/manifest.ts`:**
-```ts
-import type { MetadataRoute } from 'next'
+### `/panel`
+Hoy en la academia, asistencia del sábado con el contador (*«18 de 24 ya escanearon»*), y el
+acceso a **Mostrar QR en pantalla**.
 
-export default function manifest(): MetadataRoute.Manifest {
-  return {
-    name: 'ZR App · ZR Mecademy',
-    short_name: 'ZR App',
-    description: 'Plataforma académica de ZR Mecademy',
-    start_url: '/',
-    display: 'standalone',
-    orientation: 'portrait',
-    background_color: '#F8FAFC',
-    theme_color: '#1E3A5F',
-    icons: [
-      { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-      { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-    ],
-  }
-}
-```
+### `/alumnos`
+Lista de estudiantes activos con buscar, filtrar y exportar CSV. Ficha completa por estudiante.
 
-**Service worker (`public/sw.js`):** guarda en caché el esqueleto de la app y la pantalla del
-carnet. **No guarda en caché** exámenes ni contenido: deben estar frescos.
+### `/asistencia`
+Dos pestañas: **Sábado de hoy** e **Historial**. La de hoy trae quién llegó, quién falta, y el
+**registro manual** (§5.2).
 
-**Prueba obligatoria:** instalar la app en un Android y en un iPhone reales, y comprobar que
-la cámara funciona en modo instalado. No basta con probarlo en el navegador de escritorio.
+### `/codigos`
+Códigos de inscripción: generar, ver los activos, ver cuáles se usaron.
 
+### `/consentimientos`
+Los consentimientos pendientes de menores de edad. Por cada uno: **Ver doc** · **Verificar** ·
+**Recordar**. Verificar es la acción que habilita al estudiante.
+
+### `/qr` — pantalla completa
+Ver §5.1.
+
+---
+
+## 5. LAS DOS PANTALLAS CRÍTICAS
+
+Son las que deciden el piloto del 5 de septiembre. Se construyen primero y se prueban en el
+taller, no en una oficina.
+
+### 5.1 · El QR de un solo uso
+
+**Administración muestra; el estudiante escanea.** Nunca al revés (`spec/00` §5).
+
+| Lado | Pantalla | Comportamiento |
+|---|---|---|
+| Administración | `/qr` | QR gigante, legible a 2 metros. **Al escanearse, ese código muere y aparece otro al instante.** Contador de escaneados en vivo |
+| Estudiante | `/escanear` | Cámara con `@zxing/browser`. Permiso pedido **con explicación previa**, no a secas |
+
+**Un solo escaneo marca asistencia Y refrigerio.** Es el mismo evento.
+
+**Resultado, muy grande y legible a un metro:**
+
+| Estado | Qué dice |
+|---|---|
+| ✅ Verde | Registrado, con su nombre. Más un pitido corto |
+| ⚠️ Amarillo | *«Ya estabas registrado»* — es información, no una alarma |
+| ⛔ Rojo | *«Este código ya se usó»* · *«No es de tu cohorte»* · *«La sesión está cerrada»* |
+
+**Por qué el código de un solo uso:** fotografiarlo y mandarlo por WhatsApp no sirve. Cuando
+el ausente lo intente, ese código ya está quemado.
+
+La validación ocurre completa en la Edge Function `validate-scan` (regla 2).
+
+> **Sin conexión:** el escaneo se guarda en el teléfono y se sincroniza al reconectar. La
+> sincronización es **idempotente**: mandar el mismo escaneo dos veces no crea dos asistencias.
+> ⚠️ Esto **no entra en el MVP del 5 de septiembre** (`plan/06` §5).
+
+### 5.2 · El registro manual
+
+**Sin esta pantalla el criterio de éxito del piloto es imposible** (`plan/06` §2.1). Van a
+fallar teléfonos: batería, cámara, o alguien que no instaló la app.
+
+Administración busca al estudiante en la lista de los que faltan y lo marca presente con un
+motivo: `sin batería` · `cámara falla` · `no instaló la app` · `otro`.
+
+- Queda registrado que fue **manual** y **quién** lo hizo.
+- Marca asistencia **y refrigerio**, igual que el escaneo.
+- **Terminado cuando:** un estudiante sin teléfono queda registrado en menos de 20 segundos.
+
+---
+
+## 6. DIRECCIÓN
+
+Dirección tiene dos trabajos que **van separados**: la operación y la vigilancia
+(`spec/00` §5.7). No se mezclan en la misma pantalla.
+
+| Ruta | Qué |
+|---|---|
+| `/inicio` | Acciones rápidas · alertas de material faltante · «De vez en cuando» |
+| `/inicio/salud` | Salud del sistema — la vigilancia, aparte de la operación |
+| `/inicio/feedback` | Activar el feedback por programa y módulo. **Dirección decide cuándo** |
+| `/alumnos` | Estudiantes por programa |
+| `/alumnos/notas` | Progreso y notas, por módulo |
+| `/modulos` | Historial de módulos dictados |
+| `/curriculo` | El currículo completo — 13 módulos, con sus competencias |
+| `/curriculo/estudio` | Montar contenido con IA · **Aprobar / Rechazar / Ver detalle** los borradores que manda el profesor |
+| `/grupos` | Programas activos · asignar profesor y módulo a cada cohorte |
+
+Solo dirección (`super_admin`) puede editar `system_config`.
+
+---
+
+## 7. LO QUE NINGUNA PANTALLA HACE
+
+Vale tanto como lo anterior. Si aparece en el prototipo pero está en esta lista,
+**no se construye**:
+
+| No existe | Por qué |
+|---|---|
+| Reprobación automática por inasistencia | Prohibida por la academia (regla 7) |
+| Bloqueo de acceso al aula o al taller | Prohibido por el Ministerio (regla 8) |
+| Mensajería privada entre usuarios | Prohibida por seguridad de menores |
+| Pagos, cuotas, saldos, estado de cuenta | Fase 2 |
+| Puntos, insignias, rachas, ranking | Fase 2 |
+| Video subido por estudiantes, comentarios, portafolio público | Fase 3 |
+| El profesor viendo feedback individual | Rompe el anonimato |
+| El cliente calculando notas o validando QR | Regla 2 |
+
+---
+
+## 8. HISTORIAL
+
+| Fecha | Cambio |
+|---|---|
+| 2026-08-23 | Reescrito desde el prototipo v10. Se añaden el rol dirección, el ciclo semanal, los casos, la evaluación práctica en una pantalla y el registro manual. La versión anterior se archivó por daño de codificación |

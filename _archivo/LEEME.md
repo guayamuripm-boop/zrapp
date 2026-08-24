@@ -55,8 +55,50 @@ de julio) y responden a un alcance anterior.
 
 ### `prototipos/`
 
-Prototipos v1, v2 y la versión estática. **El vigente es `ZR_APP_PROTOTIPO_v10.html`** en la
-raíz.
+Prototipos v1, v2, la versión estática y `ZR_APP_WEB_ENTRADA.html`.
+**El vigente es `ZR_APP_PROTOTIPO_v10.html`** en la raíz.
+
+### `migraciones-superadas/` — ⚠️ NUNCA se aplican
+
+Las migraciones **001 a 016** del repositorio. Nunca llegaron a `zr-prod`, que va por la
+**033**. La siguiente migración del proyecto es la **034**, no la 017.
+
+Se conservan por una razón concreta: de la `015` salen las tablas de evaluación práctica que
+todavía hacen falta (`performance_evaluations`, `rubric_templates`, `rubric_criteria`,
+`eval_criteria_results`, `defense_questions`, `technical_defenses`).
+
+> ⚠️ **Se copian las tablas, no los umbrales.** La `015` define rúbrica sobre 100 con
+> aprobación en 81 y la compuerta bloqueante. Nada de eso va — `spec/00` §2.4.1.
+
+De la `016` sale el control de QR, pero **se reescribe** con el modelo de un solo uso.
+
+### `metodologia-lowcode/` — ⚠️ contradice el stack decidido
+
+Los tres documentos técnicos del MDV: `MDV-implementacion-tecnica-lowcode.md`,
+`MDV-implementacion-tecnica-parte2.md` y `MDV_Documento_Tecnico_Arquitectura_LowCode.md`.
+
+Especifican construir el sistema sobre **Moodle 5.1 + H5P**, en low-code. El stack decidido es
+**Next.js + Supabase**, y `CLAUDE.md` §3 prohíbe expresamente las herramientas low-code.
+Además arrastran la compuerta bloqueante y la regla «el trabajo digital vale 0%», ambas
+descartadas en `spec/00`.
+
+Se conservan por su **razonamiento pedagógico**, que sigue siendo válido: dominio verificado,
+ítems críticos que no promedian, defensa técnica y niveles de IA. Eso está recogido en
+`spec/07_MDV_INTEGRACION.md`.
+
+### `planificacion-superada/`
+
+| Archivo | Por qué |
+|---|---|
+| `11_PLAN_EJECUCION_FASE1.md` | Cronograma anterior. Lo reemplaza `plan/02_SPRINT.md` |
+| `12_TABLERO_TRELLO.md` y `trello_import.csv` | Tablero de tareas de un alcance anterior |
+
+### `docs-superados/04_PANTALLAS_dañado.md`
+
+La versión anterior de `spec/04_PANTALLAS.md`. Se archivó el 23 de agosto de 2026 por dos
+razones: sufrió un daño de codificación irreversible (los diagramas de estructura se
+perdieron) y describía un alcance más estrecho que el del prototipo v10 — no incluía el rol
+de dirección, el ciclo semanal, los casos ni la evaluación práctica.
 
 ---
 
@@ -69,3 +111,5 @@ raíz.
 | Qué hacer y en qué orden | `plan/02_SPRINT.md` |
 | Cómo se ve y se comporta cada pantalla | `ZR_APP_PROTOTIPO_v10.html` |
 | El estado real de la base de datos | `plan/01_ESTADO.md` |
+| El alcance completo del producto | `plan/07_ALCANCE_V10.md` |
+| Cómo se construye, prueba y despliega | `INGENIERIA.md` |

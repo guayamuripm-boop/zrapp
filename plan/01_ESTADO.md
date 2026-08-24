@@ -17,6 +17,9 @@ El repositorio y la base de datos son **dos versiones distintas del proyecto**.
 **El repositorio está 17 migraciones atrás.** Alguien construyó sobre esa base y el
 repositorio no lo refleja.
 
+> Desde el 23 de agosto de 2026 las migraciones 001-016 están en
+> `_archivo/migraciones-superadas/`. **La siguiente migración del proyecto es la 034.**
+
 ⚠️ **`CLAUDE.md` dice que las 16 migraciones están "YA APLICADAS". No lo están** — al menos
 no en `zr-prod`. Están escritas.
 
@@ -113,9 +116,32 @@ NO mostrarle al estudiante la respuesta correcta (regla absoluta 3 de `CLAUDE.md
 
 - **Aplicación Next.js** — cero líneas
 - **Despliegue** — no hay proyecto en Vercel
-- **Edge Function desplegada** — `validate-scan` está escrita (255 líneas) pero no publicada
+- **Proyecto `zr-dev`** — no hay entorno de pruebas. Todo apunta a producción
 - **Estudiantes y profesores** — ninguno en la base
 - **Contenido real** — los módulos y guías son de prueba
+
+## 5.1 CORRECCIÓN DEL 23 DE AGOSTO — LAS EDGE FUNCTIONS SÍ ESTÁN DESPLEGADAS
+
+Este documento decía que `validate-scan` estaba escrita pero sin publicar. **No es cierto.**
+Hay **13 Edge Functions activas** en `zr-prod`, y el repositorio solo conoce una:
+
+`validate-scan` · `provision-qr` · `claim-snack` · `create-student` · `create-staff-user` ·
+`submit-attempt` · `grade-answer` · `send-push` · `approve-professor` · `delete-account` ·
+`request-rehabilitation` · `approve-rehabilitation` · `respond-rehabilitation`
+
+Dos consecuencias:
+
+1. **Hay que descargarlas al repositorio y revisarlas** contra `spec/00` antes de confiar en
+   ellas. Que existan no significa que implementen las decisiones vigentes.
+2. ⚠️ **Nueve tienen `verify_jwt: false`.** Hay que revisar una por una si es intencional.
+
+### El otro repositorio
+
+`approve-rehabilitation` fue desplegada desde
+`/Users/mdavi/OneDrive/Documentos/DEV/zr-app-github/` — **otra máquina, otro repositorio, otra
+persona.** Es el T-02 del sprint sin resolver.
+
+> **Antes de escribir una sola migración hay que averiguar quién más despliega a `zr-prod`.**
 
 ---
 

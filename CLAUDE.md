@@ -93,10 +93,23 @@ La carpeta `plan/` tiene el sprint completo. Léela **antes** que el resto de es
 | `plan/04_CONFIGURACION.md` | Qué se cambia sin tocar código |
 | `plan/05_DIAGNOSTICO.md` | El diagnóstico de entrada del primer día |
 | `plan/06_ENTREGABLE.md` | **Qué se entrega el 5 de septiembre. Manda sobre el alcance** |
+| `plan/07_ALCANCE_V10.md` | **El alcance completo derivado del prototipo v10, en tres niveles** |
 
 ⚠️ **El repositorio y la base de datos divergieron.** `zr-prod` va por la migración 033 y el
-repositorio por la 016. La base tiene tablas que el repositorio no conoce, y el repositorio
-tiene tablas que nunca se aplicaron ahí. **Lee `plan/01_ESTADO.md` antes de escribir SQL.**
+repositorio por la 016. Las migraciones 001-016 se archivaron: **la siguiente migración es la
+034, no la 017.** Lee `plan/01_ESTADO.md` antes de escribir SQL.
+
+⚠️ **Hay 13 Edge Functions desplegadas en `zr-prod` y el repositorio solo conoce una.**
+Nueve tienen `verify_jwt: false`. No asumas que una función no existe porque no esté aquí:
+consúltalo antes.
+
+---
+
+## 3.6 CÓMO SE TRABAJA → `INGENIERIA.md`
+
+`INGENIERIA.md` define **el proceso**: el ciclo de una tarea, la disciplina de migraciones,
+qué se prueba y a qué nivel, la definición de listo y de terminado, y qué hacer cuando algo
+se rompe en producción. Léelo antes de tu primera tarea.
 
 ---
 
@@ -129,14 +142,17 @@ ZR App/
 ├── AGENTS.md                    ← estás aquí
 ├── CLAUDE.md                    ← copia de este archivo
 │
+├── INGENIERIA.md                ← ⭐ EL PROCESO. Cómo se construye, prueba y despliega
 ├── COLABORACION.md              ← cómo trabajan juntos el equipo y tú
+│
+├── ZR_APP_PROTOTIPO_v10.html    ← ⭐ LA ESPECIFICACIÓN VISUAL. Ábrelo antes de cada pantalla
 │
 ├── spec/                        ← LA ESPECIFICACIÓN. Es la verdad.
 │   ├── 00_RECONCILIACION.md     ← ⭐ LÉELO PRIMERO. Manda sobre todo lo demás.
 │   ├── 01_SETUP.md              ← comandos exactos para preparar todo
 │   ├── 02_CONTRATOS.md          ← tipos de TypeScript y formas de datos
 │   ├── 03_EDGE_FUNCTIONS.md     ← cada función con su entrada y salida exactas
-│   ├── 04_PANTALLAS.md          ← cada ruta con sus campos y estados
+│   ├── 04_PANTALLAS.md          ← las 31 pantallas del v10, los 4 roles
 │   ├── 05_PRUEBAS.md            ← qué probar y cómo
 │   ├── 06_IDENTIDAD_VISUAL.md   ← colores, tipografía, medidas, voz y tono
 │   └── 07_MDV_INTEGRACION.md    ← ⚠️ parcialmente superado por 00_
@@ -147,16 +163,15 @@ ZR App/
 │   └── validators.ts
 │
 ├── supabase/
-│   ├── migrations/              ← ⚠️ SUPERADAS por zr-prod. Lee su LEEME.md
-│   ├── functions/validate-scan/ ← Edge Function de validación de QR
+│   ├── migrations/              ← ⚠️ VACÍA. La siguiente migración es la 034
+│   ├── functions/validate-scan/ ← 1 de las 13 desplegadas. Faltan 12 por descargar
 │   └── seed/seed_dev.sql        ← datos de prueba
 │
 ├── plan/                        ← ⭐ EL SPRINT VIGENTE. Empieza por aquí
 │   ├── 00_LEEME.md … 06_ENTREGABLE.md
+│   └── 07_ALCANCE_V10.md        ← el producto completo, en tres niveles
 │
 ├── tests/rls/                   ← pruebas de aislamiento entre estudiantes
-│
-├── Metodologia/                 ← los 3 documentos pedagógicos originales del MDV
 │
 ├── docs/                        ← contexto de negocio. Léelo si dudas del "por qué".
 │   ├── 00_CONTEXTO_MAESTRO_AGENTE.md      reglas de negocio de la academia
@@ -164,22 +179,29 @@ ZR App/
 │   ├── 08_AUDITORIA_TECNICA_Y_VIABILIDAD.md
 │   ├── 09_DECISIONES_ARQUITECTONICAS.md   por qué cada cosa es como es
 │   ├── 10_ESQUEMA_BASE_DATOS_V2.md        el esquema explicado en prosa
-│   ├── 11_PLAN_EJECUCION_FASE1.md         el cronograma
 │   └── 13_DISENO_DE_PRODUCTO_ESTUDIANTE.md  qué gana el estudiante y por qué
 │
 └── _archivo/                    ← histórico. NO es fuente de verdad, no lo sigas.
     │                              Lee _archivo/LEEME.md antes de abrir nada de ahí
-    ├── prototipos/              prototipos v1, v2 y estático
+    ├── prototipos/              prototipos v1, v2, estático y la web de entrada
+    ├── migraciones-superadas/   las 001-016. NUNCA se aplican
+    ├── metodologia-lowcode/     los 3 docs de Moodle. Contradicen el stack decidido
+    ├── planificacion-superada/  el cronograma y el tablero viejos
     └── docs-superados/          docs de stack y esquema que ya no aplican
 ```
 
 **Jerarquía cuando dos archivos se contradicen:**
 
-1. **`spec/00_RECONCILIACION.md`** — manda sobre todo lo demás en los temas que trata
-   (modelo de calificación, ciclo semanal, compuertas, QR). Léelo **primero**.
-2. `supabase/migrations/*.sql`
-3. `spec/`
-4. `docs/`
+1. **El estado real de `zr-prod`** — lo que existe de verdad. Consúltalo, no lo supongas.
+2. **`spec/00_RECONCILIACION.md`** — manda en los temas que trata (modelo de calificación,
+   ciclo semanal, compuertas, QR). Léelo **primero** de los documentos.
+3. **`plan/06_ENTREGABLE.md`** — el alcance de la entrega vigente.
+4. **`ZR_APP_PROTOTIPO_v10.html`** — cómo se ve y se comporta cada pantalla.
+5. `spec/`
+6. `docs/`
+
+La versión larga, con qué hacer cuando encuentras una contradicción, está en
+`INGENIERIA.md` §11.
 
 ⚠️ **`spec/07_MDV_INTEGRACION.md` está parcialmente superado.** Su rúbrica de 100 puntos
 (aprobación 81) y su compuerta A bloqueante **no se implementan** — ver `spec/00`. Lo que sigue
@@ -253,7 +275,9 @@ Cosas que parecen decisiones libres pero no lo son:
   al escanearlo muere y se genera uno nuevo al instante para el siguiente estudiante. Por eso
   fotografiarlo y mandarlo por WhatsApp no sirve — cuando el ausente lo intente, ese código
   ya está quemado. El profesor no maneja ningún código: en su pantalla solo ve el conteo de
-  asistentes en vivo. Implementado en `supabase/migrations/016_qr_control.sql`.
+  asistentes en vivo. La migración que lo definía está en
+  `_archivo/migraciones-superadas/016_qr_control.sql` — **no se aplica**: se reescribe como
+  migración 034 con el modelo de un solo uso. Ver `plan/07` §3, épico C.
 - **El escaneo debe funcionar sin internet.** Se guarda en el teléfono y se sincroniza después.
   La sincronización debe ser idempotente: mandar el mismo escaneo dos veces no crea dos
   asistencias.

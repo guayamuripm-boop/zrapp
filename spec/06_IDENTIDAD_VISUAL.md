@@ -1,4 +1,4 @@
-# 06 · IDENTIDAD VISUAL Y SISTEMA DE DISE�'O
+# 06 · IDENTIDAD VISUAL Y SISTEMA DE DISEÑO
 > **Fuente oficial:** `Manual de Identidad ZR Mecademy 2025`.
 > Copia local del manual y de los logos en `/marca/`.
 > **Estado: CERRADO.** Los colores y tipografías de §2 y §3 son los oficiales de la marca. No
@@ -29,12 +29,12 @@ Del manual de identidad, página «Paleta de colores». Son los seis colores de 
 
 | Color | Hex | Nombre interno | Uso en la app |
 |---|---|---|---|
-| �> Azul noche | `#21284F` | `--zr-navy` | Barra superior, barra inferior, texto principal |
-| �YY� Azul institucional | `#1E4D96` | `--zr-blue-deep` | Encabezados de sección, énfasis |
-| �Y"� **Azul de marca** | `#3869B1` | `--zr-blue` | **Color del logo. Botón de acción principal** |
-| �Y"� Azul medio | `#6590CB` | `--zr-blue-mid` | Estados activos, bordes de foco |
-| �Y'� Azul claro | `#98BAE3` | `--zr-blue-light` | Fondos de tarjeta, franjas informativas |
-| �o Blanco | `#FFFFFF` | `--zr-white` | Superficies, texto sobre azul |
+| Azul noche | `#21284F` | `--zr-navy` | Barra superior, barra inferior, texto principal |
+| Azul institucional | `#1E4D96` | `--zr-blue-deep` | Encabezados de sección, énfasis |
+| **Azul de marca** | `#3869B1` | `--zr-blue` | **Color del logo. Botón de acción principal** |
+| Azul medio | `#6590CB` | `--zr-blue-mid` | Estados activos, bordes de foco |
+| Azul claro | `#98BAE3` | `--zr-blue-light` | Fondos de tarjeta, franjas informativas |
+| Blanco | `#FFFFFF` | `--zr-white` | Superficies, texto sobre azul |
 
 **Razón de la marca** (textual del manual): los azules comunican profesionalismo y confianza,
 evocan conocimiento y concentración, y su asociación con la innovación refleja los métodos de
@@ -50,17 +50,17 @@ Calculado sobre la fórmula de WCAG. **No cambies estas combinaciones sin volver
 | Blanco sobre `#1E4D96` | **8,2:1** | AAA |
 | Blanco sobre `#3869B1` | **5,5:1** | AA |
 | `#21284F` sobre `#98BAE3` | **7,1:1** | AAA |
-| Blanco sobre `#6590CB` | 3,4:1 | �O **Solo para texto de 24 px o más** |
+| Blanco sobre `#6590CB` | 3,4:1 | ⛔ **Solo para texto de 24 px o más** |
 
 > `#98BAE3` y `#6590CB` **nunca llevan texto blanco encima** en tamaño normal. Sobre esos dos,
 > el texto va en `#21284F`.
 
 ---
 
-## 3. LA CAPA FUNCIONAL �?" lo que el manual no cubre
+## 3. LA CAPA FUNCIONAL — lo que el manual no cubre
 
 **Hallazgo que hay que decir claro:** la paleta oficial es **monocromática azul**. Es una
-identidad correcta y coherente para papelería, uniformes y redes sociales �?" para lo que fue
+identidad correcta y coherente para papelería, uniformes y redes sociales — para lo que fue
 diseñada. Pero una interfaz operativa necesita algo que un manual de marca no contempla:
 **señalar estados de forma inequívoca.**
 
@@ -80,21 +80,21 @@ que la mantienen subordinada a la identidad:
 
 | Estado | Hex | Dónde aparece |
 |---|---|---|
-| �o. �?xito | `#16A34A` | Asistencia registrada, módulo aprobado, competencia dominada |
-| �s�️ Advertencia | `#EAB308` | «Ya registrado», consentimiento pendiente |
-| �O Error | `#DC2626` | Código vencido, módulo reprobado, fallo de escaneo |
+| ✅ Éxito | `#16A34A` | Asistencia registrada, módulo aprobado, competencia dominada |
+| ⚠️ Advertencia | `#EAB308` | «Ya registrado», consentimiento pendiente |
+| ⛔ Error | `#DC2626` | Código vencido, módulo reprobado, fallo de escaneo |
 
 Es la misma lógica de un semáforo dentro de un edificio corporativo: el edificio tiene su
 color, el semáforo tiene el suyo, y nadie los confunde.
 
 ---
 
-## 4. TOKENS �?" TODO EL COLOR VIVE AQUÍ
+## 4. TOKENS — TODO EL COLOR VIVE AQUÍ
 
 ```css
-/* app/globals.css �?" �sNICO lugar donde se define color en todo el proyecto */
+/* app/globals.css — ÚNICO lugar donde se define color en todo el proyecto */
 :root {
-  /* Marca �?" Manual de Identidad ZR Mecademy 2025 */
+  /* Marca — Manual de Identidad ZR Mecademy 2025 */
   --zr-navy:        #21284F;
   --zr-blue-deep:   #1E4D96;
   --zr-blue:        #3869B1;   /* color del logo */
@@ -102,7 +102,7 @@ color, el semáforo tiene el suyo, y nadie los confunde.
   --zr-blue-light:  #98BAE3;
   --zr-white:       #FFFFFF;
 
-  /* Capa funcional �?" estados, nunca decoración, nunca sobre el logo */
+  /* Capa funcional — estados, nunca decoración, nunca sobre el logo */
   --zr-success:     #16A34A;
   --zr-warning:     #EAB308;
   --zr-error:       #DC2626;
@@ -135,7 +135,7 @@ color, el semáforo tiene el suyo, y nadie los confunde.
 
 Del manual: **Roboto (principal)** y **Raleway (secundaria)**.
 
-Instalación local �?" **nunca desde Google Fonts**, porque sin señal no cargarían:
+Instalación local — **nunca desde Google Fonts**, porque sin señal no cargarían:
 
 ```bash
 npm install @fontsource-variable/roboto @fontsource-variable/raleway
@@ -149,7 +149,7 @@ npm install @fontsource-variable/roboto @fontsource-variable/raleway
 | **Texto general, botones, formularios** | **Roboto** | **16 px** | 400 |
 | Etiqueta de campo | Roboto | 14 px | 500 |
 | Números, cédulas, códigos | Roboto | según contexto | 500 |
-| **Mínimo absoluto** | �?" | **14 px** | �?" |
+| **Mínimo absoluto** | — | **14 px** | — |
 
 **Criterio de reparto:** Raleway para lo que se lee de un vistazo (títulos, cifras grandes);
 Roboto para lo que se lee de cerca (texto corrido, formularios, datos). Roboto distingue bien
@@ -171,7 +171,7 @@ Archivos en `/marca/`:
 | `isotipo-zr.svg` | Solo el bloque «ZR». Íconos de la PWA, avatar, espacios cuadrados |
 | `icon.ico` | Favicon |
 
-### Reglas del manual �?" se cumplen sin excepción
+### Reglas del manual — se cumplen sin excepción
 - **Nunca recolorear el logo.** El manual muestra explícitamente el logo en verde y en gris
   claro como usos prohibidos.
 - **Nunca deformarlo, rotarlo ni aplicarle sombras o degradados.**
@@ -184,7 +184,7 @@ Se generan a partir de `isotipo-zr.svg` sobre fondo `--zr-blue` (`#3869B1`):
 
 ---
 
-## 7. APLICACI�"N A LA APP
+## 7. APLICACIÓN A LA APP
 
 | Zona | Color |
 |---|---|
@@ -209,7 +209,7 @@ Se generan a partir de `isotipo-zr.svg` sobre fondo `--zr-blue` (`#3869B1`):
 | Español de Venezuela, sin regionalismos forzados | *"Tu profesor habilitó un examen"* | *"Tu profe te puso una prueba, pana"* |
 | Los errores dicen qué hacer | *"El código venció. Pídele al estudiante que muestre el nuevo."* | *"Error 403: token inválido"* |
 | Sin jerga técnica jamás | *"No hay internet. Se guardó y se enviará solo."* | *"Fallo de sincronización con el backend"* |
-| Celebra lo que costó, no lo trivial | *"Dominaste el diagnóstico de batería"* | *"¡Iniciaste sesión! �YZ?"* |
+| Celebra lo que costó, no lo trivial | *"Dominaste el diagnóstico de batería"* | *"¡Iniciaste sesión! 🎉"* |
 | Nunca culpes al usuario | *"No encontramos esa cédula"* | *"Escribiste mal la cédula"* |
 
 **Formato local siempre:** coma decimal (`16,5`), fechas `sáb 15 ago 2026`, horas en 24 h
@@ -260,7 +260,7 @@ burla.
 **10.3 · La pantalla de inicio del estudiante.** Los primeros diez segundos deciden si la app
 se percibe como *"algo que me obligan a usar"* o *"algo mío"*. Orden obligatorio
 (ver `docs/13_DISENO_DE_PRODUCTO_ESTUDIANTE.md` §9):
-**lo que viene el próximo sábado �?' mi progreso �?' el carnet con el QR.**
+**lo que viene el próximo sábado → mi progreso → el carnet con el QR.**
 
 ---
 
