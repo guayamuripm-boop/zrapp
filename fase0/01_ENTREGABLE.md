@@ -1,6 +1,10 @@
 # 01 · EL ENTREGABLE, PANTALLA POR PANTALLA
 
-> Cómo se ve y se comporta cada una está en `ZR_APP_PROTOTIPO_v10.html`.
+> **Cómo se ve y se comporta cada una está en `ZR_APP_FASE0_PROTOTIPO.html`** — ábrelo en el
+> navegador y recórrelo con los tres roles antes de construir nada.
+> Para las pantallas de Fase 1 que aquí no entran, la referencia sigue siendo
+> `ZR_APP_PROTOTIPO_v10.html`.
+>
 > Aquí está **qué hace y qué no hace en Fase 0**.
 
 ---

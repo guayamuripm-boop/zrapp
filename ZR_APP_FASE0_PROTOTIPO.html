@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ZR App · Prototipo Fase 0 · 5 de septiembre</title>
+<style>
+:root{
+  --navy:#21284F;--deep:#1E4D96;--blue:#3869B1;--mid:#6590CB;--light:#98BAE3;
+  --bg:#F5F7FB;--surface:#FFFFFF;--border:#C9D6EA;--text:#21284F;--muted:#4A5578;
+  --success:#16A34A;--warn:#EAB308;--error:#DC2626;
+  --btn-h:52px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Roboto','Segoe UI',system-ui,-apple-system,sans-serif;background:#d8dee9;color:var(--text);font-size:16px;line-height:1.5;padding:24px 0}
+h1,h2,h3,h4,.st-title,.section-t,.n,.num,.big-n,.name-big,.hero-day h2,.res-n,.qr-count{font-family:'Raleway','Roboto','Segoe UI',system-ui,sans-serif}
+.phone{width:100%;max-width:430px;margin:0 auto;min-height:calc(100vh - 48px);background:var(--bg);position:relative;border-radius:28px;overflow:hidden;box-shadow:0 0 40px rgba(33,40,79,.15)}
+@media(max-width:430px){body{padding:0;background:var(--bg)}.phone{border-radius:0;min-height:100vh}}
+.hidden{display:none!important}
+
+i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
+.ti-key::before{content:"🔓"}.ti-home::before{content:"🏠"}.ti-folder::before{content:"📁"}
+.ti-target::before{content:"🎯"}.ti-message::before{content:"💬"}.ti-user::before{content:"👤"}
+.ti-qr::before{content:"▦"}.ti-camera::before{content:"📷"}.ti-check::before{content:"✓"}
+.ti-file::before{content:"📄"}.ti-ppt::before{content:"📊"}.ti-upload::before{content:"⬆️"}
+.ti-users::before{content:"👥"}.ti-search::before{content:"🔍"}.ti-clock::before{content:"🕐"}
+.ti-right::before{content:"›"}.ti-tools::before{content:"🔧"}.ti-list::before{content:"📋"}
+.ti-bulb::before{content:"💡"}.ti-lock::before{content:"🔒"}.ti-out::before{content:"⏻"}
+.ti-hand::before{content:"✋"}.ti-sparkle::before{content:"✨"}.ti-book::before{content:"📚"}
+
+.tb{background:var(--navy);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:50}
+.tb .logo{display:flex;align-items:center;gap:9px;font-weight:500;font-size:15px}
+.tb .zr{width:30px;height:30px;border-radius:8px;overflow:hidden;flex-shrink:0}
+.tb .zr svg{display:block;width:100%;height:100%}
+.tb .right{display:flex;align-items:center;gap:9px}
+.tb .avat{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.tb .exit{cursor:pointer;color:#fff;background:rgba(255,255,255,.12);border:none;width:36px;height:36px;border-radius:9px;font-size:16px;font-family:inherit}
+
+.content{padding:16px 16px calc(90px + env(safe-area-inset-bottom));min-height:calc(100vh - 60px)}
+.content.no-nav{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.section-t{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.05em;margin:16px 0 10px;text-transform:uppercase}
+.section-t:first-child{margin-top:0}
+
+.card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:5px}
+.card .sub{font-size:14px;color:var(--muted);line-height:1.5}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:var(--btn-h);border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;padding:0 16px;transition:transform .1s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-outline{background:transparent;border:1.5px solid var(--blue);color:var(--blue)}
+.btn-ghost{background:transparent;color:var(--blue);font-weight:500}
+.btn-success{background:var(--success);color:#fff}
+.btn-lg{min-height:60px;font-size:16px}
+.btn-sm{min-height:44px;font-size:14px}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mb-8{margin-bottom:8px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;height:var(--btn-h);border:1.5px solid var(--border);border-radius:12px;padding:0 14px;font-size:16px;font-family:inherit;color:var(--text);background:#fff}
+.field textarea{height:auto;padding:12px 14px;min-height:96px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.field .hint{font-size:14px;color:var(--muted);margin-top:5px}
+
+.ced-field{display:flex;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+.ced-field:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.ced-field .prefix{flex-shrink:0;padding:0 14px;font-weight:700;color:var(--muted);background:#eef1f7;font-size:16px;border:none;cursor:pointer;font-family:inherit}
+.ced-field input{flex:1;border:none;height:var(--btn-h);padding:0 12px;font-size:16px;font-family:inherit;outline:none;background:transparent;min-width:0}
+
+.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:12px;font-size:14px;margin-bottom:12px;line-height:1.45}
+.aviso .ic{font-size:18px;flex-shrink:0;line-height:1.3}
+.aviso-info{background:#e0ecfa;color:#1e3a8a}
+.aviso-warn{background:#fef9c3;color:#713f12}
+.aviso-error{background:#fee2e2;color:#7f1d1d}
+.aviso-success{background:#dcfce7;color:#14532d}
+
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+.pill-blue{background:#e0ecfa;color:#1e4d96}
+.pill-green{background:#dcfce7;color:#166534}
+.pill-amber{background:#fef3c7;color:#92400e}
+.pill-grey{background:#eef1f7;color:#4a5578}
+
+.nav-bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy);display:grid;grid-template-columns:repeat(5,1fr);z-index:60;padding-bottom:env(safe-area-inset-bottom)}
+.nav-bottom .nb{display:flex;flex-direction:column;align-items:center;gap:2px;color:#c9d6ea;font-size:13px;padding:9px 1px 7px;border:none;background:transparent;font-family:inherit;font-weight:500;cursor:pointer;min-height:60px;white-space:nowrap;overflow:hidden;letter-spacing:-.02em}
+.nav-bottom .nb i{font-size:19px;line-height:1}
+.nav-bottom .nb.active{color:var(--light)}
+
+.auth{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(160deg,var(--navy),var(--deep) 55%,var(--blue))}
+.auth .brand{margin:auto;text-align:center;color:#fff;padding:32px 24px;width:100%;max-width:420px}
+.auth .brand .big{width:110px;height:80px;margin:0 auto 18px}
+.auth .brand .big svg{border-radius:10px;width:100%;height:100%}
+.auth .brand h1{font-size:24px;font-weight:600;margin-bottom:5px}
+.auth .brand p{color:#c9d6ea;font-size:14px}
+.auth .card-a{background:var(--surface);border-radius:24px 24px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));width:100%;max-width:430px;margin:0 auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)}
+
+.hero-day{background:linear-gradient(135deg,var(--navy),var(--deep));color:#fff;border-radius:16px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.hero-day::before{content:'';position:absolute;top:-20px;right:-20px;width:110px;height:110px;background:rgba(255,255,255,.06);border-radius:50%}
+.hero-day .lbl{font-size:12px;letter-spacing:.1em;opacity:.75;font-weight:600;margin-bottom:6px;position:relative}
+.hero-day h2{font-size:19px;font-weight:600;line-height:1.25;margin-bottom:6px;position:relative}
+.hero-day .desc{font-size:14px;opacity:.9;line-height:1.45;margin-bottom:12px;position:relative}
+.hero-day .btn-hero{background:#fff;color:var(--navy);border:none;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;position:relative}
+.hero-day .btn-hero:disabled{opacity:.5;cursor:not-allowed}
+
+.week-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px}
+.week-strip .d{border-radius:10px;padding:9px 2px;text-align:center;font-size:12px;overflow:hidden;white-space:nowrap;background:var(--surface);border:.5px solid var(--border);color:var(--muted);font-weight:500;cursor:pointer;font-family:inherit}
+.week-strip .d .num{font-size:14px;color:var(--text);font-weight:600;margin-bottom:2px}
+.week-strip .d.done{background:#dcfce7;border-color:#a5eec1;color:#166534}
+.week-strip .d.done .num{color:#166534}
+.week-strip .d.today{background:var(--blue);color:#fff;border-color:var(--blue)}
+.week-strip .d.today .num{color:#fff}
+.week-strip .d.future{opacity:.55}
+
+.mat-item{display:flex;align-items:center;gap:10px;padding:11px 0;font-size:14px;cursor:pointer;border-top:.5px solid #f0f3f9;text-align:left;width:100%;background:none;border-left:none;border-right:none;border-bottom:none;font-family:inherit}
+.mat-item:first-of-type{border-top:none}
+.mat-item .icn{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mat-item .icn.pdf{background:#fee2e2;color:#991b1b}
+.mat-item .icn.ppt{background:#fef3c7;color:#92400e}
+.mat-item .n{flex:1;font-weight:500;color:var(--text)}
+.mat-item .sz{color:var(--muted);font-size:12px}
+
+.vacio{text-align:center;padding:36px 20px;color:var(--muted)}
+.vacio .em{font-size:40px;margin-bottom:10px}
+.vacio .t{font-weight:600;color:var(--text);margin-bottom:5px;font-size:15px}
+.vacio .d{font-size:14px;line-height:1.5}
+
+.prog-bar{height:6px;background:#e6ebf4;border-radius:999px;overflow:hidden;margin-bottom:16px}
+.prog-bar .f{height:100%;background:var(--blue);border-radius:999px;transition:width .35s ease;width:10%}
+.caso-tb{background:var(--navy);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50}
+.caso-tb .lbl{font-size:12px;letter-spacing:.08em;font-weight:600;opacity:.85;flex:1}
+.caso-tb button{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;border-radius:9px;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
+.escenario{background:linear-gradient(135deg,#1E4D96,#3869B1);color:#fff;border-radius:14px;padding:16px;margin-bottom:16px;font-size:15px;line-height:1.55}
+.escenario .q{font-size:12px;letter-spacing:.08em;opacity:.75;font-weight:600;margin-bottom:8px}
+.paso-t{font-size:15px;font-weight:600;margin:18px 0 10px;line-height:1.35}
+.paso-t .nn{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;align-items:center;justify-content:center;font-size:12px;margin-right:7px}
+.opt{display:flex;align-items:center;gap:11px;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;margin-bottom:8px;color:var(--text);line-height:1.4}
+.opt .box{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0}
+.opt.on{border-color:var(--blue);background:#f0f6ff}
+.opt.on .box{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 3px #fff}
+.conf{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}
+.conf button{padding:12px 2px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-size:18px;cursor:pointer;font-family:inherit}
+.conf button.on{border-color:var(--blue);background:var(--blue);color:#fff}
+.conf-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px}
+.calib{border-radius:14px;padding:14px;margin-bottom:14px}
+.calib.ok{background:#dcfce7;color:#14532d}
+.calib.warn{background:#fef9c3;color:#713f12}
+.calib.err{background:#fee2e2;color:#7f1d1d}
+.calib .ct{font-weight:700;font-size:15px;margin-bottom:5px}
+.calib .cd{font-size:14px;line-height:1.5}
+.ref{background:var(--surface);border:.5px solid var(--border);border-left:4px solid var(--blue);border-radius:0 14px 14px 0;padding:14px;margin-bottom:12px;font-size:14px;line-height:1.6}
+.ref h4{font-size:14px;font-weight:700;margin-bottom:7px;color:var(--deep)}
+.ref .porque{margin-top:12px;padding-top:12px;border-top:.5px solid var(--border)}
+.ref .porque li{margin:8px 0 8px 18px;line-height:1.5}
+
+.qr-full{background:var(--navy);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#fff;text-align:center}
+.qr-box{background:#fff;border-radius:20px;padding:16px;margin-bottom:18px}
+.qr-box svg{display:block;width:220px;height:220px}
+.qr-code-txt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;letter-spacing:.06em;color:var(--light);margin-bottom:14px}
+.qr-count{font-size:44px;font-weight:700;line-height:1;margin-bottom:2px}
+.qr-count small{font-size:16px;font-weight:500;opacity:.7}
+
+.scan-frame{background:#0d1020;border-radius:16px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:16px}
+.scan-frame .marco{width:64%;aspect-ratio:1;border:3px solid rgba(255,255,255,.85);border-radius:14px;position:relative}
+.scan-frame .laser{position:absolute;left:8%;right:8%;height:2px;background:#5ee08a;box-shadow:0 0 10px #5ee08a;animation:sc 2s ease-in-out infinite}
+@keyframes sc{0%,100%{top:18%}50%{top:78%}}
+.scan-frame .hint{position:absolute;bottom:14px;left:0;right:0;color:#fff;font-size:13px;opacity:.8}
+.res-big{border-radius:16px;padding:26px 18px;text-align:center;margin-bottom:14px}
+.res-big.ok{background:#dcfce7;color:#14532d}
+.res-big.dup{background:#fef9c3;color:#713f12}
+.res-big.err{background:#fee2e2;color:#7f1d1d}
+.res-big .em{font-size:52px;line-height:1;margin-bottom:8px}
+.res-n{font-size:22px;font-weight:700;margin-bottom:4px}
+.res-d{font-size:15px;line-height:1.45}
+
+.lista-est{background:var(--surface);border:.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.est-row{display:flex;align-items:center;gap:11px;padding:12px 13px;border-top:.5px solid #f0f3f9;font-size:14px}
+.est-row:first-child{border-top:none}
+.est-row .av{width:36px;height:36px;border-radius:50%;background:#e0ecfa;color:var(--deep);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0}
+.est-row .av.ok{background:#dcfce7;color:#166534}
+.est-row .inf{flex:1;min-width:0}
+.est-row .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.est-row .cd{font-size:12px;color:var(--muted)}
+.big-n{font-size:34px;font-weight:700;line-height:1.05;color:var(--navy)}
+.big-n small{font-size:15px;font-weight:500;color:var(--muted)}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:left}
+.stat .l{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.comp-row{display:flex;gap:11px;align-items:flex-start;background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px}
+.comp-row .nn{width:26px;height:26px;border-radius:8px;background:#e0ecfa;color:var(--deep);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.comp-row .t{font-size:14px;font-weight:600;line-height:1.35;margin-bottom:3px}
+.comp-row .d{font-size:14px;color:var(--muted);line-height:1.45}
+.duda-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px;font-size:14px;line-height:1.5}
+.duda-card .meta{font-size:12px;color:var(--muted);margin-top:7px}
+.preg-ia{background:linear-gradient(135deg,#1E4D96,#3869B1);color:#fff;border-radius:14px;padding:15px;margin-bottom:12px}
+.preg-ia .h{font-size:12px;letter-spacing:.08em;font-weight:600;opacity:.8;margin-bottom:10px}
+.preg-ia ol{margin-left:18px}
+.preg-ia li{margin:10px 0;line-height:1.45;font-size:15px}
+.modal-bg{position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--surface);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;position:relative}
+.st-title{font-size:18px;font-weight:600;margin-bottom:6px;padding-right:34px}
+.close-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:#eef1f7;font-size:16px;cursor:pointer;font-family:inherit;z-index:2}
+.demo-bar{background:#fff7e6;border:1px solid #f3d99b;border-radius:12px;padding:11px 13px;font-size:13px;color:#7a5b12;margin-bottom:14px;line-height:1.5}
+.demo-bar b{display:block;margin-bottom:3px}
+.carnet{background:linear-gradient(135deg,var(--navy),var(--deep));color:#fff;border-radius:16px;padding:16px;margin-bottom:14px}
+.carnet .lg{width:46px;height:34px;margin-bottom:12px}
+.carnet .lg svg{width:100%;height:100%;border-radius:6px}
+.carnet .cn{font-size:17px;font-weight:600;margin-bottom:2px}
+.carnet .cc{font-size:14px;color:#c9d6ea;margin-bottom:10px}
+.carnet .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-top:.5px solid rgba(255,255,255,.15)}
+.carnet .row span{color:#c9d6ea}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="v-login" class="auth">
+  <div class="brand">
+    <div class="big" id="iso-login"></div>
+    <h1>ZR Mecademy</h1>
+    <p>Aula Virtual · Fase 0</p>
+  </div>
+  <div class="card-a">
+    <div class="demo-bar">
+      <b>Prototipo · toca un rol para entrar</b>
+      Es una maqueta funcional de lo que se prueba el 5 de septiembre. Ningún dato es real.
+    </div>
+    <button class="btn btn-primary btn-lg mb-8" onclick="entrar('est')"><i class="ti ti-user"></i>Entrar como estudiante</button>
+    <button class="btn btn-outline btn-sm mb-8" onclick="entrar('admin')"><i class="ti ti-qr"></i>Entrar como administración</button>
+    <button class="btn btn-outline btn-sm" onclick="entrar('prof')"><i class="ti ti-users"></i>Entrar como profesor</button>
+
+    <div class="section-t" style="margin-top:22px">O con cédula, como el día real</div>
+    <div class="field">
+      <label for="l-ced">Cédula</label>
+      <div class="ced-field">
+        <button class="prefix" id="lp" onclick="togglePref()" aria-label="Cambiar prefijo">V-</button>
+        <input id="l-ced" type="tel" inputmode="numeric" placeholder="30000001" autocomplete="off">
+      </div>
+      <div class="hint">Prueba con 30000001 · 10000005 · 10000003</div>
+    </div>
+    <div class="field">
+      <label for="l-pass">Contraseña</label>
+      <input id="l-pass" type="password" placeholder="La que te dieron hoy" autocomplete="off">
+    </div>
+    <div class="aviso aviso-error hidden" id="l-err"><span class="ic">⛔</span><div>Cédula o contraseña incorrecta.</div></div>
+    <button class="btn btn-primary" onclick="entrarCedula()"><i class="ti ti-key"></i>Entrar</button>
+  </div>
+</div>
+
+<!-- ══════════════ ESTUDIANTE ══════════════ -->
+<div id="v-est" class="hidden">
+  <div class="tb">
+    <div class="logo"><span class="zr" id="iso-tb-e"></span><span>ZR Mecademy</span></div>
+    <div class="right"><span class="avat" id="e-avat">LH</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+  </div>
+
+  <!-- INICIO -->
+  <div id="pe-inicio" class="content">
+    <div class="demo-bar">
+      <b>Prototipo · ¿qué día quieres ver?</b>
+      <div style="display:flex;gap:6px;margin-top:7px">
+        <button class="btn btn-sm" id="sim-sem" style="background:#fff;border:1.5px solid #d8b872;color:#7a5b12" onclick="simularDia(1)">Un día de semana</button>
+        <button class="btn btn-sm" id="sim-sab" style="background:#fff;border:1.5px solid #d8b872;color:#7a5b12" onclick="simularDia(5)">El sábado de clase</button>
+      </div>
+    </div>
+    <div class="section-t" id="pe-hoy-label">Hoy, martes 8 de septiembre</div>
+    <div class="week-strip" id="pe-week"></div>
+    <div class="hero-day">
+      <div class="lbl" id="pe-hero-lbl">MARTES · SEMANA 1</div>
+      <h2 id="pe-hero-t">El caso de hoy</h2>
+      <div class="desc" id="pe-hero-d">Un cliente trae su carro con una falla. Plantea tu diagnóstico y compáralo con la referencia.</div>
+      <button class="btn-hero" id="pe-hero-btn" onclick="accionDia()"><i class="ti ti-tools"></i><span id="pe-hero-btn-t">Trabajar el caso</span></button>
+      <div class="aviso aviso-warn hidden" id="pe-hero-lock" style="margin:12px 0 0;position:relative"><span class="ic">🔒</span><div>Esta actividad se abre ese día. Puedes ver de qué se trata, pero todavía no trabajarla.</div></div>
+    </div>
+
+    <div class="section-t">Tu módulo</div>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="navE('modulo')">
+      <h3>Módulo 1 · Introducción al diagnóstico</h3>
+      <div class="sub">6 competencias · toca para ver qué vas a aprender</div>
+    </button>
+
+    <div class="section-t">Lo demás</div>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="navE('material')">
+      <h3><i class="ti ti-folder"></i> Material del módulo</h3>
+      <div class="sub" id="pe-mat-sub">3 documentos publicados</div>
+    </button>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="navE('duda')">
+      <h3><i class="ti ti-message"></i> Mandar una duda</h3>
+      <div class="sub">El profesor las responde el sábado en la clínica</div>
+    </button>
+  </div>
+
+  <!-- MATERIAL -->
+  <div id="pe-material" class="content hidden">
+    <div class="section-t">Material · Módulo 1</div>
+    <div class="card" id="pe-mat-list"></div>
+    <div class="aviso aviso-info"><span class="ic">💡</span><div>Se descargan una vez y quedan en tu teléfono. Puedes abrirlos sin internet.</div></div>
+  </div>
+
+  <!-- MI MÓDULO -->
+  <div id="pe-modulo" class="content hidden">
+    <div class="hero-day">
+      <div class="lbl">MÓDULO 1 · SEMANA 1 DE 4</div>
+      <h2>Introducción al diagnóstico</h2>
+      <div class="desc" style="margin-bottom:0">Esto es lo que vas a saber hacer cuando termines el módulo.</div>
+    </div>
+    <div class="section-t">Lo que se aprende aquí</div>
+    <div id="pe-comp-list"></div>
+    <div class="aviso aviso-info"><span class="ic">📅</span><div>Las competencias <b>no se califican en esta fase</b>. Están aquí para que sepas hacia dónde vas.</div></div>
+  </div>
+
+  <!-- DUDAS -->
+  <div id="pe-duda" class="content hidden">
+    <div class="section-t">Mandar una duda</div>
+    <div class="card">
+      <div class="field" style="margin-bottom:10px">
+        <label for="d-txt">¿Qué es lo que no te quedó claro? Escríbelo como pregunta.</label>
+        <textarea id="d-txt" placeholder="Por ejemplo: ¿por qué se revisa primero lo que está a la vista?"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="enviarDuda()"><i class="ti ti-message"></i>Enviar mi duda</button>
+    </div>
+    <div class="aviso aviso-info"><span class="ic">💬</span><div>Tu profesor las agrupa y responde las más repetidas el sábado. <b>No es anónima</b>, para que pueda volver contigo.</div></div>
+    <div class="section-t">Las que has mandado</div>
+    <div id="pe-mis-dudas"></div>
+  </div>
+
+  <!-- PERFIL -->
+  <div id="pe-perfil" class="content hidden">
+    <div class="section-t">Tu carnet</div>
+    <div class="carnet">
+      <div class="lg" id="iso-carnet"></div>
+      <div class="cn" id="c-nom">Luis Hernández</div>
+      <div class="cc" id="c-ced">V-30000001 · Mecánica Automotriz</div>
+      <div class="row"><span>Código</span><b id="c-cod">ZR-2026-02-001</b></div>
+      <div class="row"><span>Sede</span><b>Sede principal</b></div>
+      <div class="row"><span>Turno</span><b>Sábado · 8:00 am</b></div>
+      <div class="row"><span>Módulo</span><b>1 · Introducción</b></div>
+    </div>
+    <div class="aviso aviso-success"><span class="ic">✓</span><div>Tu carnet se guardó en el teléfono. <b>Se ve sin señal.</b></div></div>
+    <button class="btn btn-ghost mt-8" onclick="salir()"><i class="ti ti-out"></i>Cerrar sesión</button>
+  </div>
+
+  <!-- CASO (pantalla completa) -->
+  <div id="pe-caso" class="hidden">
+    <div class="caso-tb">
+      <button onclick="cerrarCaso()" aria-label="Volver">←</button>
+      <div class="lbl" id="caso-lbl">CASO DEL MARTES · SEMANA 1</div>
+    </div>
+    <div class="content no-nav">
+      <div class="prog-bar"><div class="f" id="caso-fill"></div></div>
+      <div class="escenario">
+        <div class="q">EL CASO</div>
+        <div id="caso-escenario"></div>
+      </div>
+      <div id="caso-pasos"></div>
+      <button class="btn btn-primary btn-lg mt-16" id="btn-revelar" onclick="revelar()"><i class="ti ti-bulb"></i>Ver la respuesta de referencia</button>
+      <div id="caso-reveal" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- ESCANEAR (pantalla completa) -->
+  <div id="pe-escanear" class="hidden">
+    <div class="caso-tb">
+      <button onclick="cerrarEscaneo()" aria-label="Volver">←</button>
+      <div class="lbl">MARCAR ASISTENCIA</div>
+    </div>
+    <div class="content no-nav">
+      <div id="scan-antes">
+        <div class="aviso aviso-info"><span class="ic">📷</span><div><b>Vamos a usar la cámara</b> para leer el código que está en la pantalla del salón. No se guarda ninguna foto.</div></div>
+        <div class="scan-frame"><div class="marco"><div class="laser"></div></div><div class="hint">Apunta al código de la pantalla</div></div>
+        <button class="btn btn-primary btn-lg" onclick="simScan()"><i class="ti ti-camera"></i>Simular escaneo</button>
+        <button class="btn btn-ghost mt-8" onclick="simScanUsado()">Simular código ya usado</button>
+      </div>
+      <div id="scan-res" class="hidden"></div>
+    </div>
+  </div>
+
+  <div class="nav-bottom" id="nav-est">
+    <button class="nb active" id="nb-inicio" onclick="navE('inicio')"><i class="ti ti-home"></i>Inicio</button>
+    <button class="nb" id="nb-material" onclick="navE('material')"><i class="ti ti-folder"></i>Material</button>
+    <button class="nb" id="nb-modulo" onclick="navE('modulo')"><i class="ti ti-target"></i>Mi módulo</button>
+    <button class="nb" id="nb-duda" onclick="navE('duda')"><i class="ti ti-message"></i>Dudas</button>
+    <button class="nb" id="nb-perfil" onclick="navE('perfil')"><i class="ti ti-user"></i>Perfil</button>
+  </div>
+</div>
+
+<!-- ══════════════ ADMINISTRACIÓN ══════════════ -->
+<div id="v-admin" class="hidden">
+  <div class="tb">
+    <div class="logo"><span class="zr" id="iso-tb-a"></span><span>Administración</span></div>
+    <div class="right"><span class="avat">AF</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+  </div>
+
+  <div id="pa-panel" class="content">
+    <div class="section-t">Sábado 5 de septiembre · 8:00 am</div>
+    <div class="grid2">
+      <div class="stat"><div class="big-n" id="a-pres">0<small>/24</small></div><div class="l">Registrados</div></div>
+      <div class="stat"><div class="big-n" id="a-falt">24</div><div class="l">Faltan</div></div>
+    </div>
+    <div class="aviso aviso-warn"><span class="ic">✋</span><div><b>Hoy son estudiantes nuevos.</b> Nadie llega con la app. Empieza por el <b>registro manual</b>; el QR se muestra después, ya en clase.</div></div>
+    <button class="btn btn-primary btn-lg mb-8" onclick="navA('asistencia')"><i class="ti ti-hand"></i>Registrar a mano</button>
+    <button class="btn btn-outline" onclick="abrirQR()"><i class="ti ti-qr"></i>Mostrar el QR en pantalla</button>
+  </div>
+
+  <div id="pa-asistencia" class="content hidden">
+    <div class="section-t">Asistencia · Sábado 5 de septiembre</div>
+    <div class="grid2">
+      <div class="stat"><div class="big-n" id="a-pres2">0<small>/24</small></div><div class="l">Registrados</div></div>
+      <div class="stat"><div class="big-n" id="a-manual">0</div><div class="l">A mano</div></div>
+    </div>
+    <div class="field" style="margin-bottom:10px">
+      <input id="a-buscar" type="search" placeholder="🔍 Buscar por nombre o cédula" oninput="pintarLista()">
+    </div>
+    <div class="lista-est" id="a-lista"></div>
+  </div>
+
+  <div id="pa-material" class="content hidden">
+    <div class="section-t">Subir material</div>
+    <div class="card">
+      <div class="field"><label for="m-tit">Título</label><input id="m-tit" placeholder="Presentación de la semana 1"></div>
+      <div class="field" style="margin-bottom:10px"><label for="m-mod">Módulo</label><select id="m-mod"><option>Módulo 1 · Introducción al diagnóstico</option></select></div>
+      <button class="btn btn-primary" onclick="subirMaterial()"><i class="ti ti-upload"></i>Subir PDF</button>
+    </div>
+    <div class="section-t">Publicado</div>
+    <div class="card" id="a-mat-list"></div>
+  </div>
+
+  <div id="pa-perfil" class="content hidden">
+    <div class="section-t">Sesión</div>
+    <div class="card"><h3>Administración y Finanzas</h3><div class="sub">V-10000005 · Sede principal</div></div>
+    <button class="btn btn-ghost mt-8" onclick="salir()"><i class="ti ti-out"></i>Cerrar sesión</button>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb active" id="na-panel" onclick="navA('panel')"><i class="ti ti-home"></i>Inicio</button>
+    <button class="nb" id="na-asistencia" onclick="navA('asistencia')"><i class="ti ti-users"></i>Asistencia</button>
+    <button class="nb" onclick="abrirQR()"><i class="ti ti-qr"></i>QR</button>
+    <button class="nb" id="na-material" onclick="navA('material')"><i class="ti ti-folder"></i>Material</button>
+    <button class="nb" id="na-perfil" onclick="navA('perfil')"><i class="ti ti-user"></i>Perfil</button>
+  </div>
+</div>
+
+<!-- QR A PANTALLA COMPLETA -->
+<div id="v-qr" class="hidden">
+  <div class="qr-full">
+    <div style="font-size:13px;letter-spacing:.1em;opacity:.7;font-weight:600;margin-bottom:14px">ESCANEA ESTE CÓDIGO</div>
+    <div class="qr-box" id="qr-draw"></div>
+    <div class="qr-code-txt" id="qr-txt">ZR-A7K2-M9</div>
+    <div class="qr-count"><span id="qr-n">0</span><small>/24</small></div>
+    <div style="font-size:14px;opacity:.75;margin-bottom:22px">ya escanearon</div>
+    <button class="btn btn-success" style="max-width:300px" onclick="qrEscaneado()"><i class="ti ti-check"></i>Simular que alguien escanea</button>
+    <button class="btn btn-ghost mt-8" style="max-width:300px;color:var(--light)" onclick="cerrarQR()">Volver</button>
+    <div style="font-size:13px;opacity:.6;margin-top:18px;max-width:320px;line-height:1.5">Cada código muere al usarse y aparece otro. Fotografiarlo no sirve.</div>
+  </div>
+</div>
+
+<!-- ══════════════ PROFESOR ══════════════ -->
+<div id="v-prof" class="hidden">
+  <div class="tb">
+    <div class="logo"><span class="zr" id="iso-tb-p"></span><span>Profesor</span></div>
+    <div class="right"><span class="avat">CR</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+  </div>
+
+  <div id="pp-hoy" class="content">
+    <div class="section-t">Sábado 5 de septiembre</div>
+    <div class="hero-day">
+      <div class="lbl">TU CLASE DE HOY</div>
+      <h2>Módulo 1 · Introducción al diagnóstico</h2>
+      <div class="desc" style="margin-bottom:0">Taller 2 · 8:00 am · 24 estudiantes inscritos</div>
+    </div>
+    <div class="section-t">Asistencia en vivo</div>
+    <div class="grid2">
+      <div class="stat"><div class="big-n" id="p-pres">0<small>/24</small></div><div class="l">Ya llegaron</div></div>
+      <div class="stat"><div class="big-n" id="p-falt">24</div><div class="l">Faltan</div></div>
+    </div>
+    <div class="aviso aviso-info"><span class="ic">👁️</span><div>El conteo sube solo. <b>Tú no manejas ningún código</b>: administración muestra el QR.</div></div>
+  </div>
+
+  <div id="pp-dudas" class="content hidden">
+    <div class="section-t">Dudas de la semana</div>
+    <div id="p-digest"></div>
+    <div class="section-t">Las dudas, tal cual las escribieron</div>
+    <div id="p-dudas-crudas"></div>
+  </div>
+
+  <div id="pp-casos" class="content hidden">
+    <div class="section-t">Quién trabajó los casos</div>
+    <div class="card"><h3>Semana 1 · Módulo 1</h3><div class="sub">Se actualiza solo, cada día</div></div>
+    <div id="p-casos-list"></div>
+    <div class="aviso aviso-info"><span class="ic">🔒</span><div><b>Solo ves el número, no los nombres.</b> En esta fase el caso no tiene nota, y una lista de nombres solo produciría presión.</div></div>
+  </div>
+
+  <div id="pp-material" class="content hidden">
+    <div class="section-t">Material del módulo</div>
+    <div class="card" id="p-mat-list"></div>
+  </div>
+
+  <div id="pp-perfil" class="content hidden">
+    <div class="section-t">Sesión</div>
+    <div class="card"><h3>Prof. Carlos Rivas</h3><div class="sub">V-10000003 · Módulo 1</div></div>
+    <button class="btn btn-ghost mt-8" onclick="salir()"><i class="ti ti-out"></i>Cerrar sesión</button>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb active" id="np-hoy" onclick="navP('hoy')"><i class="ti ti-home"></i>Hoy</button>
+    <button class="nb" id="np-dudas" onclick="navP('dudas')"><i class="ti ti-message"></i>Dudas</button>
+    <button class="nb" id="np-casos" onclick="navP('casos')"><i class="ti ti-list"></i>Casos</button>
+    <button class="nb" id="np-material" onclick="navP('material')"><i class="ti ti-folder"></i>Material</button>
+    <button class="nb" id="np-perfil" onclick="navP('perfil')"><i class="ti ti-user"></i>Perfil</button>
+  </div>
+</div>
+
+<div id="modal-host"></div>
+</div>
+<script>
+/* ===================================================================
+   ZR APP · PROTOTIPO FASE 0
+   Maqueta funcional de lo que se prueba el 5 de septiembre de 2026.
+   Alcance: fase0/00_LEEME.md · Pantallas: fase0/01_ENTREGABLE.md
+   =================================================================== */
+
+/* CONFIG — en producción esto vive en system_config (regla 5).
+   En Fase 0 NO hay notas, así que aquí no hay ningún umbral. */
+const CONFIG = {
+  moduloActual: 1,
+  totalEstudiantes: 24,
+  minRespuestasFeedback: 3
+};
+
+const ISO = '<svg viewBox="57 187 966 706" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect fill="#3869b1" x="57.28" y="187.14" width="965.45" height="705.72" rx="66.74"/><polygon fill="#fff" points="316.83 333.13 246.7 430.76 235.72 446.05 146.34 446.05 146.34 333.13 316.83 333.13"/><polygon fill="#fff" points="498.36 333.13 498.36 377.9 451.7 446.05 323.09 633.98 323.06 633.98 320.78 637.31 245.51 746.87 146.34 746.87 146.34 681.61 179.02 633.98 262.75 511.98 308.07 446.05 385.68 333.13 498.36 333.13"/><path fill="#fff" d="M498.36,634V746.87s-120.19-1-183.53-1.41l68.79-96.89L394,634Z"/><rect fill="#fff" x="548.94" y="333.13" width="112.93" height="413.75"/><path fill="#fff" d="M860.55,602.47c-4.95,2.78-10.07,5.06-10.07,5.06a137.22,137.22,0,0,1-18.85,6.92L931,746.87H789.72l-70.32-93.1V502.5H790A28.32,28.32,0,0,0,818,478.06a25.36,25.36,0,0,0,.28-3.89v-.25A25.4,25.4,0,0,0,818,470,28.36,28.36,0,0,0,790,445.58H719.4V333.13l79.47.25a142.56,142.56,0,0,1,70,22.24c46.8,30.2,58.93,78.5,61.38,89.4a146.55,146.55,0,0,1,.47,60.62A141.65,141.65,0,0,1,904.21,565,159.9,159.9,0,0,1,860.55,602.47Z"/></svg>';
+
+/* ---------- LA SEMANA ---------- */
+const DIAS = [
+  { k:'lun', n:'L', lbl:'LUN 7 SEP', etiq:'Caso' },
+  { k:'mar', n:'M', lbl:'MAR 8 SEP', etiq:'Caso' },
+  { k:'mie', n:'X', lbl:'MIÉ 9 SEP', etiq:'Caso' },
+  { k:'jue', n:'J', lbl:'JUE 10 SEP', etiq:'Caso' },
+  { k:'vie', n:'V', lbl:'VIE 11 SEP', etiq:'Caso' },
+  { k:'sab', n:'S', lbl:'SÁB 12 SEP', etiq:'Clase' }
+];
+let HOY_REAL = 1;             // martes · el prototipo permite moverlo (simularDia)
+let hoyIdx = HOY_REAL;
+
+/* ---------- EL BANCO DE CASOS ----------
+   Regla de seguridad (fase0/03_CASOS.md §1): conceptuales, sin cifras.
+   Estos se producen fuera de la app y se cargan ya aprobados.        */
+const CASOS = {
+  lun: {
+    titulo: 'El carro que arranca flojo en la mañana',
+    escenario: 'Un cliente trae su carro. Dice que en la mañana, cuando arranca por primera vez, el motor «se demora y suena flojo», pero que si lo intenta una segunda vez arranca bien. En la tarde nunca le ha pasado.',
+    p1: { q:'¿Cuál es tu primera hipótesis?', ops:[
+      'El sistema de arranque no está recibiendo suficiente energía',
+      'El motor de arranque está dañado y hay que cambiarlo',
+      'El combustible no está llegando bien',
+      'Es normal en las mañanas frías, no hay falla'
+    ], ok:0 },
+    p2: { q:'¿Qué revisarías primero?', ops:[
+      'El estado y la conexión de los bornes, antes de desconectar nada',
+      'Desmontar el motor de arranque para revisarlo',
+      'El filtro de combustible',
+      'Nada: le digo que lo deje encendido más tiempo'
+    ], ok:0 },
+    p3: '¿Por qué crees que pasa en la mañana y no en la tarde? ¿Qué te dice que arranque al segundo intento?',
+    ref: {
+      que: 'El sistema de arranque no está recibiendo la energía que necesita. El patrón de «en frío falla, en caliente no» y de «al segundo intento sí» apunta a que la energía disponible está justo en el límite: el primer intento la consume, pero también «despierta» lo suficiente para que el segundo funcione.',
+      no: [
+        '<b>Motor de arranque dañado</b> — si estuviera dañado fallaría también en la tarde. Una falla que depende de la temperatura y de la hora rara vez es una pieza rota; suele ser energía.',
+        '<b>Combustible</b> — un problema de combustible no mejora al segundo intento inmediato, y normalmente también da síntomas con el motor caliente.',
+        '<b>Es normal</b> — que arranque «flojo» no es normal. Es un aviso temprano, y cuesta mucho menos atenderlo ahora que cuando el carro no arranque del todo un lunes a las 6 de la mañana.'
+      ],
+      llevar: 'Antes de desmontar nada, se revisa lo que está a la vista y lo que es reversible. Desconectar y desmontar cuesta tiempo y puede introducir fallas nuevas.'
+    }
+  },
+  mar: {
+    titulo: 'La luz que se pone débil al frenar',
+    escenario: 'Una clienta dice que cuando frena de noche, las luces del tablero «se ponen flojas» por un momento y luego vuelven. El carro nunca se ha apagado y arranca sin problema.',
+    p1: { q:'¿Cuál es tu primera hipótesis?', ops:[
+      'Hay una conexión con mala calidad en el circuito, que se nota cuando sube la demanda',
+      'Las luces del tablero están quemadas',
+      'El sistema de frenos está fallando',
+      'Es un defecto normal de fábrica del modelo'
+    ], ok:0 },
+    p2: { q:'¿Qué revisarías primero?', ops:[
+      'Los puntos de conexión y las masas, buscando suciedad, holgura o corrosión',
+      'Cambiar todas las luces del tablero',
+      'Purgar el sistema de frenos',
+      'Nada, porque el carro funciona'
+    ], ok:0 },
+    p3: '¿Por qué el síntoma aparece justo al frenar y no en otro momento?',
+    ref: {
+      que: 'Casi siempre es una conexión de mala calidad. Al frenar de noche se suman varios consumos a la vez, y una conexión floja o sucia que aguantaba con poca demanda deja de aguantar cuando la demanda sube. Por eso el síntoma es momentáneo y vuelve solo.',
+      no: [
+        '<b>Luces quemadas</b> — una luz quemada no vuelve. El síntoma que aparece y desaparece apunta a conexión, no a la pieza.',
+        '<b>Sistema de frenos</b> — el freno solo es el disparador porque activa un consumo. El problema no está en el freno.',
+        '<b>Defecto de fábrica</b> — es la respuesta que cierra la puerta a buscar. Si el carro funcionó bien antes, algo cambió.'
+      ],
+      llevar: 'Un síntoma que aparece justo cuando sube la demanda, y que se corrige solo, casi nunca es una pieza rota: es una conexión que ya no da lo que daba.'
+    }
+  },
+  mie: {
+    titulo: 'Dos mecánicos, dos diagnósticos',
+    escenario: 'Un carro entra con una falla. Un compañero dice que es una cosa; otro dice que es otra distinta. Los dos tienen argumentos y ninguno ha medido nada todavía. El cliente está esperando.',
+    p1: { q:'¿Qué haces primero?', ops:[
+      'Preguntar qué observación concreta sostiene cada hipótesis',
+      'Hacerle caso al que tiene más años de experiencia',
+      'Empezar a desarmar por donde dice el primero',
+      'Decirle al cliente que vuelva mañana'
+    ], ok:0 },
+    p2: { q:'¿Cómo decides por dónde seguir?', ops:[
+      'Por la revisión que descarte más posibilidades de una vez, aunque no confirme ninguna',
+      'Por la que sea más rápida de hacer',
+      'Por la que confirme la hipótesis que a ti te parece correcta',
+      'Por la que menos ensucie'
+    ], ok:0 },
+    p3: 'Explica por qué conviene más una revisión que descarta varias causas que una que confirma solo una.',
+    ref: {
+      que: 'Se le pide a cada uno la observación concreta en la que se apoya, y después se elige la revisión que descarte más caminos de una vez. Diagnosticar es cerrar puertas en orden, no adivinar la correcta de primero.',
+      no: [
+        '<b>Los años de experiencia</b> — ayudan a generar buenas hipótesis, no a saltarse la comprobación. Un buen mecánico también se equivoca, y lo sabe.',
+        '<b>Empezar a desarmar</b> — es la decisión más cara y la menos reversible. Se toma al final, no al principio.',
+        '<b>Que vuelva mañana</b> — no resuelve nada y pierde al cliente. La duda entre dos hipótesis es exactamente el trabajo, no un obstáculo para el trabajo.'
+      ],
+      llevar: 'Cuando dos hipótesis compiten, la revisión que más vale no es la que confirma una: es la que elimina más. Y siempre se empieza por lo reversible.'
+    }
+  },
+  jue: {
+    titulo: 'Lo que el cliente no cuenta',
+    escenario: 'Llega un carro con una falla que aparece «de vez en cuando». El cliente no sabe decir cuándo. Tú no puedes reproducirla en el taller: probaste media hora y funcionó perfecto todo el tiempo.',
+    p1: { q:'¿Cuál es tu mejor jugada?', ops:[
+      'Preguntarle al cliente por el contexto: hora, clima, carga, qué estaba haciendo',
+      'Decirle que no tiene nada, porque no falló',
+      'Cambiar la pieza que más suele fallar en ese modelo',
+      'Dejarlo encendido todo el día a ver si pasa'
+    ], ok:0 },
+    p2: { q:'¿Qué preguntas de estas sirve más?', ops:[
+      '«¿Pasa más cuando el carro lleva rato apagado, o cuando ya lleva rato andando?»',
+      '«¿Usted cree que es caro?»',
+      '«¿Quién se lo arregló la última vez?»',
+      '«¿Qué marca de repuestos prefiere?»'
+    ], ok:0 },
+    p3: '¿Por qué una falla intermitente que depende del contexto es una pista y no un obstáculo?',
+    ref: {
+      que: 'Se investiga el contexto. Una falla intermitente casi nunca es aleatoria: depende de algo — la temperatura, el tiempo andando, la carga, la humedad. Ese «algo» es la pista más valiosa que hay, y el único que lo vio es el cliente.',
+      no: [
+        '<b>«No tiene nada»</b> — que no falle en media hora no significa que no falle. Significa que no reprodujiste la condición.',
+        '<b>Cambiar la pieza que más falla</b> — es adivinar con el dinero del cliente. Y si acierta por suerte, no aprendiste nada.',
+        '<b>Dejarlo encendido todo el día</b> — gasta un día entero sin controlar la variable que importa. Reproducir sin hipótesis es esperar.'
+      ],
+      llevar: 'El cliente no es solo quien paga: es el único testigo de la falla. Saber preguntarle es una habilidad técnica, no una cortesía.'
+    }
+  },
+  vie: {
+    titulo: 'La reparación que duró tres días',
+    escenario: 'Un carro vuelve al taller. Hace tres días se reparó lo que se diagnosticó, el cliente se fue contento, y ahora está de vuelta con el mismo síntoma.',
+    p1: { q:'¿Qué es lo más probable?', ops:[
+      'Se trató un efecto y no la causa que lo produce',
+      'El repuesto que se puso venía malo',
+      'El cliente hizo algo mal',
+      'Es mala suerte'
+    ], ok:0 },
+    p2: { q:'¿Por dónde empiezas ahora?', ops:[
+      'Por revisar qué evidencia sostuvo el diagnóstico anterior, y qué no se comprobó',
+      'Por repetir la misma reparación con otro repuesto',
+      'Por revisar todo el carro desde cero, ignorando lo anterior',
+      'Por cobrarle de nuevo la revisión'
+    ], ok:0 },
+    p3: 'Explica la diferencia entre tratar un efecto y tratar la causa. Da un ejemplo tuyo.',
+    ref: {
+      que: 'Lo más probable es que se atendió un efecto y no la causa. Una pieza que se daña puede ser la víctima de otra cosa que sigue ahí. Si la causa no se toca, el síntoma vuelve — y el tiempo que tarda en volver suele ser la pista de qué es.',
+      no: [
+        '<b>Repuesto malo</b> — ocurre, pero es la primera explicación que uno quiere creer porque no obliga a revisar el propio razonamiento. Se comprueba, no se asume.',
+        '<b>Culpa del cliente</b> — cierra la investigación y daña la relación. Si el uso del cliente rompe la reparación, eso también es parte del diagnóstico.',
+        '<b>Mala suerte</b> — no es una categoría técnica. Todo lo que vuelve tiene una razón.'
+      ],
+      llevar: 'Un trabajo que vuelve no es un fracaso: es la información más honesta que da el oficio. Lo que hay que revisar primero es el razonamiento, no la pieza.'
+    }
+  }
+};
+
+/* ---------- COMPETENCIAS DEL MÓDULO (lista, sin estado) ---------- */
+const COMPETENCIAS = [
+  { t:'Recoger la información del cliente', d:'Preguntar de forma que la respuesta sirva para diagnosticar, no solo para conversar.' },
+  { t:'Formular una hipótesis y sostenerla', d:'Decir qué crees que pasa y en qué observación concreta te apoyas.' },
+  { t:'Ordenar las revisiones', d:'Empezar por lo visible y lo reversible, y dejar lo caro e irreversible para el final.' },
+  { t:'Descartar con criterio', d:'Elegir la comprobación que elimina más caminos, no la que confirma tu corazonada.' },
+  { t:'Distinguir causa de efecto', d:'Reconocer cuándo una pieza dañada es la víctima de otra cosa que sigue ahí.' },
+  { t:'Trabajar con seguridad', d:'Aplicar las normas del taller antes de tocar nada, siempre y sin excepción.' }
+];
+
+/* ---------- ESTUDIANTES ---------- */
+const NOMBRES = ['Ana Fernández','Pedro Silva','Luis Hernández','Carlos Ramos','Daniela Rojas','Miguel Sosa','Yorbelis Marcano','José Peña','Keiber Montilla','Génesis Blanco','Anthony Guerra','Rosangel Duarte','Jhoan Castillo','Andreína Colmenares','Wilmer Chacón','Yeferson Rangel','Nairobis Salazar','Endrik Villalba','Deivis Araujo','Yulimar Bastidas','María Pérez','Franyer Mendoza','Kervin Toro','Jesús Ortiz'];
+const ALUMNOS = NOMBRES.map((n,i) => ({
+  ced: 'V-3000' + String(i+1).padStart(4,'0'),
+  nom: n,
+  ini: n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase(),
+  presente: false,
+  metodo: null,
+  motivo: null
+}));
+
+/* ---------- MATERIAL ---------- */
+let MATERIAL = [
+  { t:'Presentación · Semana 1', tipo:'ppt', sz:'4,2 MB' },
+  { t:'Guía de diagnóstico · Módulo 1', tipo:'pdf', sz:'1,8 MB' },
+  { t:'Normas de seguridad del taller', tipo:'pdf', sz:'640 KB' }
+];
+
+/* ---------- DUDAS ---------- */
+let DUDAS = [
+  { txt:'¿Por qué hay que revisar primero lo que está a la vista?', dia:'lunes' },
+  { txt:'No entendí bien cuándo un síntoma es de conexión y cuándo es de una pieza dañada', dia:'lunes' },
+  { txt:'¿Cómo sé por dónde empezar si tengo dos hipótesis?', dia:'martes' },
+  { txt:'¿Qué le pregunto al cliente cuando dice que la falla es de vez en cuando?', dia:'martes' },
+  { txt:'¿Por qué no conviene desarmar de una vez si uno ya sabe lo que es?', dia:'martes' },
+  { txt:'me perdí en la parte de causa y efecto', dia:'miércoles' },
+  { txt:'¿Qué se hace si el cliente no sabe explicar cuándo pasa la falla?', dia:'miércoles' },
+  { txt:'¿Cuál revisión escojo, la más rápida o la que descarta más?', dia:'miércoles' }
+];
+let MIS_DUDAS = [];
+
+/* Las 3 preguntas que la IA sintetiza. En producción sale de la Edge
+   Function `resumir-dudas`, que solo recibe los TEXTOS — nunca nombres
+   ni cédulas (metodologia/01_MODELO.md §5.1). */
+const DIGEST = [
+  '¿En qué orden se revisa un sistema, y por qué se empieza siempre por lo visible y lo reversible?',
+  '¿Cómo se distingue un síntoma causado por una conexión de mala calidad de uno causado por una pieza dañada?',
+  '¿Qué se le pregunta a un cliente cuando la falla es intermitente y no se puede reproducir en el taller?'
+];
+
+/* ---------- CASOS TRABAJADOS (solo conteo, sin nombres) ---------- */
+const CASOS_HECHOS = [
+  { dia:'Lunes', n:19 }, { dia:'Martes', n:14 },
+  { dia:'Miércoles', n:0, futuro:true }, { dia:'Jueves', n:0, futuro:true },
+  { dia:'Viernes', n:0, futuro:true }
+];
+
+/* =================== NAVEGACIÓN =================== */
+const VISTAS = ['login','est','admin','prof','qr'];
+function show(id){
+  VISTAS.forEach(v => document.getElementById('v-'+v).classList.add('hidden'));
+  document.getElementById('v-'+id).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+function togglePref(){
+  const e = document.getElementById('lp');
+  e.textContent = e.textContent === 'V-' ? 'E-' : 'V-';
+}
+function entrarCedula(){
+  const num = document.getElementById('l-ced').value.replace(/\D/g,'');
+  const pass = document.getElementById('l-pass').value;
+  const err = document.getElementById('l-err');
+  const mapa = { '30000001':'est', '10000005':'admin', '10000003':'prof' };
+  if(!pass || !mapa[num]){ err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  entrar(mapa[num]);
+}
+function entrar(rol){
+  if(rol === 'est'){ show('est'); navE('inicio'); }
+  else if(rol === 'admin'){ show('admin'); navA('panel'); }
+  else { show('prof'); navP('hoy'); }
+}
+function salir(){
+  hoyIdx = HOY_REAL;
+  casoState = { p1:null, p2:null, conf:null, revelado:false };
+  document.getElementById('l-ced').value = '';
+  document.getElementById('l-pass').value = '';
+  document.getElementById('l-err').classList.add('hidden');
+  cerrarMod();
+  show('login');
+}
+
+function navE(p){
+  ['inicio','material','modulo','duda','perfil','caso','escanear']
+    .forEach(x => { const e = document.getElementById('pe-'+x); if(e) e.classList.add('hidden'); });
+  document.querySelectorAll('#nav-est .nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('pe-'+p).classList.remove('hidden');
+  const nb = document.getElementById('nb-'+p); if(nb) nb.classList.add('active');
+  document.getElementById('nav-est').classList.remove('hidden');
+  if(p === 'inicio'){ pintarSemana(); pintarHero(); }
+  if(p === 'material') pintarMaterial();
+  if(p === 'modulo') pintarCompetencias();
+  if(p === 'duda') pintarMisDudas();
+  window.scrollTo(0,0);
+}
+function navA(p){
+  ['panel','asistencia','material','perfil']
+    .forEach(x => document.getElementById('pa-'+x).classList.add('hidden'));
+  document.querySelectorAll('#v-admin .nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('pa-'+p).classList.remove('hidden');
+  const nb = document.getElementById('na-'+p); if(nb) nb.classList.add('active');
+  if(p === 'asistencia') pintarLista();
+  if(p === 'material') pintarMaterialAdmin();
+  refrescarContadores();
+  window.scrollTo(0,0);
+}
+function navP(p){
+  ['hoy','dudas','casos','material','perfil']
+    .forEach(x => document.getElementById('pp-'+x).classList.add('hidden'));
+  document.querySelectorAll('#v-prof .nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('pp-'+p).classList.remove('hidden');
+  const nb = document.getElementById('np-'+p); if(nb) nb.classList.add('active');
+  if(p === 'dudas') pintarDudasProf();
+  if(p === 'casos') pintarCasosProf();
+  if(p === 'material') pintarMaterialProf();
+  refrescarContadores();
+  window.scrollTo(0,0);
+}
+
+/* =================== ESTUDIANTE · INICIO =================== */
+function pintarSemana(){
+  const c = document.getElementById('pe-week');
+  c.innerHTML = DIAS.map((d,i) => {
+    const cls = i === hoyIdx ? 'today' : (i < HOY_REAL ? 'done' : 'future');
+    const cand = i > HOY_REAL ? ' 🔒' : '';
+    return `<button class="d ${cls}" onclick="verDia(${i})"><div class="num">${d.n}</div>${d.etiq}${cand}</button>`;
+  }).join('');
+}
+function verDia(i){ hoyIdx = i; pintarSemana(); pintarHero(); }
+
+/* Control solo del prototipo: mueve el "hoy" simulado para poder enseñar
+   tanto un día de semana (el caso) como el sábado (la asistencia). */
+function simularDia(i){
+  HOY_REAL = i; hoyIdx = i;
+  pintarSemana(); pintarHero();
+  const a = document.getElementById('sim-sem'), b = document.getElementById('sim-sab');
+  const on = 'background:#7a5b12;border:1.5px solid #7a5b12;color:#fff';
+  const off = 'background:#fff;border:1.5px solid #d8b872;color:#7a5b12';
+  if(a) a.style.cssText = (i===1?on:off);
+  if(b) b.style.cssText = (i===5?on:off);
+  window.scrollTo(0,0);
+}
+
+function pintarHero(){
+  const d = DIAS[hoyIdx];
+  const bloqueado = hoyIdx > HOY_REAL;
+  const esSabado = d.k === 'sab';
+  const NOM = ['LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+  document.getElementById('pe-hero-lbl').textContent = NOM[hoyIdx] + ' · SEMANA 1';
+
+  if(esSabado){
+    document.getElementById('pe-hero-t').textContent = '¡Nos vemos en el taller!';
+    document.getElementById('pe-hero-d').textContent = 'Módulo 1 · Taller 2 · 8:00 am. No olvides marcar tu asistencia al llegar.';
+    document.getElementById('pe-hero-btn-t').textContent = 'Marcar asistencia';
+  } else {
+    const caso = CASOS[d.k];
+    document.getElementById('pe-hero-t').textContent = caso ? caso.titulo : 'El caso de hoy';
+    document.getElementById('pe-hero-d').textContent = 'Plantea tu diagnóstico paso a paso y compáralo con la referencia. No tiene nota.';
+    document.getElementById('pe-hero-btn-t').textContent = 'Trabajar el caso';
+  }
+  const btn = document.getElementById('pe-hero-btn');
+  btn.disabled = bloqueado;
+  document.getElementById('pe-hero-lock').classList.toggle('hidden', !bloqueado);
+  const FECHAS = ['lunes 7','martes 8','miércoles 9','jueves 10','viernes 11','sábado 12'];
+  document.getElementById('pe-hoy-label').textContent =
+    bloqueado ? 'Todavía no se abre' : (hoyIdx < HOY_REAL ? 'Ya lo trabajaste' : 'Hoy, ' + FECHAS[hoyIdx] + ' de septiembre');
+  document.getElementById('pe-mat-sub').textContent = MATERIAL.length + ' documentos publicados';
+}
+function accionDia(){
+  if(hoyIdx > HOY_REAL) return;
+  if(DIAS[hoyIdx].k === 'sab'){ abrirEscaneo(); return; }
+  abrirCaso(DIAS[hoyIdx].k);
+}
+
+/* =================== EL CASO =================== */
+let casoState = { p1:null, p2:null, conf:null, revelado:false };
+let casoActual = null;
+
+function abrirCaso(dia){
+  casoActual = CASOS[dia];
+  if(!casoActual) return;
+  casoState = { p1:null, p2:null, conf:null, revelado:false };
+  const NOM = { lun:'LUNES', mar:'MARTES', mie:'MIÉRCOLES', jue:'JUEVES', vie:'VIERNES' };
+  document.getElementById('caso-lbl').textContent = 'CASO DEL ' + NOM[dia] + ' · SEMANA 1';
+  document.getElementById('caso-escenario').textContent = casoActual.escenario;
+  document.getElementById('caso-reveal').classList.add('hidden');
+  document.getElementById('caso-reveal').innerHTML = '';
+  document.getElementById('btn-revelar').classList.remove('hidden');
+  pintarPasos();
+  progresoCaso();
+  ['inicio','material','modulo','duda','perfil'].forEach(x => document.getElementById('pe-'+x).classList.add('hidden'));
+  document.getElementById('pe-caso').classList.remove('hidden');
+  document.getElementById('nav-est').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+function cerrarCaso(){ document.getElementById('pe-caso').classList.add('hidden'); navE('inicio'); }
+
+function pintarPasos(){
+  const c = casoActual;
+  let h = '';
+  h += `<div class="paso-t"><span class="nn">1</span>${c.p1.q}</div>`;
+  h += c.p1.ops.map((o,i) =>
+    `<button class="opt${casoState.p1===i?' on':''}" onclick="pick('p1',${i})"><span class="box"></span><span>${o}</span></button>`).join('');
+  h += `<div class="paso-t"><span class="nn">2</span>${c.p2.q}</div>`;
+  h += c.p2.ops.map((o,i) =>
+    `<button class="opt${casoState.p2===i?' on':''}" onclick="pick('p2',${i})"><span class="box"></span><span>${o}</span></button>`).join('');
+  h += `<div class="paso-t"><span class="nn">3</span>Explica tu razonamiento</div>`;
+  h += `<div class="field"><textarea id="caso-txt" placeholder="${c.p3}" oninput="progresoCaso()"></textarea>
+        <div class="hint">Nadie te corrige esto. Sirve para obligarte a poner en palabras lo que pensaste.</div></div>`;
+  h += `<div class="paso-t"><span class="nn">4</span>¿Qué tan seguro estás?</div>`;
+  h += `<div class="conf" id="conf-btns">` + [1,2,3,4,5].map(n =>
+    `<button onclick="pickConf(${n})" class="${casoState.conf===n?'on':''}">${n}</button>`).join('') + `</div>`;
+  h += `<div class="conf-lbl"><span>Nada seguro</span><span>Muy seguro</span></div>`;
+  document.getElementById('caso-pasos').innerHTML = h;
+}
+function pick(paso, i){ casoState[paso] = i; pintarPasos(); progresoCaso(); }
+function pickConf(n){ casoState.conf = n; pintarPasos(); progresoCaso(); }
+function progresoCaso(){
+  let p = 10;
+  if(casoState.p1 !== null) p = 30;
+  if(casoState.p2 !== null) p = 50;
+  const t = document.getElementById('caso-txt');
+  if(t && t.value.trim().length > 20) p = 70;
+  if(casoState.conf !== null) p = 85;
+  if(casoState.revelado) p = 100;
+  document.getElementById('caso-fill').style.width = p + '%';
+}
+function revelar(){
+  if(casoState.p1 === null || casoState.p2 === null || casoState.conf === null){
+    abrirMod('<div class="st-title">Falta un paso</div><p style="font-size:15px;line-height:1.55;color:var(--muted)">Antes de ver la respuesta, elige tu hipótesis, qué revisarías y qué tan seguro estás. <b>La idea es que compares tu razonamiento con el de referencia — no vale saltarlo.</b></p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>');
+    return;
+  }
+  casoState.revelado = true;
+  const acerto = casoState.p1 === casoActual.p1.ok;
+  const conf = casoState.conf;
+  let cls, ct, cd;
+  if(acerto && conf >= 4){ cls='ok'; ct='Tu confianza estaba bien calibrada';
+    cd='Acertaste el diagnóstico y lo sabías. Esa seguridad es la que necesitas frente a un cliente.'; }
+  else if(acerto && conf <= 2){ cls='warn'; ct='Sabías más de lo que creías';
+    cd='Acertaste, pero dudabas. Lee la referencia: tu razonamiento era correcto y no lo estabas reconociendo.'; }
+  else if(!acerto && conf >= 4){ cls='err'; ct='Estabas seguro y no era';
+    cd='Es el caso que más conviene revisar. Lee otra vez «por qué no las otras» — ahí está lo que se te escapó.'; }
+  else { cls='warn'; ct='Dudabas, y con razón';
+    cd='No acertaste, pero lo sospechabas. Repasa la referencia con calma: vas por buen camino.'; }
+
+  const r = casoActual.ref;
+  let h = `<div class="calib ${cls}"><div class="ct">${ct}</div><div class="cd">${cd}</div></div>`;
+  h += `<div class="ref"><h4>Qué era</h4>${r.que}
+        <div class="porque"><h4>Por qué no las otras</h4><ul>${r.no.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="porque"><h4>Lo que hay que llevarse</h4>${r.llevar}</div></div>`;
+  h += `<div class="aviso aviso-info"><span class="ic">💬</span><div>¿Te quedó una duda de este caso? <b>Mándasela al profesor</b> — la responde el sábado.</div></div>`;
+  h += `<button class="btn btn-outline mb-8" onclick="cerrarCaso();navE('duda')"><i class="ti ti-message"></i>Mandar una duda</button>`;
+  h += `<button class="btn btn-primary" onclick="cerrarCaso()"><i class="ti ti-check"></i>Listo, lo trabajé</button>`;
+  const rv = document.getElementById('caso-reveal');
+  rv.innerHTML = h;
+  rv.classList.remove('hidden');
+  document.getElementById('btn-revelar').classList.add('hidden');
+  progresoCaso();
+  rv.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* =================== MATERIAL =================== */
+function itemMat(m){
+  const ic = m.tipo === 'ppt' ? 'ppt' : 'pdf';
+  const em = m.tipo === 'ppt' ? '📊' : '📄';
+  return `<button class="mat-item" onclick="abrirMat('${m.t.replace(/'/g,"")}')">
+    <span class="icn ${ic}">${em}</span><span class="n">${m.t}</span><span class="sz">${m.sz}</span>
+    <span style="color:var(--muted)"><i class="ti ti-right"></i></span></button>`;
+}
+function pintarMaterial(){
+  const c = document.getElementById('pe-mat-list');
+  if(!MATERIAL.length){
+    c.outerHTML = '<div class="card" id="pe-mat-list"><div class="vacio"><div class="em">📁</div><div class="t">Todavía no hay material publicado</div><div class="d">Cuando tu profesor suba las guías y presentaciones del módulo, aparecen aquí.</div></div></div>';
+    return;
+  }
+  c.innerHTML = MATERIAL.map(itemMat).join('');
+}
+function pintarMaterialProf(){ document.getElementById('p-mat-list').innerHTML = MATERIAL.map(itemMat).join(''); }
+function pintarMaterialAdmin(){ document.getElementById('a-mat-list').innerHTML = MATERIAL.map(itemMat).join(''); }
+function abrirMat(t){
+  abrirMod(`<div class="st-title">${t}</div><p style="font-size:15px;color:var(--muted);line-height:1.55">En la app real esto abre el PDF. Se descarga una vez y queda disponible sin internet.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>`);
+}
+function subirMaterial(){
+  const t = document.getElementById('m-tit').value.trim();
+  if(!t){ abrirMod('<div class="st-title">Falta el título</div><p style="color:var(--muted)">Ponle un nombre al documento para que el estudiante sepa qué es.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>'); return; }
+  MATERIAL.push({ t:t, tipo:'pdf', sz:'1,2 MB' });
+  document.getElementById('m-tit').value = '';
+  pintarMaterialAdmin();
+  abrirMod('<div class="st-title">Publicado</div><p style="color:var(--muted);line-height:1.55">Ya lo ven los 24 estudiantes del módulo, al instante.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Listo</button>');
+}
+
+/* =================== COMPETENCIAS =================== */
+function pintarCompetencias(){
+  document.getElementById('pe-comp-list').innerHTML = COMPETENCIAS.map((c,i) =>
+    `<div class="comp-row"><div class="nn">${i+1}</div><div><div class="t">${c.t}</div><div class="d">${c.d}</div></div></div>`
+  ).join('');
+}
+
+/* =================== DUDAS =================== */
+function enviarDuda(){
+  const t = document.getElementById('d-txt').value.trim();
+  if(t.length < 5){
+    abrirMod('<div class="st-title">Escribe tu duda</div><p style="color:var(--muted)">Aunque sea en una línea. Lo importante es que quede como pregunta.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>');
+    return;
+  }
+  MIS_DUDAS.unshift({ txt:t, dia:'hoy' });
+  DUDAS.push({ txt:t, dia:'hoy' });
+  document.getElementById('d-txt').value = '';
+  pintarMisDudas();
+  abrirMod('<div class="st-title">Duda enviada</div><p style="font-size:15px;color:var(--muted);line-height:1.55">Tu profesor la ve junto con las del resto del grupo. <b>Las más repetidas se responden el sábado</b> en la clínica.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Listo</button>');
+}
+function pintarMisDudas(){
+  const c = document.getElementById('pe-mis-dudas');
+  if(!MIS_DUDAS.length){
+    c.innerHTML = '<div class="vacio"><div class="em">💬</div><div class="t">Todavía no has mandado ninguna</div><div class="d">Cuando algo no te quede claro, escríbelo aquí. No hay preguntas tontas.</div></div>';
+    return;
+  }
+  c.innerHTML = MIS_DUDAS.map(d =>
+    `<div class="duda-card">${d.txt}<div class="meta">Enviada ${d.dia} · pendiente de responder</div></div>`).join('');
+}
+function pintarDudasProf(){
+  document.getElementById('p-digest').innerHTML =
+    `<div class="preg-ia"><div class="h"><i class="ti ti-sparkle"></i> DE ${DUDAS.length} DUDAS, ESTAS TRES CUBREN LA MAYORÍA</div>
+     <ol>${DIGEST.map(q=>`<li>${q}</li>`).join('')}</ol></div>
+     <div class="aviso aviso-info"><span class="ic">💡</span><div>Responde estas tres en la clínica y cubres a casi todo el grupo. Se generaron a partir de los textos, <b>sin ver quién preguntó qué</b>.</div></div>`;
+  document.getElementById('p-dudas-crudas').innerHTML = DUDAS.map(d =>
+    `<div class="duda-card">${d.txt}<div class="meta">${d.dia}</div></div>`).join('');
+}
+
+/* =================== CASOS · CONTEO =================== */
+function pintarCasosProf(){
+  document.getElementById('p-casos-list').innerHTML = CASOS_HECHOS.map(c => {
+    if(c.futuro) return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>${c.dia}</b><div class="sub">Todavía no se abre</div></div><span class="pill pill-grey">Pendiente</span></div></div>`;
+    const pct = Math.round(c.n / CONFIG.totalEstudiantes * 100);
+    return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div><b>${c.dia}</b><div class="sub">${c.n} de ${CONFIG.totalEstudiantes} lo trabajaron</div></div>
+      <span class="pill ${pct>=60?'pill-green':'pill-amber'}">${pct}%</span></div>
+      <div class="prog-bar" style="margin:0"><div class="f" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+}
+
+/* =================== ASISTENCIA =================== */
+function presentes(){ return ALUMNOS.filter(a => a.presente); }
+function refrescarContadores(){
+  const n = presentes().length, tot = CONFIG.totalEstudiantes;
+  const man = ALUMNOS.filter(a => a.metodo === 'manual').length;
+  const set = (id,v) => { const e = document.getElementById(id); if(e) e.innerHTML = v; };
+  set('a-pres', n + '<small>/' + tot + '</small>');
+  set('a-pres2', n + '<small>/' + tot + '</small>');
+  set('a-falt', tot - n);
+  set('a-manual', man);
+  set('p-pres', n + '<small>/' + tot + '</small>');
+  set('p-falt', tot - n);
+  set('qr-n', n);
+}
+function pintarLista(){
+  const q = (document.getElementById('a-buscar').value || '').toLowerCase();
+  const lista = ALUMNOS.filter(a => a.nom.toLowerCase().includes(q) || a.ced.toLowerCase().includes(q));
+  document.getElementById('a-lista').innerHTML = lista.map((a,i) => {
+    const idx = ALUMNOS.indexOf(a);
+    if(a.presente){
+      const et = a.metodo === 'manual' ? 'A mano · ' + a.motivo : 'Escaneó';
+      return `<div class="est-row"><span class="av ok">✓</span><div class="inf"><div class="nm">${a.nom}</div><div class="cd">${et}</div></div><span class="pill pill-green">Presente</span></div>`;
+    }
+    return `<div class="est-row"><span class="av">${a.ini}</span><div class="inf"><div class="nm">${a.nom}</div><div class="cd">${a.ced}</div></div>
+      <button class="btn btn-primary btn-sm" style="width:auto;padding:0 14px" onclick="abrirManual(${idx})">Marcar</button></div>`;
+  }).join('') || '<div class="vacio"><div class="em">🔍</div><div class="t">Nadie coincide</div><div class="d">Prueba con otro nombre o cédula.</div></div>';
+  refrescarContadores();
+}
+function abrirManual(i){
+  const a = ALUMNOS[i];
+  abrirMod(`<div class="st-title">${a.nom}</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:14px">${a.ced} · ¿por qué se registra a mano?</p>
+    ${['No instaló la app','Sin batería','La cámara falla','Otro'].map(m =>
+      `<button class="btn btn-outline mb-8" onclick="marcarManual(${i},'${m}')">${m}</button>`).join('')}
+    <button class="btn btn-ghost mt-8" onclick="cerrarMod()">Cancelar</button>`);
+}
+function marcarManual(i, motivo){
+  ALUMNOS[i].presente = true;
+  ALUMNOS[i].metodo = 'manual';
+  ALUMNOS[i].motivo = motivo;
+  cerrarMod();
+  pintarLista();
+  abrirMod(`<div class="st-title">Registrado</div>
+    <div class="aviso aviso-success" style="margin-top:10px"><span class="ic">✓</span><div><b>${ALUMNOS[i].nom}</b> queda presente, con su refrigerio. Motivo: ${motivo}.</div></div>
+    <p style="font-size:14px;color:var(--muted);line-height:1.55">Queda registrado que fue manual y quién lo hizo. <b>Sigue sin ser papel.</b></p>
+    <button class="btn btn-primary mt-16" onclick="cerrarMod()">Siguiente</button>`);
+}
+
+/* =================== EL QR =================== */
+function codigoNuevo(){
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for(let i=0;i<6;i++) s += c[Math.floor(Math.random()*c.length)];
+  return 'ZR-' + s.slice(0,4) + '-' + s.slice(4);
+}
+let QR_ACTUAL = codigoNuevo();
+
+/* Dibuja un patrón tipo QR determinista a partir del código.
+   No es un QR real: es la maqueta visual. */
+function dibujarQR(txt){
+  const N = 25, cell = 8;
+  let semilla = 0;
+  for(let i=0;i<txt.length;i++) semilla = (semilla*31 + txt.charCodeAt(i)) >>> 0;
+  const rnd = () => { semilla = (semilla*1664525 + 1013904223) >>> 0; return semilla / 4294967296; };
+  let r = `<svg viewBox="0 0 ${N*cell} ${N*cell}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/>`;
+  const finder = (x,y) => {
+    r += `<rect x="${x*cell}" y="${y*cell}" width="${7*cell}" height="${7*cell}" fill="#21284F"/>`;
+    r += `<rect x="${(x+1)*cell}" y="${(y+1)*cell}" width="${5*cell}" height="${5*cell}" fill="#fff"/>`;
+    r += `<rect x="${(x+2)*cell}" y="${(y+2)*cell}" width="${3*cell}" height="${3*cell}" fill="#21284F"/>`;
+  };
+  for(let y=0;y<N;y++){
+    for(let x=0;x<N;x++){
+      const enFinder = (x<8&&y<8) || (x>N-9&&y<8) || (x<8&&y>N-9);
+      if(enFinder) continue;
+      if(rnd() > .52) r += `<rect x="${x*cell}" y="${y*cell}" width="${cell}" height="${cell}" fill="#21284F"/>`;
+    }
+  }
+  finder(0,0); finder(N-7,0); finder(0,N-7);
+  return r + '</svg>';
+}
+function abrirQR(){
+  show('qr');
+  pintarQR();
+}
+function pintarQR(){
+  document.getElementById('qr-draw').innerHTML = dibujarQR(QR_ACTUAL);
+  document.getElementById('qr-txt').textContent = QR_ACTUAL;
+  refrescarContadores();
+}
+function qrEscaneado(){
+  const pend = ALUMNOS.filter(a => !a.presente);
+  if(!pend.length){
+    abrirMod('<div class="st-title">Ya están todos</div><p style="color:var(--muted)">Los 24 estudiantes quedaron registrados. <b>Cero papel.</b></p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Cerrar</button>');
+    return;
+  }
+  const a = pend[0];
+  a.presente = true; a.metodo = 'qr';
+  QR_ACTUAL = codigoNuevo();     // el código muere y nace otro
+  pintarQR();
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.3)';
+  t.textContent = '✓ ' + a.nom;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 1600);
+}
+function cerrarQR(){ show('admin'); navA('panel'); }
+
+/* =================== ESCANEAR (estudiante) =================== */
+function abrirEscaneo(){
+  ['inicio','material','modulo','duda','perfil','caso'].forEach(x => document.getElementById('pe-'+x).classList.add('hidden'));
+  document.getElementById('pe-escanear').classList.remove('hidden');
+  document.getElementById('nav-est').classList.add('hidden');
+  document.getElementById('scan-antes').classList.remove('hidden');
+  document.getElementById('scan-res').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+function cerrarEscaneo(){ document.getElementById('pe-escanear').classList.add('hidden'); navE('inicio'); }
+function mostrarRes(html){
+  document.getElementById('scan-antes').classList.add('hidden');
+  const r = document.getElementById('scan-res');
+  r.innerHTML = html;
+  r.classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+function simScan(){
+  const yo = ALUMNOS[2];   // Luis Hernández
+  if(yo.presente){
+    mostrarRes(`<div class="res-big dup"><div class="em">⚠️</div><div class="res-n">Ya estabas registrado</div>
+      <div class="res-d">Tu asistencia de hoy ya está tomada. No hace falta escanear otra vez.</div></div>
+      <button class="btn btn-primary" onclick="cerrarEscaneo()">Entendido</button>`);
+    return;
+  }
+  yo.presente = true; yo.metodo = 'qr';
+  QR_ACTUAL = codigoNuevo();
+  refrescarContadores();
+  mostrarRes(`<div class="res-big ok"><div class="em">✅</div><div class="res-n">${yo.nom}</div>
+    <div class="res-d">Asistencia registrada<br><b>y tu refrigerio también</b></div></div>
+    <div class="aviso aviso-info"><span class="ic">🕐</span><div>Sábado 5 de septiembre · 7:52 am · Módulo 1</div></div>
+    <button class="btn btn-primary" onclick="cerrarEscaneo()">Listo</button>`);
+}
+function simScanUsado(){
+  mostrarRes(`<div class="res-big err"><div class="em">⛔</div><div class="res-n">Este código ya se usó</div>
+    <div class="res-d">Cada código sirve una sola vez. Pídele a administración que muestre el que está en pantalla ahora.</div></div>
+    <button class="btn btn-primary" onclick="abrirEscaneo()">Volver a intentar</button>
+    <button class="btn btn-ghost mt-8" onclick="cerrarEscaneo()">Cancelar</button>`);
+}
+
+/* =================== MODAL =================== */
+function abrirMod(html){
+  document.getElementById('modal-host').innerHTML =
+    `<div class="modal-bg" onclick="if(event.target===this)cerrarMod()"><div class="modal">
+      <button class="close-x" onclick="cerrarMod()" aria-label="Cerrar">✕</button>${html}</div></div>`;
+}
+function cerrarMod(){ document.getElementById('modal-host').innerHTML = ''; }
+
+/* =================== ARRANQUE =================== */
+['iso-login','iso-tb-e','iso-tb-a','iso-tb-p','iso-carnet'].forEach(id => {
+  const e = document.getElementById(id); if(e) e.innerHTML = ISO;
+});
+/* Estado inicial: 6 ya registrados, para que el prototipo no arranque en cero */
+[0,1,4,7,11,15].forEach(i => { ALUMNOS[i].presente = true; ALUMNOS[i].metodo = 'qr'; });
+refrescarContadores();
+show('login');
+simularDia(1);
+
+</script>
+</body>
+</html>

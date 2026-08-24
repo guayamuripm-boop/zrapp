@@ -147,6 +147,19 @@ Es una pantalla de solo lectura que se carga con el módulo.
 | `04_ARQUITECTURA.md` | La estructura técnica completa: carpetas, tablas, funciones, entorno |
 | `05_QUE_NECESITO.md` | **Los bloqueantes.** Accesos, contenido y decisiones pendientes |
 
+Y el prototipo:
+
+| Archivo | Qué |
+|---|---|
+| `ZR_APP_FASE0_PROTOTIPO.html` | ⭐ **La maqueta funcional de Fase 0.** Se abre en cualquier navegador |
+
+**Ábrelo antes de construir cualquier pantalla.** Los tres roles funcionan de verdad: el caso
+con sus cuatro pasos y la calibración, el QR que muere al usarse, el registro manual, las tres
+preguntas del profesor. Nada está conectado a la base — es una maqueta.
+
+> Es distinto de `ZR_APP_PROTOTIPO_v10.html`, que sigue siendo la especificación visual de
+> **Fase 1 completa**. El de Fase 0 solo tiene lo que se entrega el 5 de septiembre.
+
 Lo que no cambia sigue mandando: `spec/00_RECONCILIACION.md` para las reglas,
 `ZR_APP_PROTOTIPO_v10.html` para cómo se ve cada pantalla, `INGENIERIA.md` para el proceso.
 
