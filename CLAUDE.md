@@ -173,6 +173,13 @@ ZR App/
 │
 ├── tests/rls/                   ← pruebas de aislamiento entre estudiantes
 │
+├── metodologia/                 ← POR QUÉ el modelo es así. Independiente del stack
+│   ├── 01_MODELO.md             ← evaluación, ciclo semanal, niveles de IA
+│   ├── 02_MEDICION.md           ← los 8 indicadores y la línea base
+│   └── 03_PRODUCCION.md         ← cuánto cuesta montar una semana
+│
+├── .github/workflows/ci.yml     ← higiene siempre · verificación completa cuando haya app
+│
 ├── docs/                        ← contexto de negocio. Léelo si dudas del "por qué".
 │   ├── 00_CONTEXTO_MAESTRO_AGENTE.md      reglas de negocio de la academia
 │   ├── 07_REGISTRO_DE_CAMBIOS_Y_GAPS_ABIERTOS.md  qué sigue sin decidirse
@@ -185,7 +192,7 @@ ZR App/
     │                              Lee _archivo/LEEME.md antes de abrir nada de ahí
     ├── prototipos/              prototipos v1, v2, estático y la web de entrada
     ├── migraciones-superadas/   las 001-016. NUNCA se aplican
-    ├── metodologia-lowcode/     los 3 docs de Moodle. Contradicen el stack decidido
+    ├── metodologia-lowcode/     los 3 docs de Moodle. Su modelo se rescató en metodologia/
     ├── planificacion-superada/  el cronograma y el tablero viejos
     └── docs-superados/          docs de stack y esquema que ya no aplican
 ```

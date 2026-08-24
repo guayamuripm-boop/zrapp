@@ -15,6 +15,7 @@ automotriz. Clases sabatinas, ~100 estudiantes activos de 15 a 25 años.
 | **Agente de código** (Claude, Cursor, Copilot) | [`AGENTS.md`](AGENTS.md) — **completo, antes de escribir una línea** |
 | Alguien que va a **construir una pantalla** | [`ZR_APP_PROTOTIPO_v10.html`](ZR_APP_PROTOTIPO_v10.html), y luego [`spec/04_PANTALLAS.md`](spec/04_PANTALLAS.md) |
 | Alguien que quiere saber **qué se construye y en qué orden** | [`plan/07_ALCANCE_V10.md`](plan/07_ALCANCE_V10.md) |
+| Alguien que quiere entender **por qué el modelo pedagógico es así** | [`metodologia/01_MODELO.md`](metodologia/01_MODELO.md) |
 | Alguien que quiere entender **por qué** el proyecto es así | [`docs/08_AUDITORIA_TECNICA_Y_VIABILIDAD.md`](docs/08_AUDITORIA_TECNICA_Y_VIABILIDAD.md) |
 
 ---
@@ -42,6 +43,7 @@ automotriz. Clases sabatinas, ~100 estudiantes activos de 15 a 25 años.
 │   ├── functions/           1 de las 13 desplegadas · faltan 12 por descargar
 │   └── seed/                Datos de prueba
 │
+├── metodologia/             POR QUÉ el modelo es así — modelo, medición, producción
 ├── plan/                    El sprint vigente y el alcance completo
 ├── marca/                   Logos y referencia visual oficial
 ├── docs/                    Contexto de negocio, auditoría y decisiones

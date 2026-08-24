@@ -240,7 +240,8 @@ Las diez pantallas de `pd-*`. La operación y la vigilancia **separadas**.
 - Programas y grupos: asignar profesor y módulo
 - Progreso y notas por módulo
 - Activar el feedback por programa
-- Salud del sistema
+- Salud del sistema, con **los ocho indicadores** de `metodologia/02_MEDICION.md`
+- **El correo automático de los lunes** a coordinación con esos ocho indicadores
 - Aprobar o rechazar los borradores de contenido del profesor
 
 ### Épico N · Consentimientos y PWA completa *(octubre)*
@@ -328,8 +329,9 @@ Preguntas abiertas que bloquean parte de N2. **No las resuelvas inventando.**
 | 1 | ¿Quién más despliega a `zr-prod`? Hay una función que apunta a otro repositorio | **Todo. Es lo primero** |
 | 2 | ¿`dirección` es un rol nuevo o es `super_admin` con otra interfaz? El v10 lo trata como rol aparte; la base solo tiene `super_admin` | Épico M |
 | 3 | ¿Los 13 módulos del currículo son los reales? Los de la base son inventados | Épico M, y el contenido |
-| 4 | ¿Cuánto tarda una persona en escribir un caso? Ese número decide si la IA hace falta | N3 · IA |
+| 4 | ¿Cuánto tarda una persona en escribir un caso? **Hay una estimación: 3-4 h por semana en régimen** (`metodologia/03_PRODUCCION.md` §1). Falta cronometrar la semana real del 7 de septiembre para confirmarla | N3 · IA |
 | 5 | ¿Las 9 Edge Functions con `verify_jwt: false` son así a propósito? | Épico A |
+| 6 | **¿Va a haber grupo de control para medir el piloto?** Si no se decide antes del 5 de septiembre, ya no se puede medir — `metodologia/02_MEDICION.md` §5 | La medición del trimestre |
 
 ---
 

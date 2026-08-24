@@ -289,6 +289,38 @@ main ─────────────────────●───
 - Una rama por tarea, vida corta: se abre y se cierra en el mismo día o dos.
 - Se mergea cuando `npm run verify` pasa y la revisión está hecha.
 
+### 6.2.1 El estado real hoy, y por qué no cumple esto
+
+Auditado el 24 de agosto de 2026:
+
+| Hallazgo | Consecuencia |
+|---|---|
+| `main` está **4 commits atrás**. Todo el trabajo vive en ramas largas sin fusionar | `main` no representa el proyecto. Nadie puede clonarlo y entender dónde está |
+| Dos ramas apiladas (`reconciliacion-y-plan-mvp` → `organizacion-v10`), de semanas de vida | Contradice «vida corta». Son ramas de documentación, no de código, pero el efecto es el mismo |
+| **Sin tags.** Ninguna versión marcada | No hay forma de decir «esto es lo que había el día del piloto» |
+| **Sin CI.** Se añadió el 30 de julio y se eliminó el 11 de agosto | Las reglas de §4 y §5 dependen de que alguien se acuerde |
+
+La historia es **lineal** — no hay divergencia — así que las dos ramas se fusionan a `main`
+sin conflicto. Ver §6.4.
+
+### 6.3 Etiquetas
+
+Se marca con tag todo lo que se puso delante de estudiantes reales:
+
+```
+piloto-2026-09-05      lo que corrió el día del piloto
+v0.1-asistencia        el primer alcance completo
+```
+
+**Antes de cada clase real se etiqueta.** Es lo que permite responder «¿qué versión falló?»
+sin adivinar.
+
+### 6.4 Fusionar cuando una rama larga ya no lo es
+
+Una rama de documentación que acumuló semanas no se rebasa ni se aplasta: **se fusiona con
+merge y se conserva la historia**, porque cada commit explica una decisión y esa cadena vale
+más que un historial limpio.
+
 ### 6.3 Congelamiento antes de una entrega
 
 **El día antes de una clase real no se despliega nada.** Ese día es para recorrer los flujos
@@ -442,8 +474,47 @@ dejes ahí para que la encuentre el siguiente.
 
 ---
 
-## 12. HISTORIAL
+## 12. RESPALDO, CONTINUIDAD Y MONITOREO
+
+> **La regla, textual del MDV: un respaldo que no se ha restaurado nunca no es un respaldo.**
+
+### 12.1 Respaldo
+
+Supabase respalda automáticamente, pero eso **no basta**:
+
+- [ ] Verificar cada cuánto respalda `zr-prod` y cuánta retención tiene el plan contratado
+- [ ] **Restaurar una copia a `zr-dev` al menos una vez**, antes de cargar estudiantes reales.
+      Ese es el único momento en que se sabe si el respaldo sirve
+- [ ] Exportar el esquema al repositorio en cada migración — es la otra mitad del respaldo
+
+### 12.2 Monitoreo
+
+Dos comprobaciones, con alerta a WhatsApp o Telegram:
+
+1. **La app responde.**
+2. **Supabase responde.**
+
+**Por qué importa concretamente:** si algo se cae un viernes por la noche, el sábado a las
+7:40 hay 24 estudiantes en la puerta y nadie puede escanear. Es el fallo más probable y el más
+fácil de detectar a tiempo.
+
+> Hoy no hay ningún monitoreo. Es una tarea del épico A de `plan/07`.
+
+### 12.3 La medición no es opcional
+
+`metodologia/02_MEDICION.md` define los ocho indicadores y la línea base. Dos consecuencias
+para ingeniería:
+
+- Los ocho indicadores son **una pantalla que hay que construir** (épico M) y **un correo
+  automático los lunes** que todavía no está en el plan.
+- **Lo que no se capture antes de la primera clase ya no se puede capturar.** La línea base
+  vence el 5 de septiembre.
+
+---
+
+## 13. HISTORIAL
 
 | Fecha | Cambio |
 |---|---|
 | 2026-08-23 | Documento creado. Sale de la revisión del estado real del proyecto: base en 033, repositorio en 016, 13 Edge Functions desplegadas que el repositorio no conocía, 62 hallazgos de seguridad abiertos y cero líneas de aplicación |
+| 2026-08-24 | Auditoría del control de versiones (§6.2.1). Se añaden etiquetas (§6.3), respaldo y monitoreo (§12) — que faltaban por completo — y el enlace con `metodologia/`, restaurada tras haberse archivado de más |

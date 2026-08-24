@@ -72,7 +72,16 @@ todavía hacen falta (`performance_evaluations`, `rubric_templates`, `rubric_cri
 
 De la `016` sale el control de QR, pero **se reescribe** con el modelo de un solo uso.
 
-### `metodologia-lowcode/` — ⚠️ contradice el stack decidido
+### `metodologia-lowcode/` — ⚠️ su stack está superado, su modelo NO
+
+> **Corrección del 24 de agosto de 2026: esto se archivó de más.**
+> El contenido del modelo que había aquí se rescató en **`metodologia/`**, sin el Moodle.
+> Ahí están los ocho indicadores, la línea base, la encuesta de motivación, el presupuesto de
+> horas para montar una semana, y el respaldo y monitoreo — nada de eso estaba en ningún otro
+> documento del repositorio.
+>
+> Lo que sigue archivado y **no se sigue** es la implementación: Moodle, H5P, FlutterFlow,
+> Docker, plugins e instalación.
 
 Los tres documentos técnicos del MDV: `MDV-implementacion-tecnica-lowcode.md`,
 `MDV-implementacion-tecnica-parte2.md` y `MDV_Documento_Tecnico_Arquitectura_LowCode.md`.
@@ -93,7 +102,7 @@ Se conservan por su **razonamiento pedagógico**, que sigue siendo válido: domi
 | `11_PLAN_EJECUCION_FASE1.md` | Cronograma anterior. Lo reemplaza `plan/02_SPRINT.md` |
 | `12_TABLERO_TRELLO.md` y `trello_import.csv` | Tablero de tareas de un alcance anterior |
 
-### `docs-superados/04_PANTALLAS_dañado.md`
+### `docs-superados/04_PANTALLAS_danado.md`
 
 La versión anterior de `spec/04_PANTALLAS.md`. Se archivó el 23 de agosto de 2026 por dos
 razones: sufrió un daño de codificación irreversible (los diagramas de estructura se

@@ -5,7 +5,7 @@
 >
 > Reescrito el 23 de agosto de 2026. La versión anterior se perdió por un daño de codificación
 > y describía un alcance más estrecho que el del prototipo. Está en
-> `_archivo/docs-superados/04_PANTALLAS_dañado.md`, solo como referencia histórica.
+> `_archivo/docs-superados/04_PANTALLAS_danado.md`, solo como referencia histórica.
 
 ---
 
