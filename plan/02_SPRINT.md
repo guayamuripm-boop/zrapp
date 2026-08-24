@@ -21,7 +21,20 @@
 > repositorio: `plan/07_ALCANCE_V10.md`, `INGENIERIA.md` y `metodologia/`.
 >
 > **Las fechas de abajo son las originales y ya no cuadran.** El orden de las tareas sigue
-> siendo válido; los días hay que recorrerlos. Ver §RESUMEN DE RIESGOS al final.
+> siendo válido; los días hay que recorrerlos.
+>
+> ### ⚠️ Además, los días de la semana están mal
+>
+> Verificado contra el calendario real de 2026:
+>
+> | El plan dice | La realidad |
+> |---|---|
+> | «Jueves 21 de agosto» | 21 de agosto de 2026 fue **viernes** |
+> | «Sábado 23» | fue **domingo** |
+> | «**Sábado 30** — PRUEBA EN CLASE REAL» | 30 de agosto es **domingo**. No hay clase |
+>
+> **El sábado de ensayo real es el 29 de agosto**, y el 5 de septiembre sí es sábado.
+> Quien lea este plan sin verificar se presenta el día equivocado.
 
 ## CÓMO LEER ESTE PLAN
 

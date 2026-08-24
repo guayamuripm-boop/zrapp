@@ -294,6 +294,10 @@ revisarlas contra `spec/00` antes de confiar en ellas:
 
 > ⚠️ **Nueve de ellas tienen `verify_jwt: false`.** Hay que revisar una por una si eso es
 > intencional o es un hueco de seguridad.
+>
+> ⚠️⚠️ **`validate-scan` y `provision-qr` desplegadas implementan el modelo de QR equivocado**
+> — el estudiante lleva un TOTP rotativo y el profesor lo escanea. Es lo contrario de lo
+> decidido. Ver `plan/01_ESTADO.md` §5.2. **No son un adelanto para el épico C: son deuda.**
 
 ---
 

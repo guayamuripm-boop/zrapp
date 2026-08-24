@@ -143,6 +143,32 @@ persona.** Es el T-02 del sprint sin resolver.
 
 > **Antes de escribir una sola migración hay que averiguar quién más despliega a `zr-prod`.**
 
+## 5.2 ⚠️ LO DESPLEGADO IMPLEMENTA EL MODELO DE QR **EQUIVOCADO**
+
+Leído el código en vivo el 24 de agosto de 2026. **No es un detalle: es el corazón del piloto.**
+
+| | Lo desplegado en `zr-prod` | Lo decidido en `spec/00` §5 |
+|---|---|---|
+| Quién muestra | **El estudiante** lleva un QR rotativo en su teléfono | **Administración** muestra el QR en pantalla |
+| Quién escanea | **El profesor** escanea al estudiante | **El estudiante** escanea la pantalla |
+| Tipo de código | TOTP que cambia cada 30 s | **Un solo uso**: muere al escanearse |
+| Quién puede llamar | `Solo profesores pueden registrar asistencia` | Administración muestra; el profesor solo ve el conteo |
+
+`validate-scan` desplegada valida TOTP contra `student_qr_secrets` con
+`attendance.qr_window_seconds` y `qr_drift_tolerance`. `provision-qr` genera el secreto TOTP
+**del estudiante**. Todo el conjunto está construido para el modelo superado.
+
+**Lo bueno:** el repositorio ya tiene una `validate-scan` reescrita (255 líneas) con el modelo
+de un solo uso y la tabla `qr_codes`. **Está escrita y nunca se desplegó.**
+
+### Qué significa para el sprint
+
+- Las 13 funciones desplegadas **no son un adelanto** para la asistencia. Son deuda.
+- `provision-qr` hay que **reescribirla o retirarla**.
+- Las dos claves `attendance.qr_*` de `system_config` se retiran (T-04).
+- La tabla `qr_codes` **no existe todavía** en `zr-prod`: hay que crearla.
+- Hay que revisar si `claim-snack` asume el mismo flujo invertido.
+
 ---
 
 ## 6. LO QUE HAY Y VALE
