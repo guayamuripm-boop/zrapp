@@ -168,6 +168,17 @@ ZR App/
 │   ├── functions/validate-scan/ ← 1 de las 13 desplegadas. Faltan 12 por descargar
 │   └── seed/seed_dev.sql        ← datos de prueba
 │
+├── entrega/                     ← ⭐⭐⭐ PARA EL TÉCNICO Y SU AGENTE. Empieza aquí
+│   ├── 00_EMPIEZA_AQUI.md       ← el punto de entrada
+│   ├── 01_TODO_GRATIS.md        ← qué cuentas abrir, sin pagar
+│   ├── fase0/                   ← lo que se construye AHORA
+│   │   ├── 00_EMPIEZA_AQUI.md · 01_ENTORNO.md · 02_CONEXIONES.md
+│   │   ├── 03_CONTRATOS.md · 04_TAREAS.md
+│   │   ├── migraciones/034 · 035 · 036   ← SQL listo para correr
+│   │   └── seed_fase0.sql
+│   └── fase1/                   ← lo que sigue DESPUÉS del 5 de septiembre
+│       └── 00_EMPIEZA_AQUI.md · 01_QUE_FALTA.md · 02_ORDEN.md
+│
 ├── fase0/                       ← ⭐⭐ EL ENTREGABLE DEL 5 DE SEPTIEMBRE. Manda sobre el alcance
 │   ├── 00_LEEME.md              ← qué entra y qué no
 │   ├── 01_ENTREGABLE.md         ← pantalla por pantalla · qué se recorta si se atrasa

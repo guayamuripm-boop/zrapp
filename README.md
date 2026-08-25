@@ -11,7 +11,7 @@ automotriz. Clases sabatinas, ~100 estudiantes activos de 15 a 25 años.
 
 | Si eres… | Lee esto primero |
 |---|---|
-| **Desarrollador** que entra al proyecto | [`INGENIERIA.md`](INGENIERIA.md) — el proceso completo |
+| **Desarrollador** que entra al proyecto | [`entrega/00_EMPIEZA_AQUI.md`](entrega/00_EMPIEZA_AQUI.md) — **el paquete de entrega** |
 | **Agente de código** (Claude, Cursor, Copilot) | [`AGENTS.md`](AGENTS.md) — **completo, antes de escribir una línea** |
 | Alguien que va a **construir una pantalla** | [`ZR_APP_PROTOTIPO_v10.html`](ZR_APP_PROTOTIPO_v10.html), y luego [`spec/04_PANTALLAS.md`](spec/04_PANTALLAS.md) |
 | Alguien que quiere saber **qué se construye y en qué orden** | [`plan/07_ALCANCE_V10.md`](plan/07_ALCANCE_V10.md) |
@@ -43,6 +43,7 @@ automotriz. Clases sabatinas, ~100 estudiantes activos de 15 a 25 años.
 │   ├── functions/           1 de las 13 desplegadas · faltan 12 por descargar
 │   └── seed/                Datos de prueba
 │
+├── entrega/                 ⭐ PARA EL EQUIPO DE DESARROLLO — fase0/ y fase1/
 ├── metodologia/             POR QUÉ el modelo es así — modelo, medición, producción
 ├── plan/                    El sprint vigente y el alcance completo
 ├── marca/                   Logos y referencia visual oficial
