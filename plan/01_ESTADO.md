@@ -138,10 +138,14 @@ Dos consecuencias:
 ### El otro repositorio
 
 `approve-rehabilitation` fue desplegada desde
-`/Users/mdavi/OneDrive/Documentos/DEV/zr-app-github/` — **otra máquina, otro repositorio, otra
-persona.** Es el T-02 del sprint sin resolver.
+`/Users/mdavi/OneDrive/Documentos/DEV/zr-app-github/`.
 
-> **Antes de escribir una sola migración hay que averiguar quién más despliega a `zr-prod`.**
+> ## ✅ RESUELTO EL 24 DE AGOSTO DE 2026
+> **`mdavi` es el programador del proyecto.** Dirección le compartió el repositorio y él lo
+> clonó. Las 13 Edge Functions desplegadas son suyas.
+>
+> **Ya no es un riesgo de seguridad. Es un riesgo de divergencia**, y es mayor: su clon tiene
+> trabajo que este repositorio no conoce. Ver `entrega/02_RECONCILIACION.md`.
 
 ## 5.2 ⚠️ LO DESPLEGADO IMPLEMENTA EL MODELO DE QR **EQUIVOCADO**
 

@@ -45,10 +45,17 @@ El `supabase` CLI de esta máquina está autenticado con una cuenta que **no tie
 `zr-prod`** (organización `xxkutznknslzarpddycq`). Sin resolverlo no se puede hacer
 `supabase link`, `db pull`, ni `functions deploy` desde aquí.
 
-Además, una de las Edge Functions desplegadas apunta a un repositorio distinto
-(`.../DEV/zr-app-github/`), en otra máquina. **Hay que averiguar quién más despliega a
-`zr-prod` antes de escribir una migración.** Dos personas migrando la misma base en paralelo
-es la forma más rápida de romperla.
+### 1.3 El repositorio del programador
+
+**`mdavi` es el programador del proyecto** y trabaja desde su propio clon
+(`.../DEV/zr-app-github/`), desde donde desplegó las 13 Edge Functions vivas.
+
+**Hay dos repositorios con trabajo distinto.** Este va por delante en especificación y
+planificación; el suyo, en código. **Antes de que cualquiera de los dos escriba una migración,
+hay que unificarlos** — `entrega/02_RECONCILIACION.md`.
+
+> Dos personas migrando la misma base en paralelo es la forma más rápida de romperla. Que sean
+> del mismo equipo no lo evita: lo hace más probable, porque nadie sospecha.
 
 ---
 

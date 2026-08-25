@@ -171,6 +171,8 @@ ZR App/
 ├── entrega/                     ← ⭐⭐⭐ PARA EL TÉCNICO Y SU AGENTE. Empieza aquí
 │   ├── 00_EMPIEZA_AQUI.md       ← el punto de entrada
 │   ├── 01_TODO_GRATIS.md        ← qué cuentas abrir, sin pagar
+│   ├── 02_RECONCILIACION.md     ← ⛔ hay DOS repositorios. Esto va primero
+│   ├── 03_MENSAJE_PARA_MDAVI.md ← el mensaje listo para mandarle
 │   ├── fase0/                   ← lo que se construye AHORA
 │   │   ├── 00_EMPIEZA_AQUI.md · 01_ENTORNO.md · 02_CONEXIONES.md
 │   │   ├── 03_CONTRATOS.md · 04_TAREAS.md

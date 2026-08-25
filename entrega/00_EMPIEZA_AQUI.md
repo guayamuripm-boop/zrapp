@@ -61,7 +61,7 @@ No le creas a la documentación vieja del repositorio. Esto se comprobó en vivo
 | Siguiente migración | **034** — no la 017 |
 | Edge Functions | **13 desplegadas.** 9 con `verify_jwt: false`, por revisar |
 | ⚠️ `validate-scan` y `provision-qr` | **Implementan el modelo de QR contrario al decidido.** Hay que reescribirlas |
-| Aplicación Next.js | **No existe.** Cero líneas |
+| Aplicación Next.js | ⚠️ **No existe en ESTE repositorio.** Puede existir en el de `mdavi` — ver §4.2 |
 | Proyecto `zr-dev` | **No existe** |
 | Estudiantes cargados | **0** |
 | Hallazgos de seguridad | **3 de nivel ERROR abiertos** |
@@ -71,6 +71,21 @@ No le creas a la documentación vieja del repositorio. Esto se comprobó en vivo
 **Las 13 funciones desplegadas no son un adelanto para la asistencia: son deuda.** La
 `validate-scan` que está viva exige que quien llame sea *profesor* y valida un código TOTP que
 lleva el estudiante — es exactamente al revés de lo decidido.
+
+### 4.2 ⚠️ HAY DOS REPOSITORIOS, Y ESTE NO ES EL ÚNICO
+
+`mdavi`, el programador del proyecto, trabaja desde su propio clon y **lo ha ido mejorando**.
+Desde ahí desplegó las 13 Edge Functions vivas.
+
+**Este repositorio va por delante en especificación y planificación. El suyo, en código.**
+Ninguno de los dos está completo.
+
+> **Antes de aplicar nada de este paquete, hay que unificarlos.**
+> El procedimiento está en `entrega/02_RECONCILIACION.md`. Es lo primero, antes incluso de
+> instalar dependencias.
+>
+> La tabla de arriba describe **este** repositorio. Cuánto de eso sigue siendo cierto después
+> de mirar el otro es exactamente lo que la reconciliación tiene que averiguar.
 
 ---
 
@@ -87,6 +102,7 @@ de dudas con IA. Si no se paga, el profesor lee las dudas en crudo y no se rompe
 ## 6. ORDEN DE LECTURA
 
 ```
+0. 02_RECONCILIACION.md                  ← ⛔ PRIMERO. Hay dos repositorios
 1. Este archivo                          ← estás aquí
 2. 01_TODO_GRATIS.md                     ← qué cuentas abrir, sin pagar
 3. fase0/00_EMPIEZA_AQUI.md              ← el día 1, hora a hora
@@ -118,7 +134,7 @@ Están en manos de dirección. Si no se resuelven, el día 1 se pierde:
 |---|---|---|
 | 1 | **Acceso a Supabase.** Hay que invitar al desarrollador a la organización | Dirección |
 | 2 | **`zr-dev` no existe.** Hoy la única base es producción, con datos reales | Dirección |
-| 3 | **Alguien más despliega a `zr-prod`** desde otra máquina, sin identificar | Dirección |
+| 3 | **Hay un segundo repositorio con código que este no conoce** — el de `mdavi`, el programador. Hay que unificarlos | Dirección + mdavi |
 | 4 | **El token de GitHub no puede subir flujos de trabajo**, así que no hay CI | Dirección |
 
 Detalle y comandos en `fase0/02_CONEXIONES.md`.

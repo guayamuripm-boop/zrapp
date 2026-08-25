@@ -69,12 +69,12 @@ supabase link --project-ref <ref-del-proyecto>
 **a) El CLI de la máquina de dirección apunta a otra cuenta.** Está autenticado con una cuenta
 que no ve `zr-prod`. Se resuelve con `supabase login` usando la cuenta dueña.
 
-**b) Alguien más despliega a `zr-prod`, sin identificar.** Una de las Edge Functions vivas fue
-desplegada desde `/Users/mdavi/OneDrive/Documentos/DEV/zr-app-github/` — otra máquina, otro
-repositorio, otra persona.
+**b) Hay un segundo repositorio con trabajo real.** `mdavi`, el programador del proyecto,
+trabaja desde su propio clon y desde ahí desplegó las 13 Edge Functions vivas.
 
-> **Hay que averiguar quién es antes de escribir una migración.** Dos personas migrando la
-> misma base en paralelo es la forma más rápida de romperla.
+> **Antes de que nadie escriba una migración, hay que unificar los dos repositorios.**
+> Ver `entrega/02_RECONCILIACION.md`. Dos personas migrando la misma base en paralelo es la
+> forma más rápida de romperla — y que sean del mismo equipo no lo evita.
 
 ### 3.5 Las claves que da Supabase
 
@@ -184,7 +184,7 @@ Ninguno lo puede resolver el desarrollador solo:
 |---|---|---|---|
 | 1 | Invitar al desarrollador a Supabase y a GitHub | Dirección | **Todo** |
 | 2 | **Crear `zr-dev`** | Dirección | Cualquier migración |
-| 3 | Identificar quién más despliega a `zr-prod` | Dirección | Cualquier migración |
+| 3 | **Unificar los dos repositorios** — ver `entrega/02_RECONCILIACION.md` | Dirección + mdavi | Cualquier migración |
 | 4 | Crear el proyecto de alojamiento | Dirección o técnico | **La prueba de cámara** |
 | 5 | Activar el CI | Dirección | La red de seguridad |
 | 6 | Cerrar los 3 hallazgos de nivel `ERROR` | Técnico | **Cargar estudiantes reales** |

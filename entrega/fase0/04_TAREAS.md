@@ -37,8 +37,8 @@ supuesto roto.
 ## 🔴 F0-02 · Accesos
 Ver `02_CONEXIONES.md` §8. **No lo resuelve el desarrollador solo.**
 
-**Terminado cuando:** `zr-dev` existe, el desarrollador entra, y se sabe quién más despliega
-a `zr-prod`.
+**Terminado cuando:** `zr-dev` existe, el desarrollador entra, y **los dos repositorios están
+unificados** — `entrega/02_RECONCILIACION.md`.
 
 ## 🔴 F0-03 · El proyecto existe
 Next.js 15 + TypeScript + Tailwind 4, tokens de `spec/06`, tipografías locales, clientes de

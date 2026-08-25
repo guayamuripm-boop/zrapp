@@ -31,13 +31,16 @@ Después, para enlazar el proyecto:
 supabase link --project-ref hagbqhnittynxebdssua
 ```
 
-### 1.2 🔴 Quién más despliega a `zr-prod`
+### 1.2 ✅ Quién más despliega a `zr-prod`
 
 Una Edge Function desplegada apunta a `/Users/mdavi/OneDrive/Documentos/DEV/zr-app-github/`.
-**Otra máquina, otro repositorio, otra persona.**
 
-Necesito saber: **¿quién es y sigue trabajando en la base?** Si sí, hay que coordinar antes de
-migrar. Dos personas migrando la misma base en paralelo es la forma más rápida de romperla.
+✅ **Resuelto el 24 de agosto:** es `mdavi`, el programador del proyecto. Deja de ser un riesgo
+de seguridad y pasa a ser uno de **divergencia de código** — ver `entrega/02_RECONCILIACION.md`.
+
+Lo que queda por saber es **qué tiene su clon que este repositorio no conoce.** Hasta que se
+sepa, nadie debe escribir una migración: dos personas migrando la misma base en paralelo es la
+forma más rápida de romperla.
 
 ### 1.3 🔴 Un proyecto Supabase de pruebas (`zr-dev`)
 
