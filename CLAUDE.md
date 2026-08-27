@@ -144,6 +144,7 @@ ZR App/
 │
 ├── INGENIERIA.md                ← ⭐ EL PROCESO. Cómo se construye, prueba y despliega
 ├── COLABORACION.md              ← cómo trabajan juntos el equipo y tú
+├── TRABAJO_REMOTO.md            ← cómo trabajar de viaje, desde el teléfono
 │
 ├── ZR_APP_PROTOTIPO_v10.html    ← ⭐ LA ESPECIFICACIÓN VISUAL de Fase 1 completa
 ├── ZR_APP_FASE0_PROTOTIPO.html  ← ⭐ LA MAQUETA DE FASE 0. Lo que se entrega el 5 de sept
