@@ -4,98 +4,230 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ZR App · Prototipo Fase 0 · 5 de septiembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS · paleta oficial del manual (spec/06 §2) en dos temas.
+   Los seis azules de marca no cambian; lo que cambia es el papel
+   que juega cada uno según el tema.
+   ═══════════════════════════════════════════════════════════════ */
 :root{
   --navy:#21284F;--deep:#1E4D96;--blue:#3869B1;--mid:#6590CB;--light:#98BAE3;
-  --bg:#F5F7FB;--surface:#FFFFFF;--border:#C9D6EA;--text:#21284F;--muted:#4A5578;
   --success:#16A34A;--warn:#EAB308;--error:#DC2626;
   --btn-h:52px;
+  --r-lg:20px;--r-md:16px;--r-sm:12px;
+}
+:root, [data-tema="claro"]{
+  --bg:#EEF2FA;
+  --bg-a:rgba(56,105,177,.16); --bg-b:rgba(152,186,227,.22); --bg-c:rgba(30,77,150,.10);
+  --surface:#FFFFFF;
+  --glass:rgba(255,255,255,.66);
+  --glass-brd:rgba(255,255,255,.75);
+  --glass-sh:0 8px 32px rgba(33,40,79,.10);
+  --border:#D3DEEE;
+  --text:#21284F; --muted:#5A6485;
+  --bar:rgba(33,40,79,.88);
+  --accent:#1E4D96;
+  --chip:#E7EEF9;
+  --field:#FFFFFF;
+  --ring:rgba(56,105,177,.22);
+}
+[data-tema="oscuro"]{
+  --bg:#0C1020;
+  --bg-a:rgba(56,105,177,.30); --bg-b:rgba(30,77,150,.24); --bg-c:rgba(101,144,203,.14);
+  --surface:#161C31;
+  --glass:rgba(28,36,60,.62);
+  --glass-brd:rgba(152,186,227,.16);
+  --glass-sh:0 8px 32px rgba(0,0,0,.45);
+  --border:#2B3455;
+  --text:#E9EEF9; --muted:#9BA8C9;
+  --bar:rgba(10,14,28,.82);
+  --accent:#9CBFEC;
+  --chip:#1E2740;
+  --field:#131A2E;
+  --ring:rgba(101,144,203,.30);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Roboto','Segoe UI',system-ui,-apple-system,sans-serif;background:#d8dee9;color:var(--text);font-size:16px;line-height:1.5;padding:24px 0}
-h1,h2,h3,h4,.st-title,.section-t,.n,.num,.big-n,.name-big,.hero-day h2,.res-n,.qr-count{font-family:'Raleway','Roboto','Segoe UI',system-ui,sans-serif}
-.phone{width:100%;max-width:430px;margin:0 auto;min-height:calc(100vh - 48px);background:var(--bg);position:relative;border-radius:28px;overflow:hidden;box-shadow:0 0 40px rgba(33,40,79,.15)}
-@media(max-width:430px){body{padding:0;background:var(--bg)}.phone{border-radius:0;min-height:100vh}}
+body{
+  font-family:'Roboto','Segoe UI',system-ui,-apple-system,sans-serif;
+  color:var(--text);font-size:16px;line-height:1.5;padding:24px 0;
+  background:var(--bg);
+}
+/* Título y cifras en Poppins; texto corrido y datos en Roboto (spec/06 §5). */
+h1,h2,h3,h4,.st-title,.section-t,.num,.big-n,.name-big,.hero-day h2,.res-n,.qr-count,
+.mat-item .n,.est-row .nm,.carp-h,.btn,.nav-bottom .nb,.pill,.calib .ct,.ref h4,.visor .vt{
+  font-family:'Poppins','Roboto','Segoe UI',system-ui,sans-serif;
+}
+.phone{
+  width:100%;max-width:430px;margin:0 auto;min-height:calc(100vh - 48px);
+  position:relative;border-radius:30px;overflow:hidden;
+  background:var(--bg);
+  box-shadow:0 0 60px rgba(33,40,79,.18);
+  isolation:isolate;
+}
+/* Degradado grande de fondo: tres manchas suaves de la paleta.
+   Va en un pseudo-elemento fijo para que no repinte al hacer scroll. */
+.phone::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(80% 55% at 8% 0%, var(--bg-a) 0%, transparent 60%),
+    radial-gradient(70% 50% at 100% 18%, var(--bg-b) 0%, transparent 62%),
+    radial-gradient(90% 60% at 50% 105%, var(--bg-c) 0%, transparent 65%);
+}
+@media(max-width:430px){body{padding:0}.phone{border-radius:0;min-height:100vh;box-shadow:none}}
 .hidden{display:none!important}
 
-i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
-.ti-key::before{content:"🔓"}.ti-home::before{content:"🏠"}.ti-folder::before{content:"📁"}
-.ti-target::before{content:"🎯"}.ti-message::before{content:"💬"}.ti-user::before{content:"👤"}
-.ti-qr::before{content:"▦"}.ti-camera::before{content:"📷"}.ti-check::before{content:"✓"}
-.ti-file::before{content:"📄"}.ti-ppt::before{content:"📊"}.ti-upload::before{content:"⬆️"}
-.ti-users::before{content:"👥"}.ti-search::before{content:"🔍"}.ti-clock::before{content:"🕐"}
-.ti-right::before{content:"›"}.ti-tools::before{content:"🔧"}.ti-list::before{content:"📋"}
-.ti-bulb::before{content:"💡"}.ti-lock::before{content:"🔒"}.ti-out::before{content:"⏻"}
-.ti-hand::before{content:"✋"}.ti-sparkle::before{content:"✨"}.ti-book::before{content:"📚"}
+/* ═══════════════════════════════════════════════════════════════
+   ICONOS · SVG monocromáticos embebidos, heredan currentColor.
+   Van como máscara: un solo color, nítidos, y sin descargar nada
+   (spec/06 §1 — «iconos siempre locales, nunca descargados»).
+   ═══════════════════════════════════════════════════════════════ */
+i.ti{
+  display:inline-block;width:1.15em;height:1.15em;flex-shrink:0;
+  background-color:currentColor;vertical-align:-.18em;
+  -webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat;
+}
+.ti-home{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9.6 12 3l9 6.6V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z'/%3E%3C/svg%3E")}
+.ti-folder{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h3.6a2 2 0 0 1 1.4.6L11.4 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3C/svg%3E")}
+.ti-target{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Ccircle cx='12' cy='12' r='4.8'/%3E%3Ccircle cx='12' cy='12' r='1.3' fill='%23000'/%3E%3C/svg%3E")}
+.ti-message{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 14.5a2.5 2.5 0 0 1-2.5 2.5H8l-4.5 4V5.5A2.5 2.5 0 0 1 6 3h12.5A2.5 2.5 0 0 1 21 5.5z'/%3E%3C/svg%3E")}
+.ti-user{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4.5 21c0-4.1 3.4-6.5 7.5-6.5s7.5 2.4 7.5 6.5'/%3E%3C/svg%3E")}
+.ti-users{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.6'/%3E%3Cpath d='M2.5 20.5c0-3.7 2.9-5.9 6.5-5.9s6.5 2.2 6.5 5.9'/%3E%3Cpath d='M16.5 4.8a3.6 3.6 0 0 1 0 6.9'/%3E%3Cpath d='M18.5 14.9c1.8.7 3 2.2 3 4.4'/%3E%3C/svg%3E")}
+.ti-qr{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1.5'/%3E%3Cpath d='M14 14h3v3h-3zM19.5 14H21v1.5M14 21h3M19.5 19.5H21V21' stroke-linecap='round'/%3E%3C/svg%3E")}
+.ti-camera{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.3-2h7l1.3 2h1.7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z'/%3E%3Ccircle cx='12' cy='13' r='3.4'/%3E%3C/svg%3E")}
+.ti-check{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6.5 9.2 17.3 4 12.1'/%3E%3C/svg%3E")}
+.ti-file{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3C/svg%3E")}
+.ti-ppt{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 20.5h18'/%3E%3Cpath d='M6.5 20.5v-6'/%3E%3Cpath d='M12 20.5V4'/%3E%3Cpath d='M17.5 20.5v-9'/%3E%3C/svg%3E")}
+.ti-upload{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4'/%3E%3Cpath d='m7.5 8.5 4.5-4.5 4.5 4.5'/%3E%3Cpath d='M4 20h16'/%3E%3C/svg%3E")}
+.ti-search{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E")}
+.ti-clock{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 7v5.2l3.4 2'/%3E%3C/svg%3E")}
+.ti-right{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 5 7 7-7 7'/%3E%3C/svg%3E")}
+.ti-tools{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15.5 8.5a4.5 4.5 0 0 1-6-5.9l3 3 2.9-2.9 3 3z'/%3E%3Cpath d='m13.4 10.6-8 8a2.3 2.3 0 0 0 3.2 3.2l8-8'/%3E%3C/svg%3E")}
+.ti-list{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'%3E%3Cpath d='M9 6h12M9 12h12M9 18h12'/%3E%3Cpath d='M4 6h.01M4 12h.01M4 18h.01' stroke-width='2.4'/%3E%3C/svg%3E")}
+.ti-bulb{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2.8a6.2 6.2 0 0 0-3.9 11c.6.6.9 1.3.9 2.1h6c0-.8.3-1.5.9-2.1a6.2 6.2 0 0 0-3.9-11z'/%3E%3Cpath d='M9.5 19.5h5'/%3E%3Cpath d='M10.5 22h3'/%3E%3C/svg%3E")}
+.ti-lock{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4.5' y='10' width='15' height='11' rx='2.2'/%3E%3Cpath d='M8 10V7a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E")}
+.ti-key{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='16' r='4.5'/%3E%3Cpath d='m11.3 12.7 8.2-8.2'/%3E%3Cpath d='m16.5 7.5 2.5 2.5'/%3E%3C/svg%3E")}
+.ti-out{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v9'/%3E%3Cpath d='M6.4 6.4a8 8 0 1 0 11.2 0'/%3E%3C/svg%3E")}
+.ti-hand{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 11V4.6a1.6 1.6 0 0 1 3.2 0V11'/%3E%3Cpath d='M12.2 11V6a1.6 1.6 0 0 1 3.2 0v5'/%3E%3Cpath d='M15.4 11.5V8.4a1.6 1.6 0 0 1 3.2 0V15a6.5 6.5 0 0 1-6.5 6.5h-.8A6.5 6.5 0 0 1 4.8 15v-2.3a1.6 1.6 0 0 1 3.2 0'/%3E%3C/svg%3E")}
+.ti-sparkle{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.2 13.9 9l5.8 1.9-5.8 1.9L12 18.6l-1.9-5.8L4.3 11 10.1 9z'/%3E%3Cpath d='M18.5 3.5v3M20 5h-3'/%3E%3C/svg%3E")}
+.ti-book{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5.5A2.5 2.5 0 0 1 6.5 3H20v14.5H6.5A2.5 2.5 0 0 0 4 20z'/%3E%3Cpath d='M4 20a2.5 2.5 0 0 1 2.5-2.5H20V21H6.5A2.5 2.5 0 0 1 4 20z'/%3E%3C/svg%3E")}
+.ti-sun{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4.2'/%3E%3Cpath d='M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4'/%3E%3C/svg%3E")}
+.ti-moon{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.5 14.3A8.8 8.8 0 0 1 9.7 3.5a8.8 8.8 0 1 0 10.8 10.8z'/%3E%3C/svg%3E")}
+.ti-eye{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")}
+.ti-alert{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 8.5v5'/%3E%3Cpath d='M12 17h.01'/%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3C/svg%3E")}
+.ti-ban{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='m5.6 5.6 12.8 12.8'/%3E%3C/svg%3E")}
+.ti-calendar{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='16' rx='2.2'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E")}
+.ti-print{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 8V3h10v5'/%3E%3Crect x='3.5' y='8' width='17' height='8' rx='2'/%3E%3Cpath d='M7 14h10v7H7z'/%3E%3C/svg%3E")}
+.ti-img{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4.5' width='18' height='15' rx='2.4'/%3E%3Ccircle cx='8.5' cy='9.5' r='1.6'/%3E%3Cpath d='m3.5 17 5-4.5 4 3.5 3-2.5 5 4'/%3E%3C/svg%3E")}
+.ti-video{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2.5' y='5.5' width='14' height='13' rx='2.4'/%3E%3Cpath d='m16.5 10.5 5-3v9l-5-3z'/%3E%3C/svg%3E")}
+.ti-doc{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M8.5 13h7M8.5 16.5h4.5'/%3E%3C/svg%3E")}
 
-.tb{background:var(--navy);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:50}
+.tb{background:var(--bar);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:50;-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.10)}
 .tb .logo{display:flex;align-items:center;gap:9px;font-weight:500;font-size:15px}
 .tb .zr{width:30px;height:30px;border-radius:8px;overflow:hidden;flex-shrink:0}
 .tb .zr svg{display:block;width:100%;height:100%}
 .tb .right{display:flex;align-items:center;gap:9px}
-.tb .avat{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
-.tb .exit{cursor:pointer;color:#fff;background:rgba(255,255,255,.12);border:none;width:36px;height:36px;border-radius:9px;font-size:16px;font-family:inherit}
+.tb .avat{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.tb .exit,.tb .tema{cursor:pointer;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16);width:36px;height:36px;border-radius:11px;font-size:16px;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.tb .exit:active,.tb .tema:active{background:rgba(255,255,255,.26)}
 
 .content{padding:16px 16px calc(90px + env(safe-area-inset-bottom));min-height:calc(100vh - 60px)}
 .content.no-nav{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-.section-t{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.05em;margin:16px 0 10px;text-transform:uppercase}
+.section-t{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;margin:16px 0 10px;text-transform:uppercase}
 .section-t:first-child{margin-top:0}
 
-.card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+/* Superficie glass: translúcida y difuminada, pero siempre con un color
+   de respaldo sólido debajo para que el texto nunca dependa del blur. */
+.card{
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:var(--r-md);padding:15px;margin-bottom:10px;
+  -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:var(--glass-sh);
+}
 .card h3{font-size:15px;font-weight:600;margin-bottom:5px}
 .card .sub{font-size:14px;color:var(--muted);line-height:1.5}
+/* Sin soporte de blur (gama baja, navegadores viejos): superficie sólida. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .card,.modal,.nav-bottom,.tb,.auth .card-a{background:var(--surface)}
+}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:var(--btn-h);border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;padding:0 16px;transition:transform .1s}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:var(--btn-h);border:none;border-radius:14px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;padding:0 16px;transition:transform .1s,filter .15s}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-outline{background:transparent;border:1.5px solid var(--blue);color:var(--blue)}
-.btn-ghost{background:transparent;color:var(--blue);font-weight:500}
-.btn-success{background:var(--success);color:#fff}
+/* Los botones NO son glass: van sólidos para que se lean bajo sol. */
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--deep));color:#fff;box-shadow:0 4px 16px rgba(56,105,177,.32)}
+.btn-primary:active{filter:brightness(1.08)}
+.btn-outline{background:var(--glass);border:1.5px solid var(--accent);color:var(--accent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.btn-ghost{background:transparent;color:var(--accent);font-weight:500}
+.btn-success{background:linear-gradient(135deg,#1BAE52,var(--success));color:#fff;box-shadow:0 4px 16px rgba(22,163,74,.30)}
 .btn-lg{min-height:60px;font-size:16px}
 .btn-sm{min-height:44px;font-size:14px}
 .mt-8{margin-top:8px}.mt-16{margin-top:16px}.mb-8{margin-bottom:8px}
 
 .field{margin-bottom:14px}
 .field label{display:block;font-size:14px;font-weight:600;color:var(--muted);margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;height:var(--btn-h);border:1.5px solid var(--border);border-radius:12px;padding:0 14px;font-size:16px;font-family:inherit;color:var(--text);background:#fff}
+.field input,.field select,.field textarea{width:100%;height:var(--btn-h);border:1.5px solid var(--border);border-radius:14px;padding:0 14px;font-size:16px;font-family:inherit;color:var(--text);background:var(--field)}
 .field textarea{height:auto;padding:12px 14px;min-height:96px;resize:vertical;line-height:1.5}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px var(--ring)}
 .field .hint{font-size:14px;color:var(--muted);margin-top:5px}
+[data-tema="oscuro"] input[type=date]{color-scheme:dark}
 
-.ced-field{display:flex;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
-.ced-field:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(56,105,177,.18)}
-.ced-field .prefix{flex-shrink:0;padding:0 14px;font-weight:700;color:var(--muted);background:#eef1f7;font-size:16px;border:none;cursor:pointer;font-family:inherit}
+.ced-field{display:flex;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--field)}
+.ced-field:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px var(--ring)}
+.ced-field .prefix{flex-shrink:0;padding:0 14px;font-weight:700;color:var(--muted);background:var(--chip);font-size:16px;border:none;cursor:pointer;font-family:inherit}
 .ced-field input{flex:1;border:none;height:var(--btn-h);padding:0 12px;font-size:16px;font-family:inherit;outline:none;background:transparent;min-width:0}
 
-.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:12px;font-size:14px;margin-bottom:12px;line-height:1.45}
-.aviso .ic{font-size:18px;flex-shrink:0;line-height:1.3}
-.aviso-info{background:#e0ecfa;color:#1e3a8a}
-.aviso-warn{background:#fef9c3;color:#713f12}
-.aviso-error{background:#fee2e2;color:#7f1d1d}
-.aviso-success{background:#dcfce7;color:#14532d}
+/* Avisos: color semántico sólido. Nunca glass — son los que más
+   tienen que leerse (spec/06 §1, contraste alto obligatorio). */
+.aviso{display:flex;gap:10px;align-items:flex-start;border-radius:14px;padding:13px;font-size:14px;margin-bottom:12px;line-height:1.45;border:1px solid transparent}
+.aviso .ic{flex-shrink:0;line-height:1.3;font-size:18px;margin-top:1px}
+.aviso .ic i.ti{width:19px;height:19px}
+.aviso-info{background:#E2EDFB;color:#17356E;border-color:#C4DAF5}
+.aviso-warn{background:#FEF6C8;color:#6B3D0C;border-color:#F6E39A}
+.aviso-error{background:#FDE0E0;color:#7C1A1A;border-color:#F7C0C0}
+.aviso-success{background:#D9F7E3;color:#0F4A2B;border-color:#AEEAC6}
+[data-tema="oscuro"] .aviso-info{background:rgba(56,105,177,.20);color:#C5DCFA;border-color:rgba(101,144,203,.32)}
+[data-tema="oscuro"] .aviso-warn{background:rgba(234,179,8,.15);color:#F5DC8E;border-color:rgba(234,179,8,.28)}
+[data-tema="oscuro"] .aviso-error{background:rgba(220,38,38,.16);color:#F6B6B6;border-color:rgba(220,38,38,.32)}
+[data-tema="oscuro"] .aviso-success{background:rgba(22,163,74,.16);color:#A7E9C1;border-color:rgba(22,163,74,.30)}
 
-.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
-.pill-blue{background:#e0ecfa;color:#1e4d96}
-.pill-green{background:#dcfce7;color:#166534}
-.pill-amber{background:#fef3c7;color:#92400e}
-.pill-grey{background:#eef1f7;color:#4a5578}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+.pill-blue{background:#DEEAFA;color:#1A4685}
+.pill-green{background:#D6F5E1;color:#125C33}
+.pill-amber{background:#FCEEC2;color:#7C4A0C}
+.pill-grey{background:var(--chip);color:var(--muted)}
+[data-tema="oscuro"] .pill-blue{background:rgba(56,105,177,.26);color:#B7D3F6}
+[data-tema="oscuro"] .pill-green{background:rgba(22,163,74,.22);color:#9DE5BA}
+[data-tema="oscuro"] .pill-amber{background:rgba(234,179,8,.20);color:#F2D98A}
 
-.nav-bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy);display:grid;grid-template-columns:repeat(5,1fr);z-index:60;padding-bottom:env(safe-area-inset-bottom)}
-.nav-bottom .nb{display:flex;flex-direction:column;align-items:center;gap:2px;color:#c9d6ea;font-size:13px;padding:9px 1px 7px;border:none;background:transparent;font-family:inherit;font-weight:500;cursor:pointer;min-height:60px;white-space:nowrap;overflow:hidden;letter-spacing:-.02em}
-.nav-bottom .nb i{font-size:19px;line-height:1}
-.nav-bottom .nb.active{color:var(--light)}
+.nav-bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;
+  background:var(--bar);display:grid;grid-template-columns:repeat(5,1fr);z-index:60;
+  padding-bottom:env(safe-area-inset-bottom);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+  border-top:1px solid rgba(255,255,255,.10);
+}
+.nav-bottom .nb{display:flex;flex-direction:column;align-items:center;gap:3px;color:#B9C8E4;font-size:12.5px;padding:10px 1px 8px;border:none;background:transparent;font-family:inherit;font-weight:500;cursor:pointer;min-height:62px;white-space:nowrap;overflow:hidden;letter-spacing:-.02em;transition:color .15s}
+.nav-bottom .nb i.ti{width:21px;height:21px}
+.nav-bottom .nb.active{color:#fff}
+.nav-bottom .nb.active i.ti{filter:drop-shadow(0 0 8px rgba(152,186,227,.7))}
 
-.auth{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(160deg,var(--navy),var(--deep) 55%,var(--blue))}
+.auth{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(160deg,#1A2044,var(--deep) 52%,var(--blue))}
+[data-tema="oscuro"] .auth{background:linear-gradient(160deg,#080C18,#122E5C 52%,#1E4D96)}
 .auth .brand{margin:auto;text-align:center;color:#fff;padding:32px 24px;width:100%;max-width:420px}
 .auth .brand .big{width:110px;height:80px;margin:0 auto 18px}
 .auth .brand .big svg{border-radius:10px;width:100%;height:100%}
 .auth .brand h1{font-size:24px;font-weight:600;margin-bottom:5px}
 .auth .brand p{color:#c9d6ea;font-size:14px}
-.auth .card-a{background:var(--surface);border-radius:24px 24px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));width:100%;max-width:430px;margin:0 auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)}
+.auth .card-a{background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border-top:1px solid var(--glass-brd);border-radius:28px 28px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));width:100%;max-width:430px;margin:0 auto;box-shadow:0 -10px 40px rgba(0,0,0,.22)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.auth .card-a{background:var(--surface)}}
+.auth .tema-a{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:13px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.14);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);z-index:5}
 
-.hero-day{background:linear-gradient(135deg,var(--navy),var(--deep));color:#fff;border-radius:16px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
-.hero-day::before{content:'';position:absolute;top:-20px;right:-20px;width:110px;height:110px;background:rgba(255,255,255,.06);border-radius:50%}
+.hero-day{background:linear-gradient(135deg,#242C57,var(--deep) 60%,var(--blue));color:#fff;border-radius:var(--r-lg);padding:18px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(30,77,150,.28)}
+.hero-day::before{content:'';position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);border-radius:50%}
+.hero-day::after{content:'';position:absolute;bottom:-50px;left:-20px;width:130px;height:130px;background:radial-gradient(circle,rgba(152,186,227,.18),transparent 70%);border-radius:50%}
 .hero-day .lbl{font-size:12px;letter-spacing:.1em;opacity:.75;font-weight:600;margin-bottom:6px;position:relative}
 .hero-day h2{font-size:19px;font-weight:600;line-height:1.25;margin-bottom:6px;position:relative}
 .hero-day .desc{font-size:14px;opacity:.9;line-height:1.45;margin-bottom:12px;position:relative}
@@ -103,57 +235,70 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 .hero-day .btn-hero:disabled{opacity:.5;cursor:not-allowed}
 
 .week-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px}
-.week-strip .d{border-radius:10px;padding:9px 2px;text-align:center;font-size:12px;overflow:hidden;white-space:nowrap;background:var(--surface);border:.5px solid var(--border);color:var(--muted);font-weight:500;cursor:pointer;font-family:inherit}
+.week-strip .d{border-radius:14px;padding:10px 2px;text-align:center;font-size:12px;overflow:hidden;white-space:nowrap;background:var(--glass);border:1px solid var(--glass-brd);color:var(--muted);font-weight:500;cursor:pointer;font-family:inherit;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .week-strip .d .num{font-size:14px;color:var(--text);font-weight:600;margin-bottom:2px}
-.week-strip .d.done{background:#dcfce7;border-color:#a5eec1;color:#166534}
-.week-strip .d.done .num{color:#166534}
-.week-strip .d.today{background:var(--blue);color:#fff;border-color:var(--blue)}
+.week-strip .d.done{background:rgba(22,163,74,.16);border-color:rgba(22,163,74,.32);color:#0F7A3D}
+.week-strip .d.done .num{color:#0F7A3D}
+[data-tema="oscuro"] .week-strip .d.done,[data-tema="oscuro"] .week-strip .d.done .num{color:#8FE0B0}
+.week-strip .d.today{background:linear-gradient(135deg,var(--blue),var(--deep));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(56,105,177,.35)}
 .week-strip .d.today .num{color:#fff}
-.week-strip .d.future{opacity:.55}
+.week-strip .d.future{opacity:.5}
 
-.mat-item{display:flex;align-items:center;gap:10px;padding:11px 0;font-size:14px;cursor:pointer;border-top:.5px solid #f0f3f9;text-align:left;width:100%;background:none;border-left:none;border-right:none;border-bottom:none;font-family:inherit}
+.mat-item{display:flex;align-items:center;gap:11px;padding:11px 0;font-size:14px;cursor:pointer;border-top:1px solid var(--border);text-align:left;width:100%;background:none;border-left:none;border-right:none;border-bottom:none;font-family:inherit;color:var(--text)}
 .mat-item:first-of-type{border-top:none}
-.mat-item .icn{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.mat-item .icn.pdf{background:#fee2e2;color:#991b1b}
-.mat-item .icn.ppt{background:#fef3c7;color:#92400e}
+.mat-item .icn{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mat-item .icn i.ti{width:20px;height:20px}
+.mat-item .icn.pdf{background:rgba(220,38,38,.13);color:#C0392B}
+.mat-item .icn.ppt{background:rgba(234,179,8,.16);color:#A16207}
+.mat-item .icn.doc{background:rgba(56,105,177,.14);color:var(--accent)}
+.mat-item .icn.img{background:rgba(22,163,74,.14);color:#15803D}
+.mat-item .icn.video{background:rgba(124,58,237,.14);color:#6D28D9}
+[data-tema="oscuro"] .mat-item .icn.pdf{color:#F5A3A3}
+[data-tema="oscuro"] .mat-item .icn.ppt{color:#F0D289}
+[data-tema="oscuro"] .mat-item .icn.img{color:#8FE0B0}
+[data-tema="oscuro"] .mat-item .icn.video{color:#C4AEF5}
 .mat-item .n{flex:1;font-weight:500;color:var(--text)}
 .mat-item .sz{color:var(--muted);font-size:12px}
 
 .vacio{text-align:center;padding:36px 20px;color:var(--muted)}
-.vacio .em{font-size:40px;margin-bottom:10px}
+.vacio .em{font-size:40px;margin-bottom:10px;opacity:.55}
+.vacio .em i.ti{width:44px;height:44px}
 .vacio .t{font-weight:600;color:var(--text);margin-bottom:5px;font-size:15px}
 .vacio .d{font-size:14px;line-height:1.5}
 
-.prog-bar{height:6px;background:#e6ebf4;border-radius:999px;overflow:hidden;margin-bottom:16px}
-.prog-bar .f{height:100%;background:var(--blue);border-radius:999px;transition:width .35s ease;width:10%}
-.caso-tb{background:var(--navy);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50}
+.prog-bar{height:7px;background:var(--chip);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.prog-bar .f{height:100%;background:linear-gradient(90deg,var(--blue),var(--mid));border-radius:999px;transition:width .35s ease;width:10%}
+.caso-tb{background:var(--bar);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.10)}
 .caso-tb .lbl{font-size:12px;letter-spacing:.08em;font-weight:600;opacity:.85;flex:1}
-.caso-tb button{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;border-radius:9px;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
-.escenario{background:linear-gradient(135deg,#1E4D96,#3869B1);color:#fff;border-radius:14px;padding:16px;margin-bottom:16px;font-size:15px;line-height:1.55}
+.caso-tb button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16);color:#fff;width:36px;height:36px;border-radius:11px;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
+.escenario{background:linear-gradient(135deg,var(--deep),var(--blue));color:#fff;border-radius:var(--r-md);padding:17px;margin-bottom:16px;font-size:15px;line-height:1.55;box-shadow:0 8px 26px rgba(30,77,150,.26)}
 .escenario .q{font-size:12px;letter-spacing:.08em;opacity:.75;font-weight:600;margin-bottom:8px}
 .paso-t{font-size:15px;font-weight:600;margin:18px 0 10px;line-height:1.35}
 .paso-t .nn{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;align-items:center;justify-content:center;font-size:12px;margin-right:7px}
-.opt{display:flex;align-items:center;gap:11px;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;margin-bottom:8px;color:var(--text);line-height:1.4}
+.opt{display:flex;align-items:center;gap:11px;width:100%;background:var(--glass);border:1.5px solid var(--border);border-radius:14px;padding:14px;font-size:15px;font-family:inherit;text-align:left;cursor:pointer;margin-bottom:8px;color:var(--text);line-height:1.4;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .opt .box{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0}
-.opt.on{border-color:var(--blue);background:#f0f6ff}
-.opt.on .box{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 3px #fff}
+.opt.on{border-color:var(--blue);background:rgba(56,105,177,.12)}
+.opt.on .box{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 3px var(--surface)}
 .conf{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}
-.conf button{padding:12px 2px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-size:18px;cursor:pointer;font-family:inherit}
-.conf button.on{border-color:var(--blue);background:var(--blue);color:#fff}
+.conf button{padding:13px 2px;border-radius:13px;border:1.5px solid var(--border);background:var(--glass);color:var(--text);font-size:18px;cursor:pointer;font-family:inherit;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.conf button.on{border-color:transparent;background:linear-gradient(135deg,var(--blue),var(--deep));color:#fff;box-shadow:0 4px 14px rgba(56,105,177,.35)}
 .conf-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px}
-.calib{border-radius:14px;padding:14px;margin-bottom:14px}
-.calib.ok{background:#dcfce7;color:#14532d}
-.calib.warn{background:#fef9c3;color:#713f12}
-.calib.err{background:#fee2e2;color:#7f1d1d}
+.calib{border-radius:var(--r-md);padding:15px;margin-bottom:14px;border:1px solid transparent}
+.calib.ok{background:#D9F7E3;color:#0F4A2B;border-color:#AEEAC6}
+.calib.warn{background:#FEF6C8;color:#6B3D0C;border-color:#F6E39A}
+.calib.err{background:#FDE0E0;color:#7C1A1A;border-color:#F7C0C0}
+[data-tema="oscuro"] .calib.ok{background:rgba(22,163,74,.16);color:#A7E9C1;border-color:rgba(22,163,74,.30)}
+[data-tema="oscuro"] .calib.warn{background:rgba(234,179,8,.15);color:#F5DC8E;border-color:rgba(234,179,8,.28)}
+[data-tema="oscuro"] .calib.err{background:rgba(220,38,38,.16);color:#F6B6B6;border-color:rgba(220,38,38,.32)}
 .calib .ct{font-weight:700;font-size:15px;margin-bottom:5px}
 .calib .cd{font-size:14px;line-height:1.5}
-.ref{background:var(--surface);border:.5px solid var(--border);border-left:4px solid var(--blue);border-radius:0 14px 14px 0;padding:14px;margin-bottom:12px;font-size:14px;line-height:1.6}
-.ref h4{font-size:14px;font-weight:700;margin-bottom:7px;color:var(--deep)}
-.ref .porque{margin-top:12px;padding-top:12px;border-top:.5px solid var(--border)}
+.ref{background:var(--glass);border:1px solid var(--glass-brd);border-left:4px solid var(--blue);border-radius:0 var(--r-md) var(--r-md) 0;padding:15px;margin-bottom:12px;font-size:14px;line-height:1.6;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:var(--glass-sh)}
+.ref h4{font-size:14px;font-weight:700;margin-bottom:7px;color:var(--accent)}
+.ref .porque{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .ref .porque li{margin:8px 0 8px 18px;line-height:1.5}
 
-.qr-full{background:var(--navy);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#fff;text-align:center}
-.qr-box{background:#fff;border-radius:20px;padding:16px;margin-bottom:18px}
+.qr-full{background:linear-gradient(165deg,#151A38,#0B1024 60%,#0A1B3A);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#fff;text-align:center}
+.qr-box{background:#fff;border-radius:24px;padding:18px;margin-bottom:18px;box-shadow:0 16px 50px rgba(0,0,0,.4)}
 .qr-box svg{display:block;width:220px;height:220px}
 .qr-code-txt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;letter-spacing:.06em;color:var(--light);margin-bottom:14px}
 .qr-count{font-size:44px;font-weight:700;line-height:1;margin-bottom:2px}
@@ -164,50 +309,93 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 .scan-frame .laser{position:absolute;left:8%;right:8%;height:2px;background:#5ee08a;box-shadow:0 0 10px #5ee08a;animation:sc 2s ease-in-out infinite}
 @keyframes sc{0%,100%{top:18%}50%{top:78%}}
 .scan-frame .hint{position:absolute;bottom:14px;left:0;right:0;color:#fff;font-size:13px;opacity:.8}
-.res-big{border-radius:16px;padding:26px 18px;text-align:center;margin-bottom:14px}
-.res-big.ok{background:#dcfce7;color:#14532d}
-.res-big.dup{background:#fef9c3;color:#713f12}
-.res-big.err{background:#fee2e2;color:#7f1d1d}
-.res-big .em{font-size:52px;line-height:1;margin-bottom:8px}
+.res-big{border-radius:var(--r-lg);padding:28px 18px;text-align:center;margin-bottom:14px;border:1px solid transparent}
+.res-big.ok{background:#D9F7E3;color:#0F4A2B;border-color:#AEEAC6}
+.res-big.dup{background:#FEF6C8;color:#6B3D0C;border-color:#F6E39A}
+.res-big.err{background:#FDE0E0;color:#7C1A1A;border-color:#F7C0C0}
+[data-tema="oscuro"] .res-big.ok{background:rgba(22,163,74,.17);color:#A7E9C1;border-color:rgba(22,163,74,.32)}
+[data-tema="oscuro"] .res-big.dup{background:rgba(234,179,8,.16);color:#F5DC8E;border-color:rgba(234,179,8,.30)}
+[data-tema="oscuro"] .res-big.err{background:rgba(220,38,38,.17);color:#F6B6B6;border-color:rgba(220,38,38,.34)}
+.res-big .em{font-size:52px;line-height:1;margin-bottom:10px}
+.res-big .em i.ti{width:56px;height:56px}
 .res-n{font-size:22px;font-weight:700;margin-bottom:4px}
 .res-d{font-size:15px;line-height:1.45}
 
-.lista-est{background:var(--surface);border:.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px}
-.est-row{display:flex;align-items:center;gap:11px;padding:12px 13px;border-top:.5px solid #f0f3f9;font-size:14px}
+.lista-est{background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);overflow:hidden;margin-bottom:12px;-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--glass-sh)}
+.est-row{display:flex;align-items:center;gap:11px;padding:12px 13px;border-top:1px solid var(--border);font-size:14px}
 .est-row:first-child{border-top:none}
-.est-row .av{width:36px;height:36px;border-radius:50%;background:#e0ecfa;color:var(--deep);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0}
-.est-row .av.ok{background:#dcfce7;color:#166534}
+.est-row .av{width:38px;height:38px;border-radius:50%;background:rgba(56,105,177,.14);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0}
+.est-row .av.ok{background:rgba(22,163,74,.16);color:#15803D}
+.est-row .av.ok i.ti{width:18px;height:18px}
+[data-tema="oscuro"] .est-row .av.ok{color:#8FE0B0}
 .est-row .inf{flex:1;min-width:0}
 .est-row .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .est-row .cd{font-size:12px;color:var(--muted)}
-.big-n{font-size:34px;font-weight:700;line-height:1.05;color:var(--navy)}
+.big-n{font-size:36px;font-weight:700;line-height:1.05;color:var(--text);letter-spacing:-.02em}
 .big-n small{font-size:15px;font-weight:500;color:var(--muted)}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:left}
+.stat{background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);padding:15px;text-align:left;-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--glass-sh)}
 .stat .l{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.comp-row{display:flex;gap:11px;align-items:flex-start;background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px}
-.comp-row .nn{width:26px;height:26px;border-radius:8px;background:#e0ecfa;color:var(--deep);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.comp-row{display:flex;gap:11px;align-items:flex-start;background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);padding:14px;margin-bottom:8px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.comp-row .nn{width:28px;height:28px;border-radius:10px;background:rgba(56,105,177,.14);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
 .comp-row .t{font-size:14px;font-weight:600;line-height:1.35;margin-bottom:3px}
 .comp-row .d{font-size:14px;color:var(--muted);line-height:1.45}
-.duda-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px;font-size:14px;line-height:1.5}
+.duda-card{background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);padding:14px;margin-bottom:8px;font-size:14px;line-height:1.5;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 .duda-card .meta{font-size:12px;color:var(--muted);margin-top:7px}
-.preg-ia{background:linear-gradient(135deg,#1E4D96,#3869B1);color:#fff;border-radius:14px;padding:15px;margin-bottom:12px}
+.preg-ia{background:linear-gradient(135deg,var(--deep),var(--blue));color:#fff;border-radius:var(--r-md);padding:16px;margin-bottom:12px;box-shadow:0 8px 26px rgba(30,77,150,.26)}
 .preg-ia .h{font-size:12px;letter-spacing:.08em;font-weight:600;opacity:.8;margin-bottom:10px}
 .preg-ia ol{margin-left:18px}
 .preg-ia li{margin:10px 0;line-height:1.45;font-size:15px}
-.modal-bg{position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center}
-.modal{background:var(--surface);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;position:relative}
+.modal-bg{position:fixed;inset:0;background:rgba(8,12,26,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal{background:var(--glass);-webkit-backdrop-filter:blur(34px) saturate(180%);backdrop-filter:blur(34px) saturate(180%);border-top:1px solid var(--glass-brd);width:100%;max-width:430px;border-radius:26px 26px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 -12px 44px rgba(0,0,0,.3)}
 .st-title{font-size:18px;font-weight:600;margin-bottom:6px;padding-right:34px}
-.close-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:#eef1f7;font-size:16px;cursor:pointer;font-family:inherit;z-index:2}
-.demo-bar{background:#fff7e6;border:1px solid #f3d99b;border-radius:12px;padding:11px 13px;font-size:13px;color:#7a5b12;margin-bottom:14px;line-height:1.5}
+.close-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--chip);color:var(--text);font-size:16px;cursor:pointer;font-family:inherit;z-index:2}
+.demo-bar{background:#FFF6E0;border:1px solid #F0D89A;border-radius:14px;padding:12px 13px;font-size:13px;color:#6B4E0E;margin-bottom:14px;line-height:1.5}
+[data-tema="oscuro"] .demo-bar{background:rgba(234,179,8,.13);border-color:rgba(234,179,8,.28);color:#EBD48C}
 .demo-bar b{display:block;margin-bottom:3px}
-.carnet{background:linear-gradient(135deg,var(--navy),var(--deep));color:#fff;border-radius:16px;padding:16px;margin-bottom:14px}
+.carnet{background:linear-gradient(135deg,#242C57,var(--deep) 55%,var(--blue));color:#fff;border-radius:var(--r-lg);padding:18px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 12px 34px rgba(30,77,150,.30)}
+.carnet::after{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);border-radius:50%}
 .carnet .lg{width:46px;height:34px;margin-bottom:12px}
 .carnet .lg svg{width:100%;height:100%;border-radius:6px}
 .carnet .cn{font-size:17px;font-weight:600;margin-bottom:2px}
 .carnet .cc{font-size:14px;color:#c9d6ea;margin-bottom:10px}
 .carnet .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-top:.5px solid rgba(255,255,255,.15)}
 .carnet .row span{color:#c9d6ea}
+
+/* ---------- VARIANTES EXPLORATORIAS (fuera del alcance comprometido) ---------- */
+.exp-bar{background:#F4E9FE;border:1px solid #DCBCF9;border-radius:14px;padding:12px 13px;font-size:13px;color:#4E1078;margin-bottom:14px;line-height:1.5}
+[data-tema="oscuro"] .exp-bar{background:rgba(147,51,234,.16);border-color:rgba(168,85,247,.30);color:#DCC0F7}
+.exp-bar > b:first-child{display:block;margin-bottom:3px}
+/* El documento firmable imita papel impreso: siempre claro, en ambos temas. */
+.doc-prev{background:#fff;border:1px solid #D8D8D8;border-radius:12px;padding:16px;font-size:12.5px;line-height:1.5;color:#1a1a1a}
+.doc-prev .dp-head{text-align:center;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:10px}
+.doc-prev .dp-head .cod{display:inline-block;background:var(--navy);color:#fff;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:6px;font-size:13px;margin-top:6px}
+.doc-prev .dp-sec{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+.doc-prev .dp-sec h5{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--deep);font-weight:700;margin-bottom:6px}
+.doc-prev .dp-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:.5px solid #ECECEC}
+.doc-prev .dp-row span:first-child{color:#6B6B6B}
+.doc-prev .dp-sec{border-top-color:#DCDCDC}
+.doc-prev .dp-firma{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;text-align:center;font-size:11px;color:var(--muted)}
+.doc-prev .dp-firma div{border-top:1px solid #999;padding-top:5px}
+.carp-h{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--muted);margin:16px 0 8px}
+.carp-h i.ti{width:16px;height:16px}
+.carp-h span{background:var(--chip);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:12px}
+.visor{background:linear-gradient(150deg,#151A32,#090D1B);border:1px solid rgba(152,186,227,.14);border-radius:var(--r-md);padding:32px 18px;text-align:center;color:#fff;margin:12px 0}
+.visor .em{font-size:44px;line-height:1;margin-bottom:12px;opacity:.9}
+.visor .em i.ti{width:46px;height:46px}
+.visor .vt{font-weight:600;font-size:15px;margin-bottom:5px}
+.visor .vd{font-size:14px;opacity:.72;line-height:1.5}
+.mesh-row{display:flex;align-items:center;gap:11px;background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);padding:13px;margin-bottom:8px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.mesh-row .nn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--deep));color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.mesh-row.actual{border-color:var(--blue);background:rgba(56,105,177,.13)}
+.mesh-row.bloq{opacity:.52}
+.assign-row{background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r-md);padding:14px;margin-bottom:8px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.assign-row .mods{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.assign-row .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.ia-job{background:linear-gradient(135deg,var(--deep),var(--blue));color:#fff;border-radius:var(--r-md);padding:16px;margin-bottom:12px;box-shadow:0 8px 26px rgba(30,77,150,.26)}
+.ia-job .h{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.06em;font-weight:600;opacity:.85;margin-bottom:8px}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -215,6 +403,7 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 
 <!-- ══════════════ LOGIN ══════════════ -->
 <div id="v-login" class="auth">
+  <button class="tema-a" onclick="alternarTema()" aria-label="Cambiar tema"><i class="ti ic-tema"></i></button>
   <div class="brand">
     <div class="big" id="iso-login"></div>
     <h1>ZR Mecademy</h1>
@@ -227,7 +416,8 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
     </div>
     <button class="btn btn-primary btn-lg mb-8" onclick="entrar('est')"><i class="ti ti-user"></i>Entrar como estudiante</button>
     <button class="btn btn-outline btn-sm mb-8" onclick="entrar('admin')"><i class="ti ti-qr"></i>Entrar como administración</button>
-    <button class="btn btn-outline btn-sm" onclick="entrar('prof')"><i class="ti ti-users"></i>Entrar como profesor</button>
+    <button class="btn btn-outline btn-sm mb-8" onclick="entrar('prof')"><i class="ti ti-users"></i>Entrar como profesor</button>
+    <button class="btn btn-outline btn-sm" onclick="entrar('ventas')"><i class="ti ti-file"></i>Entrar como ventas <span class="pill pill-amber" style="margin-left:6px">variante</span></button>
 
     <div class="section-t" style="margin-top:22px">O con cédula, como el día real</div>
     <div class="field">
@@ -236,7 +426,7 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
         <button class="prefix" id="lp" onclick="togglePref()" aria-label="Cambiar prefijo">V-</button>
         <input id="l-ced" type="tel" inputmode="numeric" placeholder="30000001" autocomplete="off">
       </div>
-      <div class="hint">Prueba con 30000001 · 10000005 · 10000003</div>
+      <div class="hint">Prueba con 30000001 · 10000005 · 10000003 · 20000001 (ventas)</div>
     </div>
     <div class="field">
       <label for="l-pass">Contraseña</label>
@@ -251,7 +441,7 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 <div id="v-est" class="hidden">
   <div class="tb">
     <div class="logo"><span class="zr" id="iso-tb-e"></span><span>ZR Mecademy</span></div>
-    <div class="right"><span class="avat" id="e-avat">LH</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+    <div class="right"><span class="avat" id="e-avat">LH</span><button class="tema" onclick="alternarTema()" aria-label="Cambiar tema"><i class="ti ic-tema"></i></button><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
   </div>
 
   <!-- INICIO -->
@@ -293,7 +483,7 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
   <!-- MATERIAL -->
   <div id="pe-material" class="content hidden">
     <div class="section-t">Material · Módulo 1</div>
-    <div class="card" id="pe-mat-list"></div>
+    <div id="pe-mat-list"></div>
     <div class="aviso aviso-info"><span class="ic">💡</span><div>Se descargan una vez y quedan en tu teléfono. Puedes abrirlos sin internet.</div></div>
   </div>
 
@@ -388,7 +578,7 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 <div id="v-admin" class="hidden">
   <div class="tb">
     <div class="logo"><span class="zr" id="iso-tb-a"></span><span>Administración</span></div>
-    <div class="right"><span class="avat">AF</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+    <div class="right"><span class="avat">AF</span><button class="tema" onclick="alternarTema()" aria-label="Cambiar tema"><i class="ti ic-tema"></i></button><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
   </div>
 
   <div id="pa-panel" class="content">
@@ -399,7 +589,22 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
     </div>
     <div class="aviso aviso-warn"><span class="ic">✋</span><div><b>Hoy son estudiantes nuevos.</b> Nadie llega con la app. Empieza por el <b>registro manual</b>; el QR se muestra después, ya en clase.</div></div>
     <button class="btn btn-primary btn-lg mb-8" onclick="navA('asistencia')"><i class="ti ti-hand"></i>Registrar a mano</button>
-    <button class="btn btn-outline" onclick="abrirQR()"><i class="ti ti-qr"></i>Mostrar el QR en pantalla</button>
+    <button class="btn btn-outline mb-8" onclick="abrirQR()"><i class="ti ti-qr"></i>Mostrar el QR en pantalla</button>
+
+    <div class="section-t" style="margin-top:22px">Variantes exploratorias</div>
+    <div class="exp-bar"><b>No son parte del entregable del 5 de septiembre</b>Maquetas de módulos de otra spec, para revisar si conviene incorporarlos a un sprint futuro. El «Classroom» de esa spec <b>no es una pantalla aparte</b>: son las carpetas, los tipos de archivo y el visor que ya están dentro de <b>Material</b>.</div>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="abrirMalla()">
+      <h3><i class="ti ti-list"></i> Malla curricular</h3>
+      <div class="sub">Todos los módulos y el orden en que se cursan</div>
+    </button>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="abrirAsignacion()">
+      <h3><i class="ti ti-users"></i> Profesores y módulos</h3>
+      <div class="sub">Quién dicta cada módulo</div>
+    </button>
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;font-family:inherit;display:block" onclick="abrirReporte()">
+      <h3><i class="ti ti-search"></i> Reporte de asistencia</h3>
+      <div class="sub">Filtrable por módulo, programa y rango de fechas</div>
+    </button>
   </div>
 
   <div id="pa-asistencia" class="content hidden">
@@ -418,11 +623,18 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
     <div class="section-t">Subir material</div>
     <div class="card">
       <div class="field"><label for="m-tit">Título</label><input id="m-tit" placeholder="Presentación de la semana 1"></div>
-      <div class="field" style="margin-bottom:10px"><label for="m-mod">Módulo</label><select id="m-mod"><option>Módulo 1 · Introducción al diagnóstico</option></select></div>
-      <button class="btn btn-primary" onclick="subirMaterial()"><i class="ti ti-upload"></i>Subir PDF</button>
+      <div class="field"><label for="m-mod">Módulo</label><select id="m-mod"><option>Módulo 1 · Introducción al diagnóstico</option></select></div>
+      <div class="field"><label for="m-carp">Carpeta</label>
+        <select id="m-carp"><option>Semana 1</option><option>Semana 2</option><option>Guías generales</option></select>
+      </div>
+      <div class="field" style="margin-bottom:10px"><label for="m-tipo">Tipo de archivo</label>
+        <select id="m-tipo"><option value="pdf">PDF</option><option value="ppt">Presentación</option><option value="doc">Documento</option><option value="img">Imagen</option><option value="video">Video</option></select>
+      </div>
+      <button class="btn btn-primary" onclick="subirMaterial()"><i class="ti ti-upload"></i>Subir archivo</button>
     </div>
     <div class="section-t">Publicado</div>
-    <div class="card" id="a-mat-list"></div>
+    <div id="a-mat-list"></div>
+    <div class="aviso aviso-info"><span class="ic">👁️</span><div>El estudiante lo abre con el <b>visor integrado</b>, sin tener que descargar cada archivo para verlo.</div></div>
   </div>
 
   <div id="pa-perfil" class="content hidden">
@@ -440,6 +652,49 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
   </div>
 </div>
 
+<!-- MALLA CURRICULAR (variante) -->
+<div id="v-malla" class="hidden">
+  <div class="caso-tb"><button onclick="cerrarVariante()" aria-label="Volver">←</button><div class="lbl">MALLA CURRICULAR</div></div>
+  <div class="content no-nav">
+    <div class="exp-bar"><b>Variante exploratoria</b>Todos los módulos del programa y el orden en que se cursan — Módulo 7 de la spec de ZRM Academy.</div>
+    <div id="ml-list"></div>
+  </div>
+</div>
+
+<!-- PROFESORES Y MÓDULOS (variante) -->
+<div id="v-profesores" class="hidden">
+  <div class="caso-tb"><button onclick="cerrarVariante()" aria-label="Volver">←</button><div class="lbl">PROFESORES Y MÓDULOS</div></div>
+  <div class="content no-nav">
+    <div class="exp-bar"><b>Variante exploratoria</b>Relación muchos-a-muchos entre profesor y módulo — Módulo 5 de la spec de ZRM Academy. Los profesores no se autorregistran, los crea administración.</div>
+    <div id="as-list"></div>
+    <button class="btn btn-outline mt-8" onclick="crearProfesor()"><i class="ti ti-users"></i>Crear profesor</button>
+  </div>
+</div>
+
+<!-- REPORTE DE ASISTENCIA (variante) -->
+<div id="v-reporte" class="hidden">
+  <div class="caso-tb"><button onclick="cerrarVariante()" aria-label="Volver">←</button><div class="lbl">REPORTE DE ASISTENCIA</div></div>
+  <div class="content no-nav">
+    <div class="exp-bar"><b>Variante exploratoria</b>Filtro por módulo, programa y rango de fechas, con % de asistencia — Módulo 8 de la spec de ZRM Academy.</div>
+    <div class="card">
+      <div class="field"><label for="rp-prog">Programa</label>
+        <select id="rp-prog" onchange="pintarReporte()"><option value="todos">Todos los programas</option><option value="mecanica">Mecánica Automotriz</option></select>
+      </div>
+      <div class="field"><label for="rp-mod">Módulo</label>
+        <select id="rp-mod" onchange="pintarReporte()">
+          <option value="todos">Todos los módulos</option>
+          <option value="0">Módulo 1 · Introducción al diagnóstico</option>
+          <option value="1">Módulo 2 · Sistemas eléctricos básicos</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0"><label>Rango de fechas</label>
+        <div style="display:flex;gap:8px"><input type="date" value="2026-08-29"><input type="date" value="2026-09-05"></div>
+      </div>
+    </div>
+    <div id="rp-list"></div>
+  </div>
+</div>
+
 <!-- QR A PANTALLA COMPLETA -->
 <div id="v-qr" class="hidden">
   <div class="qr-full">
@@ -454,11 +709,95 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
   </div>
 </div>
 
+<!-- ══════════════ VENTAS (variante exploratoria) ══════════════ -->
+<div id="v-ventas" class="hidden">
+  <div class="tb">
+    <div class="logo"><span class="zr" id="iso-tb-v"></span><span>Ventas</span></div>
+    <div class="right"><span class="avat">MG</span><button class="tema" onclick="alternarTema()" aria-label="Cambiar tema"><i class="ti ic-tema"></i></button><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+  </div>
+
+  <div id="pv-inicio" class="content">
+    <div class="exp-bar"><b>Variante exploratoria</b>No es parte del entregable del 5 de septiembre. Es una maqueta de "Carga de ventas" + documento firmable, tomada de una spec aparte, para que decidas si entra a un sprint futuro.</div>
+    <div class="section-t">Hoy</div>
+    <div class="grid2">
+      <div class="stat"><div class="big-n" id="v-tot">0</div><div class="l">Inscripciones cargadas</div></div>
+      <div class="stat"><div class="big-n" id="v-doc">0</div><div class="l">Documentos generados</div></div>
+    </div>
+    <button class="btn btn-primary btn-lg mb-8" onclick="navV('nueva')"><i class="ti ti-file"></i>Nueva inscripción</button>
+    <button class="btn btn-outline" onclick="navV('docs')"><i class="ti ti-folder"></i>Ver documentos generados</button>
+  </div>
+
+  <!-- NUEVA INSCRIPCIÓN -->
+  <div id="pv-nueva" class="content hidden">
+    <div class="section-t">Datos del participante</div>
+    <div class="card">
+      <div class="field"><label for="v-nom">Nombre y apellido</label><input id="v-nom" placeholder="Ej. María Contreras"></div>
+      <div class="field">
+        <label for="v-ced">Cédula</label>
+        <div class="ced-field"><button class="prefix" id="v-cp" onclick="toggleVPref()">V-</button><input id="v-ced" type="tel" inputmode="numeric" placeholder="28451930"></div>
+      </div>
+      <div class="field"><label for="v-tel">Teléfono</label><input id="v-tel" type="tel" placeholder="04141234567"></div>
+      <div class="field"><label for="v-dir">Dirección</label><input id="v-dir" placeholder="Ej. Urb. La Rosaleda, San Antonio"></div>
+      <div class="field" style="margin-bottom:10px">
+        <label for="v-mod">Módulo / programa</label>
+        <select id="v-mod" onchange="pintarHorarioVentas()">
+          <option value="0">Módulo 1 · Introducción al diagnóstico</option>
+          <option value="1">Módulo 2 · Sistemas eléctricos básicos</option>
+          <option value="2">Módulo 3 · Motores a gasolina</option>
+        </select>
+        <div class="hint" id="v-horario">Sábados · 8:00 am – 12:00 m</div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label for="v-nac">Fecha de nacimiento</label>
+        <input id="v-nac" type="date" onchange="checkMenorVentas()">
+        <div class="hint">De aquí se deriva si aplica la sección de representante (LOPNNA).</div>
+      </div>
+    </div>
+
+    <div id="v-rep-block" class="hidden">
+      <div class="aviso aviso-warn"><span class="ic">✋</span><div><b>Es menor de edad.</b> Se activa el set completo de datos del representante — obligatorio, no un subconjunto.</div></div>
+      <div class="section-t">Datos del representante</div>
+      <div class="card">
+        <div class="field"><label for="v-rnom">Nombre y apellido</label><input id="v-rnom" placeholder="Ej. Carmen Contreras"></div>
+        <div class="field"><label for="v-rced">Cédula</label><input id="v-rced" placeholder="V-12345678"></div>
+        <div class="field"><label for="v-rpar">Parentesco</label><input id="v-rpar" placeholder="Madre, padre, tutor…"></div>
+        <div class="field"><label for="v-redad">Edad</label><input id="v-redad" type="number" placeholder="42"></div>
+        <div class="field"><label for="v-rnal">Nacionalidad</label><input id="v-rnal" placeholder="Venezolana"></div>
+        <div class="field"><label for="v-rprof">Profesión / ocupación</label><input id="v-rprof" placeholder="Ej. Docente"></div>
+        <div class="field"><label for="v-rtel">Teléfono</label><input id="v-rtel" type="tel" placeholder="04141234567"></div>
+        <div class="field" style="margin-bottom:0"><label for="v-rmail">Correo Gmail</label><input id="v-rmail" type="email" placeholder="correo@gmail.com"></div>
+      </div>
+    </div>
+
+    <div class="aviso aviso-info"><span class="ic">💡</span><div>Al guardar se genera el código de estudiante y el documento firmable, con estos datos ya pre-llenados. Nada se vuelve a pedir dos veces.</div></div>
+    <button class="btn btn-primary btn-lg" onclick="guardarInscripcion()"><i class="ti ti-check"></i>Guardar y generar documento</button>
+  </div>
+
+  <!-- DOCUMENTOS -->
+  <div id="pv-docs" class="content hidden">
+    <div class="section-t">Documentos generados</div>
+    <div class="card" id="v-doc-list"></div>
+  </div>
+
+  <div id="pv-perfil" class="content hidden">
+    <div class="section-t">Sesión</div>
+    <div class="card"><h3>Marielys González</h3><div class="sub">V-20000001 · Ventas</div></div>
+    <button class="btn btn-ghost mt-8" onclick="salir()"><i class="ti ti-out"></i>Cerrar sesión</button>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nb active" id="nv-inicio" onclick="navV('inicio')"><i class="ti ti-home"></i>Inicio</button>
+    <button class="nb" id="nv-nueva" onclick="navV('nueva')"><i class="ti ti-file"></i>Inscribir</button>
+    <button class="nb" id="nv-docs" onclick="navV('docs')"><i class="ti ti-folder"></i>Documentos</button>
+    <button class="nb" id="nv-perfil" onclick="navV('perfil')"><i class="ti ti-user"></i>Perfil</button>
+  </div>
+</div>
+
 <!-- ══════════════ PROFESOR ══════════════ -->
 <div id="v-prof" class="hidden">
   <div class="tb">
     <div class="logo"><span class="zr" id="iso-tb-p"></span><span>Profesor</span></div>
-    <div class="right"><span class="avat">CR</span><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
+    <div class="right"><span class="avat">CR</span><button class="tema" onclick="alternarTema()" aria-label="Cambiar tema"><i class="ti ic-tema"></i></button><button class="exit" onclick="salir()" aria-label="Salir"><i class="ti ti-out"></i></button></div>
   </div>
 
   <div id="pp-hoy" class="content">
@@ -492,7 +831,12 @@ i.ti{font-style:normal;display:inline-block;line-height:1;font-family:inherit}
 
   <div id="pp-material" class="content hidden">
     <div class="section-t">Material del módulo</div>
-    <div class="card" id="p-mat-list"></div>
+    <div id="p-mat-list"></div>
+
+    <div class="section-t" style="margin-top:22px">Variante exploratoria</div>
+    <div class="exp-bar"><b>Generación de casos con IA</b>Módulo 6 de la spec de ZRM Academy: a partir del material subido, se encola una generación asistida. El profesor la aprueba antes de publicarla — nunca sale directo al estudiante.</div>
+    <button class="btn btn-outline" onclick="generarCasoIA()"><i class="ti ti-sparkle"></i>Generar caso a partir del material</button>
+    <div id="ia-job-host" class="mt-16"></div>
   </div>
 
   <div id="pp-perfil" class="content hidden">
@@ -698,12 +1042,22 @@ const ALUMNOS = NOMBRES.map((n,i) => ({
   motivo: null
 }));
 
-/* ---------- MATERIAL ---------- */
+/* ---------- MATERIAL ----------
+   Un solo apartado: todo el contenido del módulo vive aquí, en carpetas.
+   La "variante Classroom" de la spec de ZRM Academy no es una pantalla
+   aparte — es este mismo apartado con carpeta, tipo de archivo y visor. */
 let MATERIAL = [
-  { t:'Presentación · Semana 1', tipo:'ppt', sz:'4,2 MB' },
-  { t:'Guía de diagnóstico · Módulo 1', tipo:'pdf', sz:'1,8 MB' },
-  { t:'Normas de seguridad del taller', tipo:'pdf', sz:'640 KB' }
+  { t:'Presentación · Semana 1', tipo:'ppt', sz:'4,2 MB', carp:'Semana 1' },
+  { t:'Guía de diagnóstico · Módulo 1', tipo:'pdf', sz:'1,8 MB', carp:'Semana 1' },
+  { t:'Cómo se revisa un sistema eléctrico', tipo:'video', sz:'18,4 MB', carp:'Semana 1' },
+  { t:'Normas de seguridad del taller', tipo:'pdf', sz:'640 KB', carp:'Guías generales' },
+  { t:'Diagrama de bornes', tipo:'img', sz:'320 KB', carp:'Guías generales' }
 ];
+const CARPETAS = ['Semana 1', 'Semana 2', 'Guías generales'];
+const TIPO_ICONO = {
+  pdf:{ cls:'pdf', em:'📄' }, ppt:{ cls:'ppt', em:'📊' }, doc:{ cls:'doc', em:'📝' },
+  img:{ cls:'img', em:'🖼️' }, video:{ cls:'video', em:'🎬' }
+};
 
 /* ---------- DUDAS ---------- */
 let DUDAS = [
@@ -735,9 +1089,13 @@ const CASOS_HECHOS = [
 ];
 
 /* =================== NAVEGACIÓN =================== */
-const VISTAS = ['login','est','admin','prof','qr'];
+const VISTAS = ['login','est','admin','prof','qr','ventas'];
+/* Pantallas de variante que se abren por encima del panel de administración. */
+const VARIANTES_ADMIN = ['v-malla','v-profesores','v-reporte'];
 function show(id){
   VISTAS.forEach(v => document.getElementById('v-'+v).classList.add('hidden'));
+  VARIANTES_ADMIN.forEach(x => document.getElementById(x).classList.add('hidden'));
+  const nb = document.querySelector('#v-admin .nav-bottom'); if(nb) nb.classList.remove('hidden');
   document.getElementById('v-'+id).classList.remove('hidden');
   window.scrollTo(0,0);
 }
@@ -749,7 +1107,7 @@ function entrarCedula(){
   const num = document.getElementById('l-ced').value.replace(/\D/g,'');
   const pass = document.getElementById('l-pass').value;
   const err = document.getElementById('l-err');
-  const mapa = { '30000001':'est', '10000005':'admin', '10000003':'prof' };
+  const mapa = { '30000001':'est', '10000005':'admin', '10000003':'prof', '20000001':'ventas' };
   if(!pass || !mapa[num]){ err.classList.remove('hidden'); return; }
   err.classList.add('hidden');
   entrar(mapa[num]);
@@ -757,6 +1115,8 @@ function entrarCedula(){
 function entrar(rol){
   if(rol === 'est'){ show('est'); navE('inicio'); }
   else if(rol === 'admin'){ show('admin'); navA('panel'); }
+  else if(rol === 'ventas'){ show('ventas'); navV('inicio'); }
+  else if(rol === 'prof'){ show('prof'); navP('hoy'); }
   else { show('prof'); navP('hoy'); }
 }
 function salir(){
@@ -949,33 +1309,52 @@ function revelar(){
 }
 
 /* =================== MATERIAL =================== */
-function itemMat(m){
-  const ic = m.tipo === 'ppt' ? 'ppt' : 'pdf';
-  const em = m.tipo === 'ppt' ? '📊' : '📄';
-  return `<button class="mat-item" onclick="abrirMat('${m.t.replace(/'/g,"")}')">
-    <span class="icn ${ic}">${em}</span><span class="n">${m.t}</span><span class="sz">${m.sz}</span>
+function itemMat(m, i){
+  const ic = TIPO_ICONO[m.tipo] || TIPO_ICONO.pdf;
+  return `<button class="mat-item" onclick="abrirMat(${i})">
+    <span class="icn ${ic.cls}">${ic.em}</span><span class="n">${m.t}</span><span class="sz">${m.sz}</span>
     <span style="color:var(--muted)"><i class="ti ti-right"></i></span></button>`;
 }
-function pintarMaterial(){
-  const c = document.getElementById('pe-mat-list');
+/* Agrupa el material por carpeta. Es lo mismo que pedía la spec como
+   "Classroom": un solo sitio, organizado, con varios tipos de archivo. */
+function matPorCarpeta(){
   if(!MATERIAL.length){
-    c.outerHTML = '<div class="card" id="pe-mat-list"><div class="vacio"><div class="em">📁</div><div class="t">Todavía no hay material publicado</div><div class="d">Cuando tu profesor suba las guías y presentaciones del módulo, aparecen aquí.</div></div></div>';
-    return;
+    return '<div class="vacio"><div class="em">📁</div><div class="t">Todavía no hay material publicado</div><div class="d">Cuando tu profesor suba las guías, videos y presentaciones del módulo, aparecen aquí.</div></div>';
   }
-  c.innerHTML = MATERIAL.map(itemMat).join('');
+  const usadas = CARPETAS.filter(c => MATERIAL.some(m => m.carp === c));
+  return usadas.map(c => {
+    const items = MATERIAL.map((m,i) => ({m,i})).filter(x => x.m.carp === c);
+    return `<div class="carp-h"><i class="ti ti-folder"></i> ${c} <span>${items.length}</span></div>
+            <div class="card">${items.map(x => itemMat(x.m, x.i)).join('')}</div>`;
+  }).join('');
 }
-function pintarMaterialProf(){ document.getElementById('p-mat-list').innerHTML = MATERIAL.map(itemMat).join(''); }
-function pintarMaterialAdmin(){ document.getElementById('a-mat-list').innerHTML = MATERIAL.map(itemMat).join(''); }
-function abrirMat(t){
-  abrirMod(`<div class="st-title">${t}</div><p style="font-size:15px;color:var(--muted);line-height:1.55">En la app real esto abre el PDF. Se descarga una vez y queda disponible sin internet.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>`);
+function pintarMaterial(){ document.getElementById('pe-mat-list').innerHTML = matPorCarpeta(); }
+function pintarMaterialProf(){ document.getElementById('p-mat-list').innerHTML = matPorCarpeta(); }
+function pintarMaterialAdmin(){ document.getElementById('a-mat-list').innerHTML = matPorCarpeta(); }
+function abrirMat(i){
+  const m = MATERIAL[i];
+  if(!m) return;
+  const ic = TIPO_ICONO[m.tipo] || TIPO_ICONO.pdf;
+  const NOMBRE = { pdf:'PDF', ppt:'presentación', doc:'documento', img:'imagen', video:'video' };
+  const offline = m.tipo === 'video'
+    ? 'Los videos se ven en streaming. Se pueden descargar para verlos sin señal, pero pesan.'
+    : 'Se descarga una vez y queda disponible sin internet.';
+  abrirMod(`<div class="st-title">${m.t}</div>
+    <div class="visor"><div class="em">${ic.em}</div><div class="vt">Visor integrado</div>
+      <div class="vd">Aquí se abre el ${NOMBRE[m.tipo]||'archivo'} dentro de la app, sin descargarlo aparte.</div></div>
+    <div class="aviso aviso-info"><span class="ic">💡</span><div>${offline}</div></div>
+    <button class="btn btn-primary" onclick="cerrarMod()">Entendido</button>`);
 }
 function subirMaterial(){
   const t = document.getElementById('m-tit').value.trim();
   if(!t){ abrirMod('<div class="st-title">Falta el título</div><p style="color:var(--muted)">Ponle un nombre al documento para que el estudiante sepa qué es.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>'); return; }
-  MATERIAL.push({ t:t, tipo:'pdf', sz:'1,2 MB' });
+  const tipo = document.getElementById('m-tipo').value;
+  const carp = document.getElementById('m-carp').value;
+  const PESO = { pdf:'1,2 MB', ppt:'3,4 MB', doc:'480 KB', img:'260 KB', video:'22,1 MB' };
+  MATERIAL.push({ t, tipo, sz:PESO[tipo], carp });
   document.getElementById('m-tit').value = '';
   pintarMaterialAdmin();
-  abrirMod('<div class="st-title">Publicado</div><p style="color:var(--muted);line-height:1.55">Ya lo ven los 24 estudiantes del módulo, al instante.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Listo</button>');
+  abrirMod(`<div class="st-title">Publicado</div><p style="color:var(--muted);line-height:1.55">Quedó en <b>${carp}</b>. Ya lo ven los 24 estudiantes del módulo, al instante.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Listo</button>`);
 }
 
 /* =================== COMPETENCIAS =================== */
@@ -1183,8 +1562,254 @@ function abrirMod(html){
 }
 function cerrarMod(){ document.getElementById('modal-host').innerHTML = ''; }
 
+/* =================================================================
+   VARIANTES EXPLORATORIAS — tomadas de la spec "ZRM Academy" aparte.
+   No forman parte del alcance comprometido para el 5 de septiembre
+   (fase0/00_LEEME.md). Se maquetan aquí solo para revisión visual.
+   =================================================================== */
+
+const MODULOS_VENTAS = [
+  { nombre:'Módulo 1 · Introducción al diagnóstico', horario:'Sábados · 8:00 am – 12:00 m' },
+  { nombre:'Módulo 2 · Sistemas eléctricos básicos', horario:'Sábados · 1:00 pm – 5:00 pm' },
+  { nombre:'Módulo 3 · Motores a gasolina', horario:'Sábados · 8:00 am – 12:00 m' }
+];
+let DOCUMENTOS = [];
+
+function navV(p){
+  ['inicio','nueva','docs','perfil'].forEach(x => document.getElementById('pv-'+x).classList.add('hidden'));
+  document.querySelectorAll('#v-ventas .nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('pv-'+p).classList.remove('hidden');
+  const nb = document.getElementById('nv-'+p); if(nb) nb.classList.add('active');
+  if(p === 'inicio'){
+    document.getElementById('v-tot').textContent = DOCUMENTOS.length;
+    document.getElementById('v-doc').textContent = DOCUMENTOS.length;
+  }
+  if(p === 'docs') pintarDocumentos();
+  window.scrollTo(0,0);
+}
+function toggleVPref(){
+  const e = document.getElementById('v-cp');
+  e.textContent = e.textContent === 'V-' ? 'E-' : 'V-';
+}
+function pintarHorarioVentas(){
+  const i = +document.getElementById('v-mod').value;
+  document.getElementById('v-horario').textContent = MODULOS_VENTAS[i].horario;
+}
+function checkMenorVentas(){
+  const f = document.getElementById('v-nac').value;
+  if(!f) return;
+  const edad = Math.floor((Date.now() - new Date(f).getTime()) / (365.25*24*3600*1000));
+  document.getElementById('v-rep-block').classList.toggle('hidden', edad >= 18);
+}
+function guardarInscripcion(){
+  const nom = document.getElementById('v-nom').value.trim();
+  const ced = document.getElementById('v-ced').value.trim();
+  const nac = document.getElementById('v-nac').value;
+  if(!nom || !ced || !nac){
+    abrirMod('<div class="st-title">Faltan datos</div><p style="color:var(--muted);font-size:14px;line-height:1.55">Nombre, cédula y fecha de nacimiento son obligatorios para generar el documento.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>');
+    return;
+  }
+  const esMenor = !document.getElementById('v-rep-block').classList.contains('hidden');
+  const modIdx = +document.getElementById('v-mod').value;
+  const anio = new Date().getFullYear();
+  const codigo = 'ZR-' + anio + '-02-' + ced.slice(-3).padStart(3,'0');
+  const doc = {
+    codigo, nom, ced: document.getElementById('v-cp').textContent + ced,
+    tel: document.getElementById('v-tel').value.trim() || '—',
+    dir: document.getElementById('v-dir').value.trim() || '—',
+    modulo: MODULOS_VENTAS[modIdx].nombre, horario: MODULOS_VENTAS[modIdx].horario,
+    fecha: new Date().toLocaleDateString('es-VE'),
+    esMenor,
+    rep: esMenor ? {
+      nom: document.getElementById('v-rnom').value.trim() || '—',
+      ced: document.getElementById('v-rced').value.trim() || '—',
+      par: document.getElementById('v-rpar').value.trim() || '—',
+      edad: document.getElementById('v-redad').value.trim() || '—',
+      nal: document.getElementById('v-rnal').value.trim() || '—',
+      prof: document.getElementById('v-rprof').value.trim() || '—',
+      tel: document.getElementById('v-rtel').value.trim() || '—',
+      mail: document.getElementById('v-rmail').value.trim() || '—'
+    } : null
+  };
+  DOCUMENTOS.unshift(doc);
+  ['v-nom','v-ced','v-tel','v-dir','v-rnom','v-rced','v-rpar','v-redad','v-rnal','v-rprof','v-rtel','v-rmail'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('v-nac').value = '';
+  document.getElementById('v-rep-block').classList.add('hidden');
+  abrirMod(`<div class="st-title">Inscripción guardada</div>
+    <div class="aviso aviso-success" style="margin-top:8px"><span class="ic">✓</span><div>Código de estudiante <b>${codigo}</b> generado. El documento firmable ya está listo.</div></div>
+    <button class="btn btn-primary mb-8" onclick="cerrarMod();verDocumento('${codigo}')"><i class="ti ti-file"></i>Ver documento firmable</button>
+    <button class="btn btn-ghost" onclick="cerrarMod();navV('docs')">Ir a documentos</button>`);
+}
+function pintarDocumentos(){
+  const c = document.getElementById('v-doc-list');
+  if(!DOCUMENTOS.length){
+    c.innerHTML = '<div class="vacio"><div class="em">📄</div><div class="t">Todavía no hay documentos</div><div class="d">Se generan automáticamente al guardar una inscripción.</div></div>';
+    return;
+  }
+  c.innerHTML = DOCUMENTOS.map(d =>
+    `<div class="est-row" style="cursor:pointer" onclick="verDocumento('${d.codigo}')">
+      <span class="av">${d.nom.split(' ').map(x=>x[0]).slice(0,2).join('')}</span>
+      <div class="inf"><div class="nm">${d.nom}</div><div class="cd">${d.codigo}</div></div>
+      <span class="pill pill-blue">Ver</span></div>`).join('');
+}
+function verDocumento(codigo){
+  const d = DOCUMENTOS.find(x => x.codigo === codigo);
+  if(!d) return;
+  let repHtml = '';
+  if(d.esMenor){
+    repHtml = `<div class="dp-sec"><h5>Datos del representante</h5>
+      <div class="dp-row"><span>Nombre</span><span>${d.rep.nom}</span></div>
+      <div class="dp-row"><span>Cédula</span><span>${d.rep.ced}</span></div>
+      <div class="dp-row"><span>Parentesco</span><span>${d.rep.par}</span></div>
+      <div class="dp-row"><span>Edad</span><span>${d.rep.edad}</span></div>
+      <div class="dp-row"><span>Nacionalidad</span><span>${d.rep.nal}</span></div>
+      <div class="dp-row"><span>Profesión</span><span>${d.rep.prof}</span></div>
+      <div class="dp-row"><span>Teléfono</span><span>${d.rep.tel}</span></div>
+      <div class="dp-row"><span>Correo</span><span>${d.rep.mail}</span></div></div>`;
+  }
+  abrirMod(`<div class="st-title">Documento firmable</div>
+    <div class="doc-prev">
+      <div class="dp-head"><b>ZR MECADEMY</b><br><span style="font-size:11px;color:var(--muted)">RIF J-000000000 · San Antonio del Táchira</span><br><span class="cod">${d.codigo}</span></div>
+      <div class="dp-sec"><h5>Datos del participante</h5>
+        <div class="dp-row"><span>Nombre</span><span>${d.nom}</span></div>
+        <div class="dp-row"><span>Cédula</span><span>${d.ced}</span></div>
+        <div class="dp-row"><span>Módulo</span><span>${d.modulo}</span></div>
+        <div class="dp-row"><span>Horario</span><span>${d.horario}</span></div>
+        <div class="dp-row"><span>Fecha de inscripción</span><span>${d.fecha}</span></div>
+        <div class="dp-row"><span>Teléfono</span><span>${d.tel}</span></div>
+        <div class="dp-row"><span>Dirección</span><span>${d.dir}</span></div>
+      </div>
+      ${repHtml}
+      <div class="dp-sec"><h5>Política administrativa y académica</h5>
+        <p style="color:var(--muted)">Texto institucional fijo — servicio, tarifas, recesos, inasistencias, suspensión disciplinaria, reembolsos. Se copia literal de la planilla física de la Academia; no se redacta aquí.</p>
+      </div>
+      <div class="dp-firma"><div>${d.esMenor ? 'Representante' : 'Participante'}</div><div>${d.esMenor ? 'Participante' : 'Fecha'}</div></div>
+    </div>
+    <div class="aviso aviso-info mt-16"><span class="ic">🖨️</span><div>Se imprime y se firma en físico. La sección de representante se <b>oculta por completo</b> cuando el estudiante es mayor de edad.</div></div>
+    <button class="btn btn-primary mt-8" onclick="cerrarMod()">Cerrar</button>`);
+}
+
+/* Abre una pantalla de variante sobre el panel de administración. */
+function abrirVariante(id){
+  ['panel','asistencia','material','perfil'].forEach(x => document.getElementById('pa-'+x).classList.add('hidden'));
+  document.querySelector('#v-admin .nav-bottom').classList.add('hidden');
+  VARIANTES_ADMIN.forEach(v => document.getElementById(v).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+/* ---------- MALLA CURRICULAR (variante) ---------- */
+const MALLA = [
+  { t:'Módulo 1 · Introducción al diagnóstico', estado:'actual' },
+  { t:'Módulo 2 · Sistemas eléctricos básicos', estado:'bloq' },
+  { t:'Módulo 3 · Motores a gasolina', estado:'bloq' },
+  { t:'Módulo 4 · Frenos y suspensión', estado:'bloq' }
+];
+function abrirMalla(){
+  abrirVariante('v-malla');
+  document.getElementById('ml-list').innerHTML = MALLA.map((m,i) =>
+    `<div class="mesh-row ${m.estado==='actual'?'actual':''} ${m.estado==='bloq'?'bloq':''}"><div class="nn">${i+1}</div><div style="flex:1"><b>${m.t}</b></div>${m.estado==='actual'?'<span class="pill pill-blue">En curso</span>':'<span class="pill pill-grey">Pendiente</span>'}</div>`).join('');
+}
+
+/* ---------- PROFESORES Y MÓDULOS (variante) ---------- */
+const PROFESORES = [
+  { nom:'Carlos Rivas', ced:'V-10000003', mods:['Módulo 1'] },
+  { nom:'Andreína Ponce', ced:'V-10000009', mods:['Módulo 2','Módulo 3'] }
+];
+function abrirAsignacion(){
+  abrirVariante('v-profesores');
+  document.getElementById('as-list').innerHTML = PROFESORES.map(p =>
+    `<div class="assign-row"><b>${p.nom}</b><div class="sub">${p.ced}</div><div class="mods">${p.mods.map(m=>`<span class="pill pill-blue">${m}</span>`).join('')}</div></div>`).join('');
+}
+function crearProfesor(){
+  abrirMod('<div class="st-title">Crear profesor</div><p style="color:var(--muted);font-size:14px;line-height:1.55">En la app real esto abre un formulario con los datos del docente. Al guardarlo, el administrador le asigna uno o más módulos desde esta misma pantalla. <b>Los profesores no se autorregistran.</b></p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>');
+}
+
+/* ---------- REPORTE DE ASISTENCIA (variante) ----------
+   El % es determinista (derivado de la cédula), no aleatorio: si cambiara
+   en cada repintado, la demo perdería credibilidad frente a la academia. */
+function pctAsistencia(a){
+  if(a.presente) return 100;
+  let s = 0;
+  for(let i=0;i<a.ced.length;i++) s = (s*31 + a.ced.charCodeAt(i)) >>> 0;
+  return 60 + (s % 36);
+}
+function abrirReporte(){ abrirVariante('v-reporte'); pintarReporte(); }
+function pintarReporte(){
+  const mod = document.getElementById('rp-mod').value;
+  /* Con datos reales esto filtra por módulo; en la maqueta solo existe
+     la cohorte del Módulo 1, así que el resto sale vacío a propósito. */
+  const lista = (mod === 'todos' || mod === '0') ? ALUMNOS.slice(0,10) : [];
+  const c = document.getElementById('rp-list');
+  if(!lista.length){
+    c.innerHTML = '<div class="vacio"><div class="em">📋</div><div class="t">Sin sesiones en ese filtro</div><div class="d">En la maqueta solo hay datos de la cohorte del Módulo 1.</div></div>';
+    return;
+  }
+  c.innerHTML = `<div class="lista-est">` + lista.map(a => {
+    const pct = pctAsistencia(a);
+    return `<div class="est-row"><span class="av">${a.ini}</span><div class="inf"><div class="nm">${a.nom}</div><div class="cd">Módulo 1 · ${a.presente?'presente hoy':'sin registrar hoy'}</div></div><span class="pill ${pct>=80?'pill-green':'pill-amber'}">${pct}%</span></div>`;
+  }).join('') + `</div>`;
+}
+
+function cerrarVariante(){
+  VARIANTES_ADMIN.forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.querySelector('#v-admin .nav-bottom').classList.remove('hidden');
+  navA('panel');
+}
+
+/* ---------- GENERACIÓN DE CASOS CON IA (variante, Módulo 6) ---------- */
+function generarCasoIA(){
+  const host = document.getElementById('ia-job-host');
+  host.innerHTML = `<div class="ia-job"><div class="h"><span class="spin"></span> EN COLA · GENERANDO A PARTIR DEL MATERIAL</div>
+    <div style="font-size:14px;line-height:1.5">Esto pasa en segundo plano para no saturar la API de IA si varios profesores generan a la vez.</div></div>`;
+  setTimeout(() => {
+    host.innerHTML = `<div class="card">
+      <div class="pill pill-amber mb-8">Borrador · pendiente de tu aprobación</div>
+      <h3>Caso generado: "El motor que pierde potencia en subida"</h3>
+      <div class="sub">Generado a partir de «Guía de diagnóstico · Módulo 1». Nadie lo ve todavía — decides tú si se publica.</div>
+      <button class="btn btn-primary mt-8 mb-8" onclick="aprobarCasoIA()"><i class="ti ti-check"></i>Aprobar y publicar</button>
+      <button class="btn btn-outline" onclick="document.getElementById('ia-job-host').innerHTML=''">Descartar</button>
+    </div>`;
+  }, 1400);
+}
+function aprobarCasoIA(){
+  document.getElementById('ia-job-host').innerHTML = '';
+  abrirMod('<div class="st-title">Caso publicado</div><p style="color:var(--muted);font-size:14px;line-height:1.55">Ya está disponible para el grupo del módulo. Ningún caso generado por IA se publica sin que un profesor lo apruebe primero.</p><button class="btn btn-primary mt-16" onclick="cerrarMod()">Entendido</button>');
+}
+
+/* =================== TEMA CLARO / OSCURO ===================
+   Arranca siguiendo la preferencia del sistema. Si el usuario elige
+   a mano, esa elección manda y se recuerda mientras dure la sesión.
+   En la app real esto iría en el perfil del usuario.            */
+let TEMA = null;   // null = seguir al sistema
+
+function sistemaPrefiereOscuro(){
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function temaEfectivo(){ return TEMA || (sistemaPrefiereOscuro() ? 'oscuro' : 'claro'); }
+function aplicarTema(){
+  const t = temaEfectivo();
+  document.documentElement.setAttribute('data-tema', t);
+  /* El icono muestra a dónde vas a ir, no dónde estás. */
+  document.querySelectorAll('.ic-tema').forEach(i => {
+    i.classList.remove('ti-sun','ti-moon');
+    i.classList.add(t === 'oscuro' ? 'ti-sun' : 'ti-moon');
+  });
+}
+function alternarTema(){
+  TEMA = temaEfectivo() === 'oscuro' ? 'claro' : 'oscuro';
+  aplicarTema();
+}
+/* Si el usuario no ha elegido, seguimos al sistema en vivo. */
+if(window.matchMedia){
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const alSistema = () => { if(!TEMA) aplicarTema(); };
+  mq.addEventListener ? mq.addEventListener('change', alSistema) : mq.addListener(alSistema);
+}
+aplicarTema();
+
 /* =================== ARRANQUE =================== */
-['iso-login','iso-tb-e','iso-tb-a','iso-tb-p','iso-carnet'].forEach(id => {
+['iso-login','iso-tb-e','iso-tb-a','iso-tb-p','iso-tb-v','iso-carnet'].forEach(id => {
   const e = document.getElementById(id); if(e) e.innerHTML = ISO;
 });
 /* Estado inicial: 6 ya registrados, para que el prototipo no arranque en cero */
